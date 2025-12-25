@@ -1,0 +1,10 @@
+format: jb-book
+root: intro
+parts:
+  - chapters:
+    - file: langchain/core/overview
+      sections:
+      - glob: langchain/core/*
+    - file: langchain/prompt_engineering/overview
+      sections:
+      - glob: langchain/prompt_engineering/*
