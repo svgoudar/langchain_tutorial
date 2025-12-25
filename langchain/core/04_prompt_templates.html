@@ -1,0 +1,975 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Prompt Template &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/core/04_prompt_templates';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/core/04_prompt_templates.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/core/04_prompt_templates.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/core/04_prompt_templates.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Prompt Template</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-prompt-templates-exist">Why Prompt Templates Exist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-prompt-template-types">Core Prompt Template Types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompttemplate-text-completion-legacy"><code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code> (Text Completion – Legacy)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatprompttemplate-primary-recommended"><code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code> (Primary &amp; Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-templates-llm-lcel">Prompt Templates + LLM (LCEL)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-validation">Variables &amp; Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-variables-advanced">Partial Variables (Advanced)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#messagesplaceholder-critical-for-agents"><code class="docutils literal notranslate"><span class="pre">MessagesPlaceholder</span></code> (Critical for Agents)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-templates-in-agents">Prompt Templates in Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-templates-in-rag">Prompt Templates in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-templates-vs-raw-strings-key-difference">Prompt Templates vs Raw Strings (Key Difference)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#versioning-testing-prompts">Versioning &amp; Testing Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#prompt-template" id="id1">Prompt Template</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-prompt-templates-exist" id="id2">Why Prompt Templates Exist</a></p></li>
+<li><p><a class="reference internal" href="#core-prompt-template-types" id="id3">Core Prompt Template Types</a></p></li>
+<li><p><a class="reference internal" href="#prompttemplate-text-completion-legacy" id="id4"><code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code> (Text Completion – Legacy)</a></p></li>
+<li><p><a class="reference internal" href="#chatprompttemplate-primary-recommended" id="id5"><code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code> (Primary &amp; Recommended)</a></p></li>
+<li><p><a class="reference internal" href="#prompt-templates-llm-lcel" id="id6">Prompt Templates + LLM (LCEL)</a></p></li>
+<li><p><a class="reference internal" href="#variables-validation" id="id7">Variables &amp; Validation</a></p></li>
+<li><p><a class="reference internal" href="#partial-variables-advanced" id="id8">Partial Variables (Advanced)</a></p></li>
+<li><p><a class="reference internal" href="#messagesplaceholder-critical-for-agents" id="id9"><code class="docutils literal notranslate"><span class="pre">MessagesPlaceholder</span></code> (Critical for Agents)</a></p></li>
+<li><p><a class="reference internal" href="#prompt-templates-in-agents" id="id10">Prompt Templates in Agents</a></p></li>
+<li><p><a class="reference internal" href="#prompt-templates-in-rag" id="id11">Prompt Templates in RAG</a></p></li>
+<li><p><a class="reference internal" href="#prompt-templates-vs-raw-strings-key-difference" id="id12">Prompt Templates vs Raw Strings (Key Difference)</a></p></li>
+<li><p><a class="reference internal" href="#versioning-testing-prompts" id="id13">Versioning &amp; Testing Prompts</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id14">Common Mistakes</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id15">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id16">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="prompt-template">
+<h1><a class="toc-backref" href="#id1">Prompt Template</a><a class="headerlink" href="#prompt-template" title="Permalink to this heading">#</a></h1>
+<p>In <strong>LangChain</strong>, a <strong>Prompt Template</strong> is:</p>
+<blockquote>
+<div><p>A <strong>structured, reusable, parameterized prompt object</strong> that separates <strong>prompt logic</strong> from <strong>business logic</strong>.</p>
+</div></blockquote>
+<p>Instead of hard-coding strings, you define <strong>prompt contracts</strong>.</p>
+<hr class="docutils" />
+<section id="why-prompt-templates-exist">
+<h2><a class="toc-backref" href="#id2">Why Prompt Templates Exist</a><a class="headerlink" href="#why-prompt-templates-exist" title="Permalink to this heading">#</a></h2>
+<p>Without templates:</p>
+<ul class="simple">
+<li><p>Prompts are scattered strings</p></li>
+<li><p>Hard to version, test, or reuse</p></li>
+<li><p>Easy to break agents/RAG pipelines</p></li>
+</ul>
+<p>With templates:</p>
+<ul class="simple">
+<li><p>Strong input validation</p></li>
+<li><p>Reusability</p></li>
+<li><p>Composition with chains/agents</p></li>
+<li><p>Provider-agnostic prompts</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="core-prompt-template-types">
+<h2><a class="toc-backref" href="#id3">Core Prompt Template Types</a><a class="headerlink" href="#core-prompt-template-types" title="Permalink to this heading">#</a></h2>
+<p>LangChain has <strong>three primary prompt abstractions</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Template Type</p></th>
+<th class="head"><p>Used For</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code></p></td>
+<td><p>Text-only models (legacy)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code></p></td>
+<td><p>Chat models (modern, recommended)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MessagesPlaceholder</span></code></p></td>
+<td><p>Injecting memory / scratchpad</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="prompttemplate-text-completion-legacy">
+<h2><a class="toc-backref" href="#id4"><code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code> (Text Completion – Legacy)</a><a class="headerlink" href="#prompttemplate-text-completion-legacy" title="Permalink to this heading">#</a></h2>
+<p><strong>Input → string</strong>
+<strong>Output → formatted string</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Explain </span><span class="si">{topic}</span><span class="s2"> in one sentence&quot;</span>
+<span class="p">)</span>
+
+<span class="n">formatted</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">topic</span><span class="o">=</span><span class="s2">&quot;RAG&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">formatted</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Explain RAG in one sentence
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use only when:</p>
+<ul class="simple">
+<li><p>Model accepts plain text</p></li>
+<li><p>No tools, no agents, no chat</p></li>
+</ul>
+<p>❌ Not recommended for new systems</p>
+</section>
+<hr class="docutils" />
+<section id="chatprompttemplate-primary-recommended">
+<h2><a class="toc-backref" href="#id5"><code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code> (Primary &amp; Recommended)</a><a class="headerlink" href="#chatprompttemplate-primary-recommended" title="Permalink to this heading">#</a></h2>
+<p><strong>Input → structured messages</strong>
+<strong>Output → list of messages</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;You are an IT support assistant&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">format_messages</span><span class="p">(</span>
+    <span class="n">question</span><span class="o">=</span><span class="s2">&quot;What is LangChain?&quot;</span>
+<span class="p">)</span>
+<span class="n">messages</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[SystemMessage(content=&#39;You are an IT support assistant&#39;, additional_kwargs={}, response_metadata={}),
+ HumanMessage(content=&#39;What is LangChain?&#39;, additional_kwargs={}, response_metadata={})]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Why this matters:</p>
+<ul class="simple">
+<li><p>Preserves role semantics</p></li>
+<li><p>Enables tool calling</p></li>
+<li><p>Works with agents &amp; RAG</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="prompt-templates-llm-lcel">
+<h2><a class="toc-backref" href="#id6">Prompt Templates + LLM (LCEL)</a><a class="headerlink" href="#prompt-templates-llm-lcel" title="Permalink to this heading">#</a></h2>
+<p>Prompt templates are <strong>Runnable objects</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain RAG&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RAG stands for Red, Amber, Green. It is a color-coding system used in project management and reporting to indicate the status or health of a particular task, project, or key performance indicator (KPI).
+
+- Red typically indicates that a task or project is at risk, behind schedule, or facing significant issues that need immediate attention.
+- Amber signifies that there are some concerns or potential risks that may impact the task or project if not addressed promptly.
+- Green indicates that everything is on track, within schedule, and progressing as planned.
+
+By using the RAG system, stakeholders can quickly assess the status of various aspects of a project or task and prioritize their attention and resources accordingly.
+</pre></div>
+</div>
+</div>
+</div>
+<p>This composability is <strong>core LangChain design</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="variables-validation">
+<h2><a class="toc-backref" href="#id7">Variables &amp; Validation</a><a class="headerlink" href="#variables-validation" title="Permalink to this heading">#</a></h2>
+<p>Prompt templates <strong>declare required inputs</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;severity&quot;</span><span class="p">,</span> <span class="s2">&quot;issue&quot;</span><span class="p">],</span>
+    <span class="n">template</span><span class="o">=</span><span class="s2">&quot;Severity: </span><span class="si">{severity}</span><span class="se">\n</span><span class="s2">Issue: </span><span class="si">{issue}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you miss a variable → error early
+This prevents <strong>silent prompt bugs</strong></p>
+</section>
+<hr class="docutils" />
+<section id="partial-variables-advanced">
+<h2><a class="toc-backref" href="#id8">Partial Variables (Advanced)</a><a class="headerlink" href="#partial-variables-advanced" title="Permalink to this heading">#</a></h2>
+<p>Used for <strong>static instructions</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
+    <span class="n">template</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{role}</span><span class="se">\n</span><span class="s2">Question: </span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span>
+    <span class="n">partial_variables</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a security expert&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Why useful:</p>
+<ul class="simple">
+<li><p>Environment-specific prompts</p></li>
+<li><p>Prompt versioning</p></li>
+<li><p>Config-driven instructions</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="messagesplaceholder-critical-for-agents">
+<h2><a class="toc-backref" href="#id9"><code class="docutils literal notranslate"><span class="pre">MessagesPlaceholder</span></code> (Critical for Agents)</a><a class="headerlink" href="#messagesplaceholder-critical-for-agents" title="Permalink to this heading">#</a></h2>
+<p>Used to inject:</p>
+<ul class="simple">
+<li><p>Memory</p></li>
+<li><p>Tool history</p></li>
+<li><p>Scratchpad</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">MessagesPlaceholder</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;You are an assistant&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">),</span>
+    <span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="n">variable_name</span><span class="o">=</span><span class="s2">&quot;agent_scratchpad&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>⚠️ Never hard-code scratchpads manually.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-templates-in-agents">
+<h2><a class="toc-backref" href="#id10">Prompt Templates in Agents</a><a class="headerlink" href="#prompt-templates-in-agents" title="Permalink to this heading">#</a></h2>
+<p>Agents <strong>require</strong> specific variables.</p>
+<p>For OpenAI tools agents:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{input}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{agent_scratchpad}</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Use tools if needed&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{agent_scratchpad}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Mismatch → runtime errors (as you observed earlier)</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-templates-in-rag">
+<h2><a class="toc-backref" href="#id11">Prompt Templates in RAG</a><a class="headerlink" href="#prompt-templates-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Answer using the provided context only&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;Context:</span><span class="se">\n</span><span class="si">{context}</span><span class="se">\n\n</span><span class="s2">Question:</span><span class="se">\n</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>LangChain injects retrieved documents into <code class="docutils literal notranslate"><span class="pre">{context}</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-templates-vs-raw-strings-key-difference">
+<h2><a class="toc-backref" href="#id12">Prompt Templates vs Raw Strings (Key Difference)</a><a class="headerlink" href="#prompt-templates-vs-raw-strings-key-difference" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Raw String</p></th>
+<th class="head"><p>PromptTemplate</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Validation</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reusability</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Composable</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Agent-safe</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Production-ready</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="versioning-testing-prompts">
+<h2><a class="toc-backref" href="#id13">Versioning &amp; Testing Prompts</a><a class="headerlink" href="#versioning-testing-prompts" title="Permalink to this heading">#</a></h2>
+<p>Best practice:</p>
+<ul class="simple">
+<li><p>Treat prompts as <strong>code</strong></p></li>
+<li><p>Store in files</p></li>
+<li><p>Version them</p></li>
+<li><p>Test with fixed inputs</p></li>
+</ul>
+<p>PromptTemplate makes this feasible.</p>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id14">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mistake</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Using <code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code> with chat models</p></td>
+<td><p>Tool/agent failures</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hard-coding scratchpad</p></td>
+<td><p>Agent crashes</p></td>
+</tr>
+<tr class="row-even"><td><p>Missing variables</p></td>
+<td><p>Runtime KeyError</p></td>
+</tr>
+<tr class="row-odd"><td><p>Embedding logic in prompt text</p></td>
+<td><p>Unmaintainable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id15">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Prompt Templates in LangChain are structured, validated, composable prompt definitions that decouple prompt engineering from application logic. <code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code> is the standard for modern, agentic, and RAG-based systems.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id16">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Chatbot / Agent / RAG → <code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code></strong></p></li>
+<li><p><strong>Legacy text model → <code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code></strong></p></li>
+<li><p><strong>Agents → always include <code class="docutils literal notranslate"><span class="pre">agent_scratchpad</span></code></strong></p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Typical Use</p></th>
+<th class="head"><p>Provided By</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">{input}</span></code></p></td>
+<td><p>User query</p></td>
+<td><p>You</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">{agent_scratchpad}</span></code></p></td>
+<td><p>Tool history</p></td>
+<td><p>AgentExecutor</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">{chat_history}</span></code></p></td>
+<td><p>Conversation memory</p></td>
+<td><p>Memory</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">{context}</span></code></p></td>
+<td><p>Retrieved docs</p></td>
+<td><p>RAG</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">{question}</span></code></p></td>
+<td><p>Alias of input</p></td>
+<td><p>You</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">{tools}</span></code></p></td>
+<td><p>Tool schemas</p></td>
+<td><p>Agent</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">{tool_names}</span></code></p></td>
+<td><p>Tool list</p></td>
+<td><p>Agent</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">{system_prompt}</span></code></p></td>
+<td><p>Global rules</p></td>
+<td><p>Partial vars</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">{format_instructions}</span></code></p></td>
+<td><p>Output schema</p></td>
+<td><p>Output parser</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\core"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-prompt-templates-exist">Why Prompt Templates Exist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-prompt-template-types">Core Prompt Template Types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompttemplate-text-completion-legacy"><code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code> (Text Completion – Legacy)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatprompttemplate-primary-recommended"><code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code> (Primary &amp; Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-templates-llm-lcel">Prompt Templates + LLM (LCEL)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-validation">Variables &amp; Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-variables-advanced">Partial Variables (Advanced)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#messagesplaceholder-critical-for-agents"><code class="docutils literal notranslate"><span class="pre">MessagesPlaceholder</span></code> (Critical for Agents)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-templates-in-agents">Prompt Templates in Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-templates-in-rag">Prompt Templates in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-templates-vs-raw-strings-key-difference">Prompt Templates vs Raw Strings (Key Difference)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#versioning-testing-prompts">Versioning &amp; Testing Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

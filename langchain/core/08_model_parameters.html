@@ -1,0 +1,1040 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Model Parameters &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/core/08_model_parameters';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/core/08_model_parameters.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/core/08_model_parameters.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/core/08_model_parameters.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Model Parameters</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Model Parameters</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-model-parameters-matter">Why Model Parameters Matter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-model-parameters-most-important">Core Model Parameters (Most Important)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature">temperature</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#top-p-nucleus-sampling">top_p (Nucleus Sampling)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#max-tokens">max_tokens</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration">Demonstration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-control-parameters">Token Control Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stop">stop</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-penalty">frequency_penalty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#presence-penalty">presence_penalty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seed-determinism">seed (Determinism)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#response-format-structured-output">response_format (Structured Output)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters-in-langchain-chains">Model Parameters in LangChain Chains</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters-in-agents">Model Parameters in Agents</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters-in-rag">Model Parameters in RAG</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-rag-settings">Recommended RAG Settings</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#common-parameter-mistakes">Common Parameter Mistakes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-temperature-in-rag">High temperature in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unlimited-max-tokens">Unlimited max_tokens</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuning-temperature-top-p-together">Tuning temperature + top_p together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-defaults-blindly">Using defaults blindly</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-interaction-summary">Parameter Interaction Summary</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-presets-production">Recommended Presets (Production)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-qa">RAG / QA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chatbot">Chatbot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agents">Agents</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-langchain-helps-with-parameters">How LangChain Helps with Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#model-parameters" id="id1">Model Parameters</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-model-parameters-matter" id="id2">Why Model Parameters Matter</a></p></li>
+<li><p><a class="reference internal" href="#core-model-parameters-most-important" id="id3">Core Model Parameters (Most Important)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#temperature" id="id4">temperature</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#top-p-nucleus-sampling" id="id5">top_p (Nucleus Sampling)</a></p></li>
+<li><p><a class="reference internal" href="#max-tokens" id="id6">max_tokens</a></p>
+<ul>
+<li><p><a class="reference internal" href="#demonstration" id="id7">Demonstration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#token-control-parameters" id="id8">Token Control Parameters</a></p>
+<ul>
+<li><p><a class="reference internal" href="#stop" id="id9">stop</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#frequency-penalty" id="id10">frequency_penalty</a></p></li>
+<li><p><a class="reference internal" href="#presence-penalty" id="id11">presence_penalty</a></p></li>
+<li><p><a class="reference internal" href="#seed-determinism" id="id12">seed (Determinism)</a></p></li>
+<li><p><a class="reference internal" href="#response-format-structured-output" id="id13">response_format (Structured Output)</a></p></li>
+<li><p><a class="reference internal" href="#model-parameters-in-langchain-chains" id="id14">Model Parameters in LangChain Chains</a></p></li>
+<li><p><a class="reference internal" href="#model-parameters-in-agents" id="id15">Model Parameters in Agents</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#model-parameters-in-rag" id="id16">Model Parameters in RAG</a></p>
+<ul>
+<li><p><a class="reference internal" href="#recommended-rag-settings" id="id17">Recommended RAG Settings</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#common-parameter-mistakes" id="id18">Common Parameter Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#high-temperature-in-rag" id="id19">High temperature in RAG</a></p></li>
+<li><p><a class="reference internal" href="#unlimited-max-tokens" id="id20">Unlimited max_tokens</a></p></li>
+<li><p><a class="reference internal" href="#tuning-temperature-top-p-together" id="id21">Tuning temperature + top_p together</a></p></li>
+<li><p><a class="reference internal" href="#using-defaults-blindly" id="id22">Using defaults blindly</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#parameter-interaction-summary" id="id23">Parameter Interaction Summary</a></p>
+<ul>
+<li><p><a class="reference internal" href="#recommended-presets-production" id="id24">Recommended Presets (Production)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rag-qa" id="id25">RAG / QA</a></p></li>
+<li><p><a class="reference internal" href="#chatbot" id="id26">Chatbot</a></p></li>
+<li><p><a class="reference internal" href="#agents" id="id27">Agents</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#how-langchain-helps-with-parameters" id="id28">How LangChain Helps with Parameters</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id29">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id30">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="model-parameters">
+<h1><a class="toc-backref" href="#id1">Model Parameters</a><a class="headerlink" href="#model-parameters" title="Permalink to this heading">#</a></h1>
+<p><strong>Model parameters</strong> are <strong>runtime controls</strong> that influence <em>how</em> an LLM generates responses.
+They do <strong>not change the model weights</strong>—only the <strong>generation behavior</strong>.</p>
+<p>In LangChain, these parameters are passed to the <strong>ChatModel / LLM abstraction</strong> and are <strong>provider-agnostic</strong> (as much as possible).</p>
+<hr class="docutils" />
+<section id="why-model-parameters-matter">
+<h2><a class="toc-backref" href="#id2">Why Model Parameters Matter</a><a class="headerlink" href="#why-model-parameters-matter" title="Permalink to this heading">#</a></h2>
+<p>Model parameters control:</p>
+<ul class="simple">
+<li><p>Creativity vs determinism</p></li>
+<li><p>Factuality vs diversity</p></li>
+<li><p>Latency and cost</p></li>
+<li><p>Safety and verbosity</p></li>
+</ul>
+<p>Poor tuning leads to:</p>
+<ul class="simple">
+<li><p>Hallucinations</p></li>
+<li><p>Inconsistent answers</p></li>
+<li><p>Higher cost</p></li>
+<li><p>Slow responses</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="core-model-parameters-most-important">
+<h2><a class="toc-backref" href="#id3">Core Model Parameters (Most Important)</a><a class="headerlink" href="#core-model-parameters-most-important" title="Permalink to this heading">#</a></h2>
+<section id="temperature">
+<h3><a class="toc-backref" href="#id4">temperature</a><a class="headerlink" href="#temperature" title="Permalink to this heading">#</a></h3>
+<p>Controls <strong>randomness</strong> of token selection.</p>
+<p><strong>Behavior</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code> → deterministic, factual</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0.7</span></code> → balanced</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;1.0</span></code> → creative, risky</p></li>
+</ul>
+<p><strong>Demonstration</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain RAG&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Rule of thumb</strong></p>
+<ul class="simple">
+<li><p>RAG / classification → <code class="docutils literal notranslate"><span class="pre">0.0–0.2</span></code></p></li>
+<li><p>Chat / ideation → <code class="docutils literal notranslate"><span class="pre">0.6–0.9</span></code></p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="top-p-nucleus-sampling">
+<h2><a class="toc-backref" href="#id5">top_p (Nucleus Sampling)</a><a class="headerlink" href="#top-p-nucleus-sampling" title="Permalink to this heading">#</a></h2>
+<p>Limits token selection to the <strong>smallest probability mass</strong>.</p>
+<p><strong>Behavior</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">top_p=1.0</span></code> → consider all tokens</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">top_p=0.9</span></code> → consider only top 90% probability mass</p></li>
+</ul>
+<p><strong>Demonstration</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span>
+<span class="p">)</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain RAG&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Important</strong></p>
+<ul class="simple">
+<li><p>Use <strong>either</strong> <code class="docutils literal notranslate"><span class="pre">temperature</span></code> <strong>or</strong> <code class="docutils literal notranslate"><span class="pre">top_p</span></code></p></li>
+<li><p>Avoid tuning both aggressively</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="max-tokens">
+<h2><a class="toc-backref" href="#id6">max_tokens</a><a class="headerlink" href="#max-tokens" title="Permalink to this heading">#</a></h2>
+<p>Limits the <strong>length of the generated output</strong>.</p>
+<section id="demonstration">
+<h3><a class="toc-backref" href="#id7">Demonstration</a><a class="headerlink" href="#demonstration" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">50</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Controls:</p>
+<ul class="simple">
+<li><p>Cost</p></li>
+<li><p>Response verbosity</p></li>
+<li><p>Latency</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="token-control-parameters">
+<h2><a class="toc-backref" href="#id8">Token Control Parameters</a><a class="headerlink" href="#token-control-parameters" title="Permalink to this heading">#</a></h2>
+<section id="stop">
+<h3><a class="toc-backref" href="#id9">stop</a><a class="headerlink" href="#stop" title="Permalink to this heading">#</a></h3>
+<p>Stops generation when a token or sequence is encountered.</p>
+<p>Used in:</p>
+<ul class="simple">
+<li><p>Structured outputs</p></li>
+<li><p>Tool responses</p></li>
+<li><p>Controlled generation</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="frequency-penalty">
+<h2><a class="toc-backref" href="#id10">frequency_penalty</a><a class="headerlink" href="#frequency-penalty" title="Permalink to this heading">#</a></h2>
+<p>Reduces repetition of tokens already used.</p>
+<p><strong>Demonstration</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">frequency_penalty</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="presence-penalty">
+<h2><a class="toc-backref" href="#id11">presence_penalty</a><a class="headerlink" href="#presence-penalty" title="Permalink to this heading">#</a></h2>
+<p>Encourages <strong>new topics</strong>.</p>
+<p><strong>Demonstration</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">presence_penalty</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="seed-determinism">
+<h2><a class="toc-backref" href="#id12">seed (Determinism)</a><a class="headerlink" href="#seed-determinism" title="Permalink to this heading">#</a></h2>
+<p>Ensures <strong>repeatable outputs</strong> (if provider supports it).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="response-format-structured-output">
+<h2><a class="toc-backref" href="#id13">response_format (Structured Output)</a><a class="headerlink" href="#response-format-structured-output" title="Permalink to this heading">#</a></h2>
+<p>Used internally by LangChain for structured parsing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">MySchema</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>LangChain auto-manages this.</p>
+</section>
+<hr class="docutils" />
+<section id="model-parameters-in-langchain-chains">
+<h2><a class="toc-backref" href="#id14">Model Parameters in LangChain Chains</a><a class="headerlink" href="#model-parameters-in-langchain-chains" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">200</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Parameters are bound to the <strong>Runnable</strong>, not the prompt.</p>
+</section>
+<hr class="docutils" />
+<section id="model-parameters-in-agents">
+<h2><a class="toc-backref" href="#id15">Model Parameters in Agents</a><a class="headerlink" href="#model-parameters-in-agents" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">agent_llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Best practice:</p>
+<ul class="simple">
+<li><p><strong>Agents → temperature = 0</strong></p></li>
+<li><p>Deterministic tool selection</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="model-parameters-in-rag">
+<h1><a class="toc-backref" href="#id16">Model Parameters in RAG</a><a class="headerlink" href="#model-parameters-in-rag" title="Permalink to this heading">#</a></h1>
+<section id="recommended-rag-settings">
+<h2><a class="toc-backref" href="#id17">Recommended RAG Settings</a><a class="headerlink" href="#recommended-rag-settings" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">300</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Why:</p>
+<ul class="simple">
+<li><p>Reduce hallucinations</p></li>
+<li><p>Improve grounding on retrieved context</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="common-parameter-mistakes">
+<h1><a class="toc-backref" href="#id18">Common Parameter Mistakes</a><a class="headerlink" href="#common-parameter-mistakes" title="Permalink to this heading">#</a></h1>
+<section id="high-temperature-in-rag">
+<h2><a class="toc-backref" href="#id19">High temperature in RAG</a><a class="headerlink" href="#high-temperature-in-rag" title="Permalink to this heading">#</a></h2>
+<p>❌ Causes hallucinations</p>
+</section>
+<section id="unlimited-max-tokens">
+<h2><a class="toc-backref" href="#id20">Unlimited max_tokens</a><a class="headerlink" href="#unlimited-max-tokens" title="Permalink to this heading">#</a></h2>
+<p>❌ Increases cost</p>
+</section>
+<section id="tuning-temperature-top-p-together">
+<h2><a class="toc-backref" href="#id21">Tuning temperature + top_p together</a><a class="headerlink" href="#tuning-temperature-top-p-together" title="Permalink to this heading">#</a></h2>
+<p>❌ Unpredictable behavior</p>
+</section>
+<section id="using-defaults-blindly">
+<h2><a class="toc-backref" href="#id22">Using defaults blindly</a><a class="headerlink" href="#using-defaults-blindly" title="Permalink to this heading">#</a></h2>
+<p>❌ Suboptimal results</p>
+<hr class="docutils" />
+</section>
+</section>
+<section id="parameter-interaction-summary">
+<h1><a class="toc-backref" href="#id23">Parameter Interaction Summary</a><a class="headerlink" href="#parameter-interaction-summary" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Affects</p></th>
+<th class="head"><p>Typical Use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>temperature</p></td>
+<td><p>Randomness</p></td>
+<td><p>Creativity control</p></td>
+</tr>
+<tr class="row-odd"><td><p>top_p</p></td>
+<td><p>Diversity</p></td>
+<td><p>Token filtering</p></td>
+</tr>
+<tr class="row-even"><td><p>max_tokens</p></td>
+<td><p>Length</p></td>
+<td><p>Cost &amp; latency</p></td>
+</tr>
+<tr class="row-odd"><td><p>stop</p></td>
+<td><p>Termination</p></td>
+<td><p>Structured output</p></td>
+</tr>
+<tr class="row-even"><td><p>frequency_penalty</p></td>
+<td><p>Repetition</p></td>
+<td><p>Reduce loops</p></td>
+</tr>
+<tr class="row-odd"><td><p>presence_penalty</p></td>
+<td><p>Topic diversity</p></td>
+<td><p>Brainstorming</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<section id="recommended-presets-production">
+<h2><a class="toc-backref" href="#id24">Recommended Presets (Production)</a><a class="headerlink" href="#recommended-presets-production" title="Permalink to this heading">#</a></h2>
+<section id="rag-qa">
+<h3><a class="toc-backref" href="#id25">RAG / QA</a><a class="headerlink" href="#rag-qa" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="n">top_p</span><span class="o">=</span><span class="mf">1.0</span>
+<span class="n">max_tokens</span><span class="o">=</span><span class="mi">300</span>
+</pre></div>
+</div>
+</section>
+<section id="chatbot">
+<h3><a class="toc-backref" href="#id26">Chatbot</a><a class="headerlink" href="#chatbot" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span>
+<span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span>
+<span class="n">max_tokens</span><span class="o">=</span><span class="mi">500</span>
+</pre></div>
+</div>
+</section>
+<section id="agents">
+<h3><a class="toc-backref" href="#id27">Agents</a><a class="headerlink" href="#agents" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="n">max_tokens</span><span class="o">=</span><span class="mi">200</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="how-langchain-helps-with-parameters">
+<h2><a class="toc-backref" href="#id28">How LangChain Helps with Parameters</a><a class="headerlink" href="#how-langchain-helps-with-parameters" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Unified API across providers</p></li>
+<li><p>Safe defaults</p></li>
+<li><p>Retry &amp; fallback support</p></li>
+<li><p>Structured output enforcement</p></li>
+<li><p>Centralized tuning</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id29">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Model parameters in LangChain control generation behavior at runtime. They tune creativity, determinism, length, and cost without changing the model. Proper parameter tuning is critical for reliable RAG, agents, and production systems.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id30">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Accuracy → temperature ↓</strong></p></li>
+<li><p><strong>Creativity → temperature ↑</strong></p></li>
+<li><p><strong>Production → explicit parameters</strong></p></li>
+<li><p><strong>Never rely on defaults blindly</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\core"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Model Parameters</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-model-parameters-matter">Why Model Parameters Matter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-model-parameters-most-important">Core Model Parameters (Most Important)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature">temperature</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#top-p-nucleus-sampling">top_p (Nucleus Sampling)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#max-tokens">max_tokens</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration">Demonstration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-control-parameters">Token Control Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stop">stop</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-penalty">frequency_penalty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#presence-penalty">presence_penalty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seed-determinism">seed (Determinism)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#response-format-structured-output">response_format (Structured Output)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters-in-langchain-chains">Model Parameters in LangChain Chains</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters-in-agents">Model Parameters in Agents</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters-in-rag">Model Parameters in RAG</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-rag-settings">Recommended RAG Settings</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#common-parameter-mistakes">Common Parameter Mistakes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-temperature-in-rag">High temperature in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unlimited-max-tokens">Unlimited max_tokens</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuning-temperature-top-p-together">Tuning temperature + top_p together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-defaults-blindly">Using defaults blindly</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-interaction-summary">Parameter Interaction Summary</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-presets-production">Recommended Presets (Production)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-qa">RAG / QA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chatbot">Chatbot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agents">Agents</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-langchain-helps-with-parameters">How LangChain Helps with Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

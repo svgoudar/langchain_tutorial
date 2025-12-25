@@ -1,0 +1,893 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Entity Memory &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/memory/05_entity_memory';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/memory/05_entity_memory.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/memory/05_entity_memory.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/memory/05_entity_memory.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Entity Memory</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-entity-memory-exists">Why Entity Memory Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-entity-memory-works-internally">How Entity Memory Works Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entity-memory-demonstration-langchain">Entity Memory Demonstration (LangChain)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-entity-memory">Initialize Entity Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attach-memory-to-a-conversation-chain">Attach Memory to a Conversation Chain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-conversation">Run a Conversation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-stored-entities">Inspecting Stored Entities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-injection-mechanism">Prompt Injection Mechanism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#strengths-of-entity-memory">Strengths of Entity Memory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-entity-memory">When to Use Entity Memory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-other-memory-types">Comparison with Other Memory Types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-world-use-case">Real-World Use Case</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#entity-memory" id="id1">Entity Memory</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-entity-memory-exists" id="id2">Why Entity Memory Exists</a></p></li>
+<li><p><a class="reference internal" href="#how-entity-memory-works-internally" id="id3">How Entity Memory Works Internally</a></p></li>
+<li><p><a class="reference internal" href="#architecture-view" id="id4">Architecture View</a></p></li>
+<li><p><a class="reference internal" href="#entity-memory-demonstration-langchain" id="id5">Entity Memory Demonstration (LangChain)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#initialize-entity-memory" id="id6">Initialize Entity Memory</a></p></li>
+<li><p><a class="reference internal" href="#attach-memory-to-a-conversation-chain" id="id7">Attach Memory to a Conversation Chain</a></p></li>
+<li><p><a class="reference internal" href="#run-a-conversation" id="id8">Run a Conversation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#inspecting-stored-entities" id="id9">Inspecting Stored Entities</a></p></li>
+<li><p><a class="reference internal" href="#prompt-injection-mechanism" id="id10">Prompt Injection Mechanism</a></p></li>
+<li><p><a class="reference internal" href="#strengths-of-entity-memory" id="id11">Strengths of Entity Memory</a></p></li>
+<li><p><a class="reference internal" href="#limitations" id="id12">Limitations</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-entity-memory" id="id13">When to Use Entity Memory</a></p></li>
+<li><p><a class="reference internal" href="#comparison-with-other-memory-types" id="id14">Comparison with Other Memory Types</a></p></li>
+<li><p><a class="reference internal" href="#real-world-use-case" id="id15">Real-World Use Case</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id16">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="entity-memory">
+<h1><a class="toc-backref" href="#id1">Entity Memory</a><a class="headerlink" href="#entity-memory" title="Permalink to this heading">#</a></h1>
+<p><strong>Entity Memory</strong> is a memory mechanism that <strong>extracts, tracks, and updates facts about entities</strong> (people, systems, products, organizations, issues) mentioned during a conversation.</p>
+<p>Instead of storing raw chat history, it stores <strong>structured knowledge about entities</strong> and their attributes.</p>
+<p>Provided by LangChain.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Conversation
+   ↓
+Entity Extraction
+   ↓
+Entity → Attributes Map
+   ↓
+Prompt Context (facts only)
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="why-entity-memory-exists">
+<h2><a class="toc-backref" href="#id2">Why Entity Memory Exists</a><a class="headerlink" href="#why-entity-memory-exists" title="Permalink to this heading">#</a></h2>
+<p>Traditional memories focus on <em>conversation flow</em>.
+Entity memory focuses on <em>facts</em>.</p>
+<p>It solves:</p>
+<ul class="simple">
+<li><p>Repetition (“Which OS again?”)</p></li>
+<li><p>Loss of important details in summaries</p></li>
+<li><p>Inefficient long-term recall</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Entity</span><span class="p">:</span> <span class="n">User</span>
+  <span class="o">-</span> <span class="n">OS</span><span class="p">:</span> <span class="n">Windows</span> <span class="mi">11</span>
+  <span class="o">-</span> <span class="n">Issue</span><span class="p">:</span> <span class="n">VPN</span> <span class="n">disconnects</span>
+  <span class="o">-</span> <span class="n">Frequency</span><span class="p">:</span> <span class="n">Every</span> <span class="mi">5</span> <span class="n">minutes</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="how-entity-memory-works-internally">
+<h2><a class="toc-backref" href="#id3">How Entity Memory Works Internally</a><a class="headerlink" href="#how-entity-memory-works-internally" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>LLM scans each turn</p></li>
+<li><p>Identifies entities (noun phrases)</p></li>
+<li><p>Extracts or updates facts about entities</p></li>
+<li><p>Stores them in a structured store</p></li>
+<li><p>Injects relevant entity facts into future prompts</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&quot;My VPN disconnects on Windows 11&quot;
+→ Entity: VPN (Issue: disconnects)
+→ Entity: OS (Windows 11)
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="architecture-view">
+<h2><a class="toc-backref" href="#id4">Architecture View</a><a class="headerlink" href="#architecture-view" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://miro.medium.com/1%2AOyHxTQJzuOWswO0fUOmi9A.png?utm_source=chatgpt.com" /></p>
+<p><img alt="Image" src="https://pbs.twimg.com/media/FnHayTUaUAIaTg2.jpg?utm_source=chatgpt.com" /></p>
+<p><img alt="Image" src="https://dist.neo4j.com/wp-content/uploads/20240722075316/knowledge-graph-example-1.png?utm_source=chatgpt.com" /></p>
+</section>
+<hr class="docutils" />
+<section id="entity-memory-demonstration-langchain">
+<h2><a class="toc-backref" href="#id5">Entity Memory Demonstration (LangChain)</a><a class="headerlink" href="#entity-memory-demonstration-langchain" title="Permalink to this heading">#</a></h2>
+<section id="initialize-entity-memory">
+<h3><a class="toc-backref" href="#id6">Initialize Entity Memory</a><a class="headerlink" href="#initialize-entity-memory" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationEntityMemory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">()</span>
+
+<span class="n">memory</span> <span class="o">=</span> <span class="n">ConversationEntityMemory</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\sangouda\AppData\Local\Temp\ipykernel_21264\2339198863.py:6: LangChainDeprecationWarning: Please see the migration guide at: https://python.langchain.com/docs/versions/migrating_memory/
+  memory = ConversationEntityMemory(
+c:\Users\sangouda\Python3.10\lib\site-packages\pydantic\main.py:250: LangChainDeprecationWarning: Please see the migration guide at: https://python.langchain.com/docs/versions/migrating_memory/
+  validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This memory:</p>
+<ul class="simple">
+<li><p>Uses the LLM to extract entities</p></li>
+<li><p>Maintains an entity → facts dictionary</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="attach-memory-to-a-conversation-chain">
+<h3><a class="toc-backref" href="#id7">Attach Memory to a Conversation Chain</a><a class="headerlink" href="#attach-memory-to-a-conversation-chain" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationChain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span>
+
+<span class="c1"># Custom prompt template that includes entities variable</span>
+<span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;You are an assistant to a human, powered by a large language model trained by OpenAI.</span>
+
+<span class="s2">You are designed to be able to assist with a wide range of tasks, from answering simple questions to providing in-depth explanations and discussions on a wide range of topics. As a language model, you are able to generate human-like text based on the input you receive, allowing you to engage in natural-sounding conversations and provide responses that are coherent and relevant to the topic at hand.</span>
+
+<span class="s2">You are constantly learning and improving, and your capabilities are constantly evolving. You are able to process and understand large amounts of text, and can use this knowledge to provide accurate and informative responses to a wide range of questions. You have access to some personalized information provided by the human in the Context section below. Additionally, you are able to generate your own text based on the input you receive, allowing you to engage in discussions and provide explanations and descriptions on a wide range of topics.</span>
+
+<span class="s2">Overall, you are a powerful tool that can help with a wide range of tasks and provide valuable insights and information on a wide range of topics. Whether the human needs help with a specific question or just wants to have a conversation about a particular topic, you are here to assist.</span>
+
+<span class="s2">Context:</span>
+<span class="si">{entities}</span>
+
+<span class="s2">Current conversation:</span>
+<span class="si">{history}</span>
+<span class="s2">Human: </span><span class="si">{input}</span>
+<span class="s2">AI:&quot;&quot;&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;entities&quot;</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">],</span>
+    <span class="n">template</span><span class="o">=</span><span class="n">template</span>
+<span class="p">)</span>
+
+<span class="n">conversation</span> <span class="o">=</span> <span class="n">ConversationChain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="run-a-conversation">
+<h3><a class="toc-backref" href="#id8">Run a Conversation</a><a class="headerlink" href="#run-a-conversation" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conversation</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s2">&quot;My VPN disconnects every 5 minutes on Windows 11&quot;</span><span class="p">)</span>
+<span class="n">conversation</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s2">&quot;It started after the last update&quot;</span><span class="p">)</span>
+<span class="n">conversation</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s2">&quot;What OS am I using?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39; You are using Windows 11 as your operating system. Is there anything else I can assist you with?&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Expected Output</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">You</span> <span class="n">are</span> <span class="n">using</span> <span class="n">Windows</span> <span class="mf">11.</span>
+</pre></div>
+</div>
+<p>The model answers from <strong>entity memory</strong>, not chat replay.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="inspecting-stored-entities">
+<h2><a class="toc-backref" href="#id9">Inspecting Stored Entities</a><a class="headerlink" href="#inspecting-stored-entities" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">memory</span><span class="o">.</span><span class="n">entity_store</span><span class="o">.</span><span class="n">store</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;VPN&quot;</span><span class="p">:</span> <span class="s2">&quot;Disconnects every 5 minutes, started after last update&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Operating System&quot;</span><span class="p">:</span> <span class="s2">&quot;Windows 11&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is <strong>structured factual memory</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-injection-mechanism">
+<h2><a class="toc-backref" href="#id10">Prompt Injection Mechanism</a><a class="headerlink" href="#prompt-injection-mechanism" title="Permalink to this heading">#</a></h2>
+<p>Instead of raw history, the prompt contains:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Known Entities:
+- Operating System: Windows 11
+- VPN: Disconnects every 5 minutes, started after last update
+
+H: What OS am I using?
+AI:
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="strengths-of-entity-memory">
+<h2><a class="toc-backref" href="#id11">Strengths of Entity Memory</a><a class="headerlink" href="#strengths-of-entity-memory" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Fact-focused</p></li>
+<li><p>Low token usage</p></li>
+<li><p>Persistent knowledge</p></li>
+<li><p>Reduces repetitive questions</p></li>
+<li><p>Excellent for personalization</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="limitations">
+<h2><a class="toc-backref" href="#id12">Limitations</a><a class="headerlink" href="#limitations" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Limitation</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Extraction errors</p></td>
+<td><p>Depends on LLM quality</p></td>
+</tr>
+<tr class="row-odd"><td><p>No temporal order</p></td>
+<td><p>Facts overwrite history</p></td>
+</tr>
+<tr class="row-even"><td><p>Not semantic search</p></td>
+<td><p>Exact entity recall only</p></td>
+</tr>
+<tr class="row-odd"><td><p>Schema-free</p></td>
+<td><p>Can become inconsistent</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-entity-memory">
+<h2><a class="toc-backref" href="#id13">When to Use Entity Memory</a><a class="headerlink" href="#when-to-use-entity-memory" title="Permalink to this heading">#</a></h2>
+<p>Use it when:</p>
+<ul class="simple">
+<li><p>User attributes matter</p></li>
+<li><p>Facts must persist</p></li>
+<li><p>Personalization is needed</p></li>
+<li><p>Conversations are long-lived</p></li>
+</ul>
+<p>Avoid it when:</p>
+<ul class="simple">
+<li><p>Narrative flow matters</p></li>
+<li><p>Exact dialogue history is needed</p></li>
+<li><p>Auditing is required</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="comparison-with-other-memory-types">
+<h2><a class="toc-backref" href="#id14">Comparison with Other Memory Types</a><a class="headerlink" href="#comparison-with-other-memory-types" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Memory Type</p></th>
+<th class="head"><p>Stores</p></th>
+<th class="head"><p>Best For</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Buffer</p></td>
+<td><p>Full chat</p></td>
+<td><p>Short conversations</p></td>
+</tr>
+<tr class="row-odd"><td><p>Summary</p></td>
+<td><p>Compressed chat</p></td>
+<td><p>Long dialogue</p></td>
+</tr>
+<tr class="row-even"><td><p>VectorStore</p></td>
+<td><p>Semantic recall</p></td>
+<td><p>Long-term memory</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Entity Memory</strong></p></td>
+<td><p>Facts about entities</p></td>
+<td><p>Personalization</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="real-world-use-case">
+<h2><a class="toc-backref" href="#id15">Real-World Use Case</a><a class="headerlink" href="#real-world-use-case" title="Permalink to this heading">#</a></h2>
+<p><strong>IT Support Assistant</strong></p>
+<ul class="simple">
+<li><p>Remembers user OS, device, location</p></li>
+<li><p>Tracks recurring issues per system</p></li>
+<li><p>Avoids asking same diagnostic questions</p></li>
+<li><p>Feels “aware” across sessions</p></li>
+</ul>
+<p>Often combined with:</p>
+<ul class="simple">
+<li><p>Vector memory (incident history)</p></li>
+<li><p>Window memory (recent context)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id16">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Entity Memory stores <strong>facts, not dialogue</strong></p></li>
+<li><p>It extracts structured knowledge automatically</p></li>
+<li><p>Extremely efficient for long-term personalization</p></li>
+<li><p>Critical for production-grade conversational agents</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\memory"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-entity-memory-exists">Why Entity Memory Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-entity-memory-works-internally">How Entity Memory Works Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entity-memory-demonstration-langchain">Entity Memory Demonstration (LangChain)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-entity-memory">Initialize Entity Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attach-memory-to-a-conversation-chain">Attach Memory to a Conversation Chain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-conversation">Run a Conversation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-stored-entities">Inspecting Stored Entities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-injection-mechanism">Prompt Injection Mechanism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#strengths-of-entity-memory">Strengths of Entity Memory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-entity-memory">When to Use Entity Memory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-other-memory-types">Comparison with Other Memory Types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-world-use-case">Real-World Use Case</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

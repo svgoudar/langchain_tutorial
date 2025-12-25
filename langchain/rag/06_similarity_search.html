@@ -1,0 +1,999 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Similarity Search &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/06_similarity_search';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/06_similarity_search.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/06_similarity_search.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/06_similarity_search.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Similarity Search</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-similarity-search-is">What Similarity Search Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-similarity-search-is-needed">Why Similarity Search Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-similarity-search-fits-in-rag">Where Similarity Search Fits in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea-geometric-view">Core Idea (Geometric View)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-metrics-critical">Similarity Metrics (Critical)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine-similarity-most-common">Cosine Similarity (Most Common)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dot-product">Dot Product</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#euclidean-l2-distance">Euclidean (L2) Distance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-in-langchain">Similarity Search in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-demonstration">Basic Demonstration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-similarity-search">Performing Similarity Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-internally">What Happens Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-vs-retriever">Similarity Search vs Retriever</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-with-scores">Similarity Search with Scores</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-metadata-filtering">Similarity Search + Metadata Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-vs-keyword-search">Similarity Search vs Keyword Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-production-standard">Hybrid Search (Production Standard)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-vs-reranking">Similarity Search vs Reranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-k-top-k">Choosing <code class="docutils literal notranslate"><span class="pre">k</span></code> (Top-K)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-chunk-overlap">No chunk overlap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#large-chunks">Large chunks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-k-values">High k values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixing-embedding-models">Mixing embedding models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#similarity-search" id="id1">Similarity Search</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-similarity-search-is" id="id2">What Similarity Search Is</a></p></li>
+<li><p><a class="reference internal" href="#why-similarity-search-is-needed" id="id3">Why Similarity Search Is Needed</a></p></li>
+<li><p><a class="reference internal" href="#where-similarity-search-fits-in-rag" id="id4">Where Similarity Search Fits in RAG</a></p></li>
+<li><p><a class="reference internal" href="#core-idea-geometric-view" id="id5">Core Idea (Geometric View)</a></p></li>
+<li><p><a class="reference internal" href="#similarity-metrics-critical" id="id6">Similarity Metrics (Critical)</a></p></li>
+<li><p><a class="reference internal" href="#cosine-similarity-most-common" id="id7">Cosine Similarity (Most Common)</a></p></li>
+<li><p><a class="reference internal" href="#dot-product" id="id8">Dot Product</a></p></li>
+<li><p><a class="reference internal" href="#euclidean-l2-distance" id="id9">Euclidean (L2) Distance</a></p></li>
+<li><p><a class="reference internal" href="#similarity-search-in-langchain" id="id10">Similarity Search in LangChain</a></p></li>
+<li><p><a class="reference internal" href="#basic-demonstration" id="id11">Basic Demonstration</a></p></li>
+<li><p><a class="reference internal" href="#performing-similarity-search" id="id12">Performing Similarity Search</a></p></li>
+<li><p><a class="reference internal" href="#what-happens-internally" id="id13">What Happens Internally</a></p></li>
+<li><p><a class="reference internal" href="#similarity-search-vs-retriever" id="id14">Similarity Search vs Retriever</a></p></li>
+<li><p><a class="reference internal" href="#similarity-search-with-scores" id="id15">Similarity Search with Scores</a></p></li>
+<li><p><a class="reference internal" href="#similarity-search-metadata-filtering" id="id16">Similarity Search + Metadata Filtering</a></p></li>
+<li><p><a class="reference internal" href="#similarity-search-vs-keyword-search" id="id17">Similarity Search vs Keyword Search</a></p></li>
+<li><p><a class="reference internal" href="#hybrid-search-production-standard" id="id18">Hybrid Search (Production Standard)</a></p></li>
+<li><p><a class="reference internal" href="#similarity-search-vs-reranking" id="id19">Similarity Search vs Reranking</a></p></li>
+<li><p><a class="reference internal" href="#choosing-k-top-k" id="id20">Choosing <code class="docutils literal notranslate"><span class="pre">k</span></code> (Top-K)</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id21">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#no-chunk-overlap" id="id22">No chunk overlap</a></p></li>
+<li><p><a class="reference internal" href="#large-chunks" id="id23">Large chunks</a></p></li>
+<li><p><a class="reference internal" href="#high-k-values" id="id24">High k values</a></p></li>
+<li><p><a class="reference internal" href="#mixing-embedding-models" id="id25">Mixing embedding models</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices" id="id26">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id27">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id28">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="similarity-search">
+<h1><a class="toc-backref" href="#id1">Similarity Search</a><a class="headerlink" href="#similarity-search" title="Permalink to this heading">#</a></h1>
+<section id="what-similarity-search-is">
+<h2><a class="toc-backref" href="#id2">What Similarity Search Is</a><a class="headerlink" href="#what-similarity-search-is" title="Permalink to this heading">#</a></h2>
+<p><strong>Similarity search</strong> is the process of finding items whose <strong>vector embeddings are closest</strong> to a query embedding in a vector space.</p>
+<blockquote>
+<div><p>Instead of matching exact words, similarity search matches <strong>meaning</strong>.</p>
+</div></blockquote>
+<p>It is the <strong>core retrieval mechanism</strong> behind RAG, semantic search, and recommendation systems.</p>
+</section>
+<hr class="docutils" />
+<section id="why-similarity-search-is-needed">
+<h2><a class="toc-backref" href="#id3">Why Similarity Search Is Needed</a><a class="headerlink" href="#why-similarity-search-is-needed" title="Permalink to this heading">#</a></h2>
+<p>Keyword search fails when:</p>
+<ul class="simple">
+<li><p>Synonyms are used</p></li>
+<li><p>Meaning is paraphrased</p></li>
+<li><p>Context matters more than exact words</p></li>
+</ul>
+<p>Similarity search enables:</p>
+<ul class="simple">
+<li><p>Semantic retrieval</p></li>
+<li><p>Context-aware search</p></li>
+<li><p>Robust recall across phrasing variations</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="where-similarity-search-fits-in-rag">
+<h2><a class="toc-backref" href="#id4">Where Similarity Search Fits in RAG</a><a class="headerlink" href="#where-similarity-search-fits-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Query
+   ↓
+Query Embedding
+   ↓
+Similarity Search (Vector Store)
+   ↓
+Top-K Relevant Chunks
+   ↓
+LLM (Answer Generation)
+</pre></div>
+</div>
+<p>Similarity search happens at <strong>query time</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="core-idea-geometric-view">
+<h2><a class="toc-backref" href="#id5">Core Idea (Geometric View)</a><a class="headerlink" href="#core-idea-geometric-view" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Each text → vector in high-dimensional space</p></li>
+<li><p>Similar meanings → vectors are close</p></li>
+<li><p>Search = find nearest vectors</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span><span class="p">(</span><span class="n">query_vector</span><span class="p">,</span> <span class="n">doc_vector</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Smaller distance → higher similarity.</p>
+</section>
+<hr class="docutils" />
+<section id="similarity-metrics-critical">
+<h2><a class="toc-backref" href="#id6">Similarity Metrics (Critical)</a><a class="headerlink" href="#similarity-metrics-critical" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="cosine-similarity-most-common">
+<h2><a class="toc-backref" href="#id7">Cosine Similarity (Most Common)</a><a class="headerlink" href="#cosine-similarity-most-common" title="Permalink to this heading">#</a></h2>
+<p>Measures the <strong>angle</strong> between vectors.</p>
+<ul class="simple">
+<li><p>Scale-invariant</p></li>
+<li><p>Best for text embeddings</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>similarity = cos(θ)
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="dot-product">
+<h2><a class="toc-backref" href="#id8">Dot Product</a><a class="headerlink" href="#dot-product" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Faster</p></li>
+<li><p>Assumes normalized vectors</p></li>
+<li><p>Used by some embedding models</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="euclidean-l2-distance">
+<h2><a class="toc-backref" href="#id9">Euclidean (L2) Distance</a><a class="headerlink" href="#euclidean-l2-distance" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Measures absolute distance</p></li>
+<li><p>More common in vision than text</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="similarity-search-in-langchain">
+<h2><a class="toc-backref" href="#id10">Similarity Search in LangChain</a><a class="headerlink" href="#similarity-search-in-langchain" title="Permalink to this heading">#</a></h2>
+<p>LangChain exposes similarity search through <strong>vector stores</strong>.</p>
+</section>
+<section id="basic-demonstration">
+<h2><a class="toc-backref" href="#id11">Basic Demonstration</a><a class="headerlink" href="#basic-demonstration" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;LangChain is a framework for LLM applications&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RAG combines retrieval and generation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Vector stores enable semantic search&quot;</span>
+<span class="p">]</span>
+
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="performing-similarity-search">
+<h2><a class="toc-backref" href="#id12">Performing Similarity Search</a><a class="headerlink" href="#performing-similarity-search" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span>
+    <span class="s2">&quot;How does retrieval work?&quot;</span><span class="p">,</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">page_content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RAG combines retrieval and generation
+Vector stores enable semantic search
+</pre></div>
+</div>
+</div>
+</div>
+<p>Returns the <strong>top-k most similar chunks</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="what-happens-internally">
+<h2><a class="toc-backref" href="#id13">What Happens Internally</a><a class="headerlink" href="#what-happens-internally" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Query text → embedding vector</p></li>
+<li><p>Vector store computes distance to all stored vectors</p></li>
+<li><p>ANN index narrows candidates</p></li>
+<li><p>Top-k closest vectors are returned</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="similarity-search-vs-retriever">
+<h2><a class="toc-backref" href="#id14">Similarity Search vs Retriever</a><a class="headerlink" href="#similarity-search-vs-retriever" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>similarity_search</p></th>
+<th class="head"><p>Retriever</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Level</p></td>
+<td><p>Low-level</p></td>
+<td><p>High-level</p></td>
+</tr>
+<tr class="row-odd"><td><p>Output</p></td>
+<td><p>Documents</p></td>
+<td><p>Documents</p></td>
+</tr>
+<tr class="row-even"><td><p>Filtering</p></td>
+<td><p>Manual</p></td>
+<td><p>Built-in</p></td>
+</tr>
+<tr class="row-odd"><td><p>Production use</p></td>
+<td><p>Rare</p></td>
+<td><p>Preferred</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Best practice:</strong> use retrievers in production.</p>
+</section>
+<hr class="docutils" />
+<section id="similarity-search-with-scores">
+<h2><a class="toc-backref" href="#id15">Similarity Search with Scores</a><a class="headerlink" href="#similarity-search-with-scores" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs_with_scores</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">similarity_search_with_score</span><span class="p">(</span>
+    <span class="s2">&quot;What is LangChain?&quot;</span><span class="p">,</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">doc</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">docs_with_scores</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">doc</span><span class="o">.</span><span class="n">page_content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.21958779 LangChain is a framework for LLM applications
+0.5789856 Vector stores enable semantic search
+0.59600055 RAG combines retrieval and generation
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lower score (or higher similarity) = better match.</p>
+<p>Used for:</p>
+<ul class="simple">
+<li><p>Thresholding</p></li>
+<li><p>Debugging</p></li>
+<li><p>Reranking</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="similarity-search-metadata-filtering">
+<h2><a class="toc-backref" href="#id16">Similarity Search + Metadata Filtering</a><a class="headerlink" href="#similarity-search-metadata-filtering" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span>
+    <span class="s2">&quot;ticket escalation&quot;</span><span class="p">,</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;jira&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Production-critical for:</p>
+<ul class="simple">
+<li><p>Multi-tenancy</p></li>
+<li><p>Access control</p></li>
+<li><p>Domain separation</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="similarity-search-vs-keyword-search">
+<h2><a class="toc-backref" href="#id17">Similarity Search vs Keyword Search</a><a class="headerlink" href="#similarity-search-vs-keyword-search" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Similarity Search</p></th>
+<th class="head"><p>Keyword Search</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Semantic meaning</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Synonyms</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>Exact match</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Explainability</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="hybrid-search-production-standard">
+<h2><a class="toc-backref" href="#id18">Hybrid Search (Production Standard)</a><a class="headerlink" href="#hybrid-search-production-standard" title="Permalink to this heading">#</a></h2>
+<p>Most production systems use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Keyword Search + Similarity Search → Merge → Rerank
+</pre></div>
+</div>
+<p>Benefits:</p>
+<ul class="simple">
+<li><p>High recall</p></li>
+<li><p>High precision</p></li>
+<li><p>Robust to edge cases</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="similarity-search-vs-reranking">
+<h2><a class="toc-backref" href="#id19">Similarity Search vs Reranking</a><a class="headerlink" href="#similarity-search-vs-reranking" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Similarity search</p></td>
+<td><p>Fast candidate retrieval</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reranker</p></td>
+<td><p>Precise ordering</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Similarity search is <strong>coarse but fast</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="choosing-k-top-k">
+<h2><a class="toc-backref" href="#id20">Choosing <code class="docutils literal notranslate"><span class="pre">k</span></code> (Top-K)</a><a class="headerlink" href="#choosing-k-top-k" title="Permalink to this heading">#</a></h2>
+<p>Guidelines:</p>
+<ul class="simple">
+<li><p>Typical: <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">3–10</span></code></p></li>
+<li><p>Too small → misses context</p></li>
+<li><p>Too large → noise + latency</p></li>
+</ul>
+<p>Production pattern:</p>
+<ul class="simple">
+<li><p>Retrieve top-k = 10</p></li>
+<li><p>Rerank to top-3</p></li>
+<li><p>Send to LLM</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id21">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="no-chunk-overlap">
+<h3><a class="toc-backref" href="#id22">No chunk overlap</a><a class="headerlink" href="#no-chunk-overlap" title="Permalink to this heading">#</a></h3>
+<p>❌ Similarity fails at boundaries</p>
+</section>
+<section id="large-chunks">
+<h3><a class="toc-backref" href="#id23">Large chunks</a><a class="headerlink" href="#large-chunks" title="Permalink to this heading">#</a></h3>
+<p>❌ Embeddings too coarse</p>
+</section>
+<section id="high-k-values">
+<h3><a class="toc-backref" href="#id24">High k values</a><a class="headerlink" href="#high-k-values" title="Permalink to this heading">#</a></h3>
+<p>❌ Slower + noisy context</p>
+</section>
+<section id="mixing-embedding-models">
+<h3><a class="toc-backref" href="#id25">Mixing embedding models</a><a class="headerlink" href="#mixing-embedding-models" title="Permalink to this heading">#</a></h3>
+<p>❌ Invalid similarity scores</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id26">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use consistent embedding model</p></li>
+<li><p>Split text properly before embedding</p></li>
+<li><p>Use metadata filters</p></li>
+<li><p>Tune k per use case</p></li>
+<li><p>Add reranking for precision</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id27">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Similarity search finds semantically related content by comparing embedding vectors using distance metrics like cosine similarity. In LangChain, it is implemented via vector stores and is the core retrieval mechanism for RAG systems.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id28">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Similarity search = meaning-based retrieval</strong></p></li>
+<li><p><strong>Vector store = engine</strong></p></li>
+<li><p><strong>Retriever = production interface</strong></p></li>
+<li><p><strong>Reranker = precision booster</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-similarity-search-is">What Similarity Search Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-similarity-search-is-needed">Why Similarity Search Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-similarity-search-fits-in-rag">Where Similarity Search Fits in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea-geometric-view">Core Idea (Geometric View)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-metrics-critical">Similarity Metrics (Critical)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine-similarity-most-common">Cosine Similarity (Most Common)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dot-product">Dot Product</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#euclidean-l2-distance">Euclidean (L2) Distance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-in-langchain">Similarity Search in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-demonstration">Basic Demonstration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-similarity-search">Performing Similarity Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-internally">What Happens Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-vs-retriever">Similarity Search vs Retriever</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-with-scores">Similarity Search with Scores</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-metadata-filtering">Similarity Search + Metadata Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-vs-keyword-search">Similarity Search vs Keyword Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-production-standard">Hybrid Search (Production Standard)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-search-vs-reranking">Similarity Search vs Reranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-k-top-k">Choosing <code class="docutils literal notranslate"><span class="pre">k</span></code> (Top-K)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-chunk-overlap">No chunk overlap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#large-chunks">Large chunks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-k-values">High k values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixing-embedding-models">Mixing embedding models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

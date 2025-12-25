@@ -1,0 +1,1045 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Agent Memory &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/agents/09_agent_memory';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/agents/09_agent_memory.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/agents/09_agent_memory.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/agents/09_agent_memory.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Agent Memory</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-agent-memory-is-not">What Agent Memory Is NOT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-agent-memory-fits">Where Agent Memory Fits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-memory-vs-agent-scratchpad">Agent Memory vs agent_scratchpad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-types-of-agent-memory">Core Types of Agent Memory</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conversation-buffer-memory">1) Conversation Buffer Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conversation-window-memory">2) Conversation Window Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conversation-summary-memory">3) Conversation Summary Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-summary-window-memory">4) Hybrid (Summary + Window) Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entity-memory">5) Entity Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-long-term-memory">6) Vector (Long-Term) Memory</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-memory-vs-rag">Agent Memory vs RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-memory-is-injected">How Memory Is Injected</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-in-agents-execution">Memory in Agents (Execution)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-concerns">Production Concerns</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-management">Context Window Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#safety-privacy">Safety &amp; Privacy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-drift">Accuracy Drift</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-agent-memory">When to Use Agent Memory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-it">When NOT to Use It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#agent-memory" id="id1">Agent Memory</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-agent-memory-is-not" id="id2">What Agent Memory Is NOT</a></p></li>
+<li><p><a class="reference internal" href="#where-agent-memory-fits" id="id3">Where Agent Memory Fits</a></p></li>
+<li><p><a class="reference internal" href="#agent-memory-vs-agent-scratchpad" id="id4">Agent Memory vs agent_scratchpad</a></p></li>
+<li><p><a class="reference internal" href="#core-types-of-agent-memory" id="id5">Core Types of Agent Memory</a></p>
+<ul>
+<li><p><a class="reference internal" href="#conversation-buffer-memory" id="id6">1) Conversation Buffer Memory</a></p></li>
+<li><p><a class="reference internal" href="#conversation-window-memory" id="id7">2) Conversation Window Memory</a></p></li>
+<li><p><a class="reference internal" href="#conversation-summary-memory" id="id8">3) Conversation Summary Memory</a></p></li>
+<li><p><a class="reference internal" href="#hybrid-summary-window-memory" id="id9">4) Hybrid (Summary + Window) Memory</a></p></li>
+<li><p><a class="reference internal" href="#entity-memory" id="id10">5) Entity Memory</a></p></li>
+<li><p><a class="reference internal" href="#vector-long-term-memory" id="id11">6) Vector (Long-Term) Memory</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#agent-memory-vs-rag" id="id12">Agent Memory vs RAG</a></p></li>
+<li><p><a class="reference internal" href="#how-memory-is-injected" id="id13">How Memory Is Injected</a></p></li>
+<li><p><a class="reference internal" href="#memory-in-agents-execution" id="id14">Memory in Agents (Execution)</a></p></li>
+<li><p><a class="reference internal" href="#production-concerns" id="id15">Production Concerns</a></p>
+<ul>
+<li><p><a class="reference internal" href="#context-window-management" id="id16">Context Window Management</a></p></li>
+<li><p><a class="reference internal" href="#safety-privacy" id="id17">Safety &amp; Privacy</a></p></li>
+<li><p><a class="reference internal" href="#accuracy-drift" id="id18">Accuracy Drift</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id19">Common Mistakes</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id20">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-agent-memory" id="id21">When to Use Agent Memory</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-it" id="id22">When NOT to Use It</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id23">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id24">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="agent-memory">
+<h1><a class="toc-backref" href="#id1">Agent Memory</a><a class="headerlink" href="#agent-memory" title="Permalink to this heading">#</a></h1>
+<p><strong>Agent memory</strong> is the mechanism that lets an agent <strong>persist and reuse state across turns or steps</strong>, enabling coherent, stateful behavior instead of stateless, one-off responses.</p>
+<blockquote>
+<div><p>Memory answers: <em>“What should the agent remember from the past to act better now?”</em></p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="what-agent-memory-is-not">
+<h2><a class="toc-backref" href="#id2">What Agent Memory Is NOT</a><a class="headerlink" href="#what-agent-memory-is-not" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>❌ Not the model’s training data</p></li>
+<li><p>❌ Not <code class="docutils literal notranslate"><span class="pre">agent_scratchpad</span></code> (which is per-run reasoning)</p></li>
+<li><p>❌ Not permanent world knowledge by default</p></li>
+</ul>
+<p>Memory is <strong>runtime state</strong>, scoped to a <strong>session, conversation, or workflow</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="where-agent-memory-fits">
+<h2><a class="toc-backref" href="#id3">Where Agent Memory Fits</a><a class="headerlink" href="#where-agent-memory-fits" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Input
+   ↓
+Memory (read)
+   ↓
+Agent Reasoning / Tool Use / Retrieval
+   ↓
+Response
+   ↓
+Memory (write/update)
+</pre></div>
+</div>
+<p>Memory is <strong>read before reasoning</strong> and <strong>updated after each turn</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="agent-memory-vs-agent-scratchpad">
+<h2><a class="toc-backref" href="#id4">Agent Memory vs agent_scratchpad</a><a class="headerlink" href="#agent-memory-vs-agent-scratchpad" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Agent Memory</p></th>
+<th class="head"><p>agent_scratchpad</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Remembering across turns</p></td>
+<td><p>Reasoning within a single run</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scope</p></td>
+<td><p>Multi-turn/session</p></td>
+<td><p>Single execution</p></td>
+</tr>
+<tr class="row-even"><td><p>Persistence</p></td>
+<td><p>Yes (session)</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>User-visible</p></td>
+<td><p>Indirect</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>They solve <strong>different problems</strong> and are often used together.</p>
+</section>
+<hr class="docutils" />
+<section id="core-types-of-agent-memory">
+<h2><a class="toc-backref" href="#id5">Core Types of Agent Memory</a><a class="headerlink" href="#core-types-of-agent-memory" title="Permalink to this heading">#</a></h2>
+<section id="conversation-buffer-memory">
+<h3><a class="toc-backref" href="#id6">1) Conversation Buffer Memory</a><a class="headerlink" href="#conversation-buffer-memory" title="Permalink to this heading">#</a></h3>
+<p>Stores the <strong>entire conversation history</strong>.</p>
+<ul class="simple">
+<li><p><strong>Pros:</strong> Simple, faithful recall</p></li>
+<li><p><strong>Cons:</strong> Grows unbounded; token pressure</p></li>
+</ul>
+<p><strong>Use when:</strong> Short conversations, low token risk.</p>
+</section>
+<hr class="docutils" />
+<section id="conversation-window-memory">
+<h3><a class="toc-backref" href="#id7">2) Conversation Window Memory</a><a class="headerlink" href="#conversation-window-memory" title="Permalink to this heading">#</a></h3>
+<p>Keeps <strong>only the last N turns</strong>.</p>
+<ul class="simple">
+<li><p><strong>Pros:</strong> Predictable size</p></li>
+<li><p><strong>Cons:</strong> Older context lost</p></li>
+</ul>
+<p><strong>Use when:</strong> Only recent context matters.</p>
+</section>
+<hr class="docutils" />
+<section id="conversation-summary-memory">
+<h3><a class="toc-backref" href="#id8">3) Conversation Summary Memory</a><a class="headerlink" href="#conversation-summary-memory" title="Permalink to this heading">#</a></h3>
+<p>Summarizes older turns into a <strong>compact abstract</strong>.</p>
+<ul class="simple">
+<li><p><strong>Pros:</strong> Scales to long chats</p></li>
+<li><p><strong>Cons:</strong> Possible summary drift</p></li>
+</ul>
+<p><strong>Use when:</strong> Long-running conversations.</p>
+</section>
+<hr class="docutils" />
+<section id="hybrid-summary-window-memory">
+<h3><a class="toc-backref" href="#id9">4) Hybrid (Summary + Window) Memory</a><a class="headerlink" href="#hybrid-summary-window-memory" title="Permalink to this heading">#</a></h3>
+<p>Recent turns + summarized past.</p>
+<ul class="simple">
+<li><p><strong>Pros:</strong> Best balance (production standard)</p></li>
+<li><p><strong>Cons:</strong> Slight complexity</p></li>
+</ul>
+<p><strong>Use when:</strong> Enterprise chatbots and assistants.</p>
+</section>
+<hr class="docutils" />
+<section id="entity-memory">
+<h3><a class="toc-backref" href="#id10">5) Entity Memory</a><a class="headerlink" href="#entity-memory" title="Permalink to this heading">#</a></h3>
+<p>Tracks <strong>entities and attributes</strong> (names, IDs, preferences).</p>
+<ul class="simple">
+<li><p><strong>Pros:</strong> Structured recall of facts</p></li>
+<li><p><strong>Cons:</strong> Needs clean extraction</p></li>
+</ul>
+<p><strong>Use when:</strong> CRM/support agents with identifiers.</p>
+</section>
+<hr class="docutils" />
+<section id="vector-long-term-memory">
+<h3><a class="toc-backref" href="#id11">6) Vector (Long-Term) Memory</a><a class="headerlink" href="#vector-long-term-memory" title="Permalink to this heading">#</a></h3>
+<p>Stores past interactions as <strong>embeddings</strong> for semantic recall.</p>
+<ul class="simple">
+<li><p><strong>Pros:</strong> Long-term personalization</p></li>
+<li><p><strong>Cons:</strong> Retrieval tuning required</p></li>
+</ul>
+<p><strong>Use when:</strong> Personalized assistants over time.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="agent-memory-vs-rag">
+<h2><a class="toc-backref" href="#id12">Agent Memory vs RAG</a><a class="headerlink" href="#agent-memory-vs-rag" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Dimension</p></th>
+<th class="head"><p>Memory</p></th>
+<th class="head"><p>RAG</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Conversation state</p></td>
+<td><p>External knowledge</p></td>
+</tr>
+<tr class="row-odd"><td><p>Source</p></td>
+<td><p>User interactions</p></td>
+<td><p>Documents/DBs</p></td>
+</tr>
+<tr class="row-even"><td><p>Update</p></td>
+<td><p>Every turn</p></td>
+<td><p>Ingestion-time</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scope</p></td>
+<td><p>Session/user</p></td>
+<td><p>Global/shared</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>They are <strong>complementary</strong>: memory for <em>context</em>, RAG for <em>facts</em>.</p>
+</section>
+<hr class="docutils" />
+<section id="how-memory-is-injected">
+<h2><a class="toc-backref" href="#id13">How Memory Is Injected</a><a class="headerlink" href="#how-memory-is-injected" title="Permalink to this heading">#</a></h2>
+<p>Agents typically build prompts like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">Instructions</span>
+<span class="o">+</span> <span class="n">Memory</span> <span class="p">(</span><span class="n">formatted</span><span class="p">)</span>
+<span class="o">+</span> <span class="n">User</span> <span class="n">Input</span>
+<span class="o">+</span> <span class="n">agent_scratchpad</span>
+</pre></div>
+</div>
+<p>Memory influences <strong>intent resolution</strong>, <strong>follow-ups</strong>, and <strong>tool decisions</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="memory-in-agents-execution">
+<h2><a class="toc-backref" href="#id14">Memory in Agents (Execution)</a><a class="headerlink" href="#memory-in-agents-execution" title="Permalink to this heading">#</a></h2>
+<p>When running an agent:</p>
+<ul class="simple">
+<li><p><strong>Read:</strong> Memory is loaded before reasoning</p></li>
+<li><p><strong>Write:</strong> New turns (or summaries) are appended after the response</p></li>
+</ul>
+<p>This happens automatically when memory is attached to the executor.</p>
+</section>
+<hr class="docutils" />
+<section id="production-concerns">
+<h2><a class="toc-backref" href="#id15">Production Concerns</a><a class="headerlink" href="#production-concerns" title="Permalink to this heading">#</a></h2>
+<section id="context-window-management">
+<h3><a class="toc-backref" href="#id16">Context Window Management</a><a class="headerlink" href="#context-window-management" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Memory consumes tokens</p></li>
+<li><p>Use windows, summaries, or compression</p></li>
+</ul>
+</section>
+<section id="safety-privacy">
+<h3><a class="toc-backref" href="#id17">Safety &amp; Privacy</a><a class="headerlink" href="#safety-privacy" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Memory may include PII</p></li>
+<li><p>Enforce retention and deletion policies</p></li>
+</ul>
+</section>
+<section id="accuracy-drift">
+<h3><a class="toc-backref" href="#id18">Accuracy Drift</a><a class="headerlink" href="#accuracy-drift" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Summaries can accumulate errors</p></li>
+<li><p>Validate what gets written to memory</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id19">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Using full buffer memory indefinitely → token overflow</p></li>
+<li><p>Confusing memory with scratchpad → logic errors</p></li>
+<li><p>Storing hallucinations → compounding mistakes</p></li>
+<li><p>Sharing memory across users → data leakage</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id20">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Prefer <strong>hybrid memory</strong> (summary + window)</p></li>
+<li><p>Clear memory per session/user</p></li>
+<li><p>Don’t store tool internals unless needed</p></li>
+<li><p>Validate memory updates</p></li>
+<li><p>Monitor token usage</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-agent-memory">
+<h2><a class="toc-backref" href="#id21">When to Use Agent Memory</a><a class="headerlink" href="#when-to-use-agent-memory" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Conversational agents</p></li>
+<li><p>Multi-step workflows</p></li>
+<li><p>Personalization</p></li>
+<li><p>Long-running sessions</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-not-to-use-it">
+<h2><a class="toc-backref" href="#id22">When NOT to Use It</a><a class="headerlink" href="#when-not-to-use-it" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Single-turn APIs</p></li>
+<li><p>Stateless services</p></li>
+<li><p>High-throughput endpoints</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id23">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Agent memory enables stateful behavior by persisting conversational context across turns. It is distinct from the agent scratchpad and from RAG, and must be managed carefully to balance recall, cost, and safety.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id24">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Scratchpad → thinking</strong></p></li>
+<li><p><strong>Memory → remembering</strong></p></li>
+<li><p><strong>RAG → knowing</strong></p></li>
+<li><p><strong>LLM → reasoning</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;My name is Sanjeev&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">content</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Hello, Sanjeev! How can I assist you today?&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;What is my name?&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">content</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;I&#39;m sorry, but I don&#39;t have access to personal information about you unless you share it with me. How can I assist you today?&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Why This Happens</p>
+<p>No memory</p>
+<p>Each call is independent</p>
+<p>The model has no past context</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">AgentExecutor</span><span class="p">,</span> <span class="n">create_openai_tools_agent</span>
+
+<span class="n">memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span>
+    <span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From C:\Users\sangouda\AppData\Roaming\Python\Python312\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\sangouda\AppData\Local\Temp\ipykernel_39492\2940709401.py:4: LangChainDeprecationWarning: Please see the migration guide at: https://python.langchain.com/docs/versions/migrating_memory/
+  memory = ConversationBufferMemory(
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Agent with memory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">AgentExecutor</span><span class="p">,</span> <span class="n">create_openai_tools_agent</span>
+
+<span class="n">memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span>
+    <span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">memory_key</span><span class="o">=</span><span class="s2">&quot;chat_history&quot;</span>  <span class="c1"># Explicitly set the key</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;placeholder&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{chat_history}</span><span class="s2">&quot;</span><span class="p">),</span>  <span class="c1"># This injects the memory!</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;placeholder&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{agent_scratchpad}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Separate placeholder for scratchpad</span>
+<span class="p">])</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_openai_tools_agent</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[],</span>  <span class="c1"># no tools needed for this demo</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">executor</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+    <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
+    <span class="c1"># verbose=True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">executor</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+    <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Stateful Conversation with an Agent</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;My name is Sanjeev&quot;</span><span class="p">})</span>
+<span class="n">answer</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Hello again, Sanjeev! How can I help you today?&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Memory now contains the conversation history</strong></p>
+<ul class="simple">
+<li><p>Human: My name is Sanjeev</p></li>
+<li><p>AI: Nice to meet you, Sanjeev.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">answer</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;What is my name?&quot;</span><span class="p">})</span>
+<span class="n">answer</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Your name is Sanjeev.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\agents"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-agent-memory-is-not">What Agent Memory Is NOT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-agent-memory-fits">Where Agent Memory Fits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-memory-vs-agent-scratchpad">Agent Memory vs agent_scratchpad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-types-of-agent-memory">Core Types of Agent Memory</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conversation-buffer-memory">1) Conversation Buffer Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conversation-window-memory">2) Conversation Window Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conversation-summary-memory">3) Conversation Summary Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-summary-window-memory">4) Hybrid (Summary + Window) Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entity-memory">5) Entity Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-long-term-memory">6) Vector (Long-Term) Memory</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-memory-vs-rag">Agent Memory vs RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-memory-is-injected">How Memory Is Injected</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-in-agents-execution">Memory in Agents (Execution)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-concerns">Production Concerns</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-management">Context Window Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#safety-privacy">Safety &amp; Privacy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-drift">Accuracy Drift</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-agent-memory">When to Use Agent Memory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-it">When NOT to Use It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,971 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>RetrievalQA Chain (LangChain) &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/chains/09_retrievalqa_chain';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/chains/09_retrievalqa_chain.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/chains/09_retrievalqa_chain.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/chains/09_retrievalqa_chain.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>RetrievalQA Chain (LangChain)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-retrievalqa-chain-is">What a RetrievalQA Chain Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-retrievalqa-exists">Why RetrievalQA Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components-of-retrievalqa">Core Components of RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retriever">Retriever</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt">Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm">LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-retrievalqa-demonstration">Basic RetrievalQA Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-create-a-retriever">Step 1: Create a Retriever</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-create-the-retrievalqa-chain">Step 2: Create the RetrievalQA Chain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-ask-a-question">Step 3: Ask a Question</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-retrievalqa-returns">What RetrievalQA Returns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-with-source-documents">RetrievalQA with Source Documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-types-in-retrievalqa">Chain Types in RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-vs-conversationalretrievalchain">RetrievalQA vs ConversationalRetrievalChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-retrievalqa">Limitations of RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-vs-lcel-based-rag-modern">RetrievalQA vs LCEL-based RAG (Modern)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-legacy">RetrievalQA (Legacy)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-rag-recommended">LCEL RAG (Recommended)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-retrievalqa">When to Use RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-retrievalqa">When NOT to Use RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-if-you-use-it">Best Practices (If You Use It)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#retrievalqa-chain-langchain" id="id1">RetrievalQA Chain (LangChain)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-a-retrievalqa-chain-is" id="id2">What a RetrievalQA Chain Is</a></p></li>
+<li><p><a class="reference internal" href="#why-retrievalqa-exists" id="id3">Why RetrievalQA Exists</a></p></li>
+<li><p><a class="reference internal" href="#conceptual-flow" id="id4">Conceptual Flow</a></p></li>
+<li><p><a class="reference internal" href="#core-components-of-retrievalqa" id="id5">Core Components of RetrievalQA</a></p></li>
+<li><p><a class="reference internal" href="#retriever" id="id6">Retriever</a></p></li>
+<li><p><a class="reference internal" href="#prompt" id="id7">Prompt</a></p></li>
+<li><p><a class="reference internal" href="#llm" id="id8">LLM</a></p></li>
+<li><p><a class="reference internal" href="#basic-retrievalqa-demonstration" id="id9">Basic RetrievalQA Demonstration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-create-a-retriever" id="id10">Step 1: Create a Retriever</a></p></li>
+<li><p><a class="reference internal" href="#step-2-create-the-retrievalqa-chain" id="id11">Step 2: Create the RetrievalQA Chain</a></p></li>
+<li><p><a class="reference internal" href="#step-3-ask-a-question" id="id12">Step 3: Ask a Question</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#what-retrievalqa-returns" id="id13">What RetrievalQA Returns</a></p></li>
+<li><p><a class="reference internal" href="#retrievalqa-with-source-documents" id="id14">RetrievalQA with Source Documents</a></p></li>
+<li><p><a class="reference internal" href="#chain-types-in-retrievalqa" id="id15">Chain Types in RetrievalQA</a></p></li>
+<li><p><a class="reference internal" href="#retrievalqa-vs-conversationalretrievalchain" id="id16">RetrievalQA vs ConversationalRetrievalChain</a></p></li>
+<li><p><a class="reference internal" href="#limitations-of-retrievalqa" id="id17">Limitations of RetrievalQA</a></p></li>
+<li><p><a class="reference internal" href="#retrievalqa-vs-lcel-based-rag-modern" id="id18">RetrievalQA vs LCEL-based RAG (Modern)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retrievalqa-legacy" id="id19">RetrievalQA (Legacy)</a></p></li>
+<li><p><a class="reference internal" href="#lcel-rag-recommended" id="id20">LCEL RAG (Recommended)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#when-to-use-retrievalqa" id="id21">When to Use RetrievalQA</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-retrievalqa" id="id22">When NOT to Use RetrievalQA</a></p></li>
+<li><p><a class="reference internal" href="#best-practices-if-you-use-it" id="id23">Best Practices (If You Use It)</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id24">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id25">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="retrievalqa-chain-langchain">
+<h1><a class="toc-backref" href="#id1">RetrievalQA Chain (LangChain)</a><a class="headerlink" href="#retrievalqa-chain-langchain" title="Permalink to this heading">#</a></h1>
+<section id="what-a-retrievalqa-chain-is">
+<h2><a class="toc-backref" href="#id2">What a RetrievalQA Chain Is</a><a class="headerlink" href="#what-a-retrievalqa-chain-is" title="Permalink to this heading">#</a></h2>
+<p>A <strong>RetrievalQA chain</strong> is a LangChain abstraction that combines:</p>
+<ul class="simple">
+<li><p><strong>Retrieval</strong> (searching relevant documents)</p></li>
+<li><p><strong>Generation</strong> (answering using an LLM)</p></li>
+</ul>
+<p>to answer questions <strong>grounded in external data</strong>.</p>
+<blockquote>
+<div><p>RetrievalQA = <strong>Retriever + Prompt + LLM</strong></p>
+</div></blockquote>
+<p>It is one of the earliest and most common <strong>RAG (Retrieval-Augmented Generation)</strong> patterns in LangChain.</p>
+</section>
+<hr class="docutils" />
+<section id="why-retrievalqa-exists">
+<h2><a class="toc-backref" href="#id3">Why RetrievalQA Exists</a><a class="headerlink" href="#why-retrievalqa-exists" title="Permalink to this heading">#</a></h2>
+<p>LLMs alone:</p>
+<ul class="simple">
+<li><p>Hallucinate</p></li>
+<li><p>Have stale knowledge</p></li>
+<li><p>Cannot access private data</p></li>
+</ul>
+<p>RetrievalQA solves this by:</p>
+<ul class="simple">
+<li><p>Fetching relevant context at runtime</p></li>
+<li><p>Grounding answers in source documents</p></li>
+<li><p>Reducing hallucinations</p></li>
+<li><p>Enabling enterprise/private data QA</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="conceptual-flow">
+<h2><a class="toc-backref" href="#id4">Conceptual Flow</a><a class="headerlink" href="#conceptual-flow" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Question
+   ↓
+Retriever (Vector DB / Search)
+   ↓
+Relevant Documents
+   ↓
+Prompt (stuffed with context)
+   ↓
+LLM
+   ↓
+Answer
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="core-components-of-retrievalqa">
+<h2><a class="toc-backref" href="#id5">Core Components of RetrievalQA</a><a class="headerlink" href="#core-components-of-retrievalqa" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="retriever">
+<h2><a class="toc-backref" href="#id6">Retriever</a><a class="headerlink" href="#retriever" title="Permalink to this heading">#</a></h2>
+<p>Responsible for fetching relevant documents.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>VectorStore retriever (FAISS, Chroma, Pinecone)</p></li>
+<li><p>BM25 / keyword retriever</p></li>
+<li><p>Hybrid retriever</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="prompt">
+<h2><a class="toc-backref" href="#id7">Prompt</a><a class="headerlink" href="#prompt" title="Permalink to this heading">#</a></h2>
+<p>Defines how retrieved documents are injected into the LLM.</p>
+<p>Typical pattern:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Answer</span> <span class="n">the</span> <span class="n">question</span> <span class="n">using</span> <span class="n">the</span> <span class="n">following</span> <span class="n">context</span><span class="p">:</span>
+<span class="p">{</span><span class="n">context</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="llm">
+<h2><a class="toc-backref" href="#id8">LLM</a><a class="headerlink" href="#llm" title="Permalink to this heading">#</a></h2>
+<p>Generates the final answer using the provided context.</p>
+</section>
+<hr class="docutils" />
+<section id="basic-retrievalqa-demonstration">
+<h2><a class="toc-backref" href="#id9">Basic RetrievalQA Demonstration</a><a class="headerlink" href="#basic-retrievalqa-demonstration" title="Permalink to this heading">#</a></h2>
+<section id="step-1-create-a-retriever">
+<h3><a class="toc-backref" href="#id10">Step 1: Create a Retriever</a><a class="headerlink" href="#step-1-create-a-retriever" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai.embeddings</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span>
+    <span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;LangChain is a framework for LLM apps&quot;</span><span class="p">],</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-2-create-the-retrievalqa-chain">
+<h3><a class="toc-backref" href="#id11">Step 2: Create the RetrievalQA Chain</a><a class="headerlink" href="#step-2-create-the-retrievalqa-chain" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains</span><span class="w"> </span><span class="kn">import</span> <span class="n">RetrievalQA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">qa_chain</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="o">.</span><span class="n">from_chain_type</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">retriever</span><span class="o">=</span><span class="n">retriever</span><span class="p">,</span>
+    <span class="n">chain_type</span><span class="o">=</span><span class="s2">&quot;stuff&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From C:\Users\sangouda\AppData\Roaming\Python\Python312\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-3-ask-a-question">
+<h3><a class="toc-backref" href="#id12">Step 3: Ask a Question</a><a class="headerlink" href="#step-3-ask-a-question" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">qa_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;What is LangChain?&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LangChain is a framework designed for building applications that utilize large language models (LLMs). It provides tools and components to facilitate the development of LLM-based applications, making it easier for developers to integrate and manage these models in their projects.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>LangChain is a framework for building applications using language models.
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="what-retrievalqa-returns">
+<h2><a class="toc-backref" href="#id13">What RetrievalQA Returns</a><a class="headerlink" href="#what-retrievalqa-returns" title="Permalink to this heading">#</a></h2>
+<p>By default:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="s2">&quot;final answer&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Optional:</p>
+<ul class="simple">
+<li><p>Source documents</p></li>
+<li><p>Metadata</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="retrievalqa-with-source-documents">
+<h2><a class="toc-backref" href="#id14">RetrievalQA with Source Documents</a><a class="headerlink" href="#retrievalqa-with-source-documents" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qa_chain</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="o">.</span><span class="n">from_chain_type</span><span class="p">(</span>
+        <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">retriever</span><span class="o">=</span><span class="n">retriever</span><span class="p">,</span>
+    <span class="n">return_source_documents</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">qa_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;What is LangChain?&quot;</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;source_documents&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Document(id=&#39;dedc0e08-e26e-481d-84ee-154d9279f09b&#39;, metadata={}, page_content=&#39;LangChain is a framework for LLM apps&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Useful for:</p>
+<ul class="simple">
+<li><p>Debugging</p></li>
+<li><p>Citations</p></li>
+<li><p>Trust &amp; explainability</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="chain-types-in-retrievalqa">
+<h2><a class="toc-backref" href="#id15">Chain Types in RetrievalQA</a><a class="headerlink" href="#chain-types-in-retrievalqa" title="Permalink to this heading">#</a></h2>
+<p>RetrievalQA internally uses <strong>document combination chains</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>chain_type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>stuff</p></td>
+<td><p>Stuff all docs into one prompt</p></td>
+</tr>
+<tr class="row-odd"><td><p>map_reduce</p></td>
+<td><p>Summarize docs independently, then combine</p></td>
+</tr>
+<tr class="row-even"><td><p>refine</p></td>
+<td><p>Incrementally refine answer</p></td>
+</tr>
+<tr class="row-odd"><td><p>map_rerank</p></td>
+<td><p>Score answers and pick best</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="retrievalqa-vs-conversationalretrievalchain">
+<h2><a class="toc-backref" href="#id16">RetrievalQA vs ConversationalRetrievalChain</a><a class="headerlink" href="#retrievalqa-vs-conversationalretrievalchain" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>RetrievalQA</p></th>
+<th class="head"><p>ConversationalRetrievalChain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Chat history</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multi-turn</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Memory</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Use RetrievalQA for <strong>single-turn QA</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="limitations-of-retrievalqa">
+<h2><a class="toc-backref" href="#id17">Limitations of RetrievalQA</a><a class="headerlink" href="#limitations-of-retrievalqa" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>❌ Legacy abstraction</p></li>
+<li><p>❌ Limited customization</p></li>
+<li><p>❌ Not fully Runnable-based</p></li>
+<li><p>❌ Harder to debug</p></li>
+<li><p>❌ Less control than LCEL</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="retrievalqa-vs-lcel-based-rag-modern">
+<h2><a class="toc-backref" href="#id18">RetrievalQA vs LCEL-based RAG (Modern)</a><a class="headerlink" href="#retrievalqa-vs-lcel-based-rag-modern" title="Permalink to this heading">#</a></h2>
+<section id="retrievalqa-legacy">
+<h3><a class="toc-backref" href="#id19">RetrievalQA (Legacy)</a><a class="headerlink" href="#retrievalqa-legacy" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RetrievalQA</span><span class="o">.</span><span class="n">from_chain_type</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="lcel-rag-recommended">
+<h3><a class="toc-backref" href="#id20">LCEL RAG (Recommended)</a><a class="headerlink" href="#lcel-rag-recommended" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">RunnablePassthrough</span><span class="p">()}</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">llm</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>LCEL provides:</p>
+<ul class="simple">
+<li><p>Better observability</p></li>
+<li><p>Streaming &amp; async</p></li>
+<li><p>Custom guards</p></li>
+<li><p>Flexible composition</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-retrievalqa">
+<h2><a class="toc-backref" href="#id21">When to Use RetrievalQA</a><a class="headerlink" href="#when-to-use-retrievalqa" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Learning RAG concepts</p></li>
+<li><p>Quick prototypes</p></li>
+<li><p>Legacy codebases</p></li>
+<li><p>Simple QA over documents</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-not-to-use-retrievalqa">
+<h2><a class="toc-backref" href="#id22">When NOT to Use RetrievalQA</a><a class="headerlink" href="#when-not-to-use-retrievalqa" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Production RAG systems</p></li>
+<li><p>Multi-turn chat</p></li>
+<li><p>Agentic workflows</p></li>
+<li><p>Advanced reranking</p></li>
+<li><p>Streaming APIs</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="best-practices-if-you-use-it">
+<h2><a class="toc-backref" href="#id23">Best Practices (If You Use It)</a><a class="headerlink" href="#best-practices-if-you-use-it" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use low temperature (0–0.2)</p></li>
+<li><p>Limit retrieved documents</p></li>
+<li><p>Enable source documents</p></li>
+<li><p>Validate token size</p></li>
+<li><p>Plan migration to LCEL</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id24">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“RetrievalQA is a LangChain chain that answers questions by retrieving relevant documents and passing them to an LLM. It implements a classic RAG pattern but is a legacy abstraction superseded by LCEL-based pipelines.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id25">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Simple single-turn QA → RetrievalQA</strong></p></li>
+<li><p><strong>Conversational QA → ConversationalRetrievalChain</strong></p></li>
+<li><p><strong>Production RAG → LCEL or LangGraph</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\chains"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-retrievalqa-chain-is">What a RetrievalQA Chain Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-retrievalqa-exists">Why RetrievalQA Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components-of-retrievalqa">Core Components of RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retriever">Retriever</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt">Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm">LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-retrievalqa-demonstration">Basic RetrievalQA Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-create-a-retriever">Step 1: Create a Retriever</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-create-the-retrievalqa-chain">Step 2: Create the RetrievalQA Chain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-ask-a-question">Step 3: Ask a Question</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-retrievalqa-returns">What RetrievalQA Returns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-with-source-documents">RetrievalQA with Source Documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-types-in-retrievalqa">Chain Types in RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-vs-conversationalretrievalchain">RetrievalQA vs ConversationalRetrievalChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-retrievalqa">Limitations of RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-vs-lcel-based-rag-modern">RetrievalQA vs LCEL-based RAG (Modern)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-legacy">RetrievalQA (Legacy)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-rag-recommended">LCEL RAG (Recommended)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-retrievalqa">When to Use RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-retrievalqa">When NOT to Use RetrievalQA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-if-you-use-it">Best Practices (If You Use It)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

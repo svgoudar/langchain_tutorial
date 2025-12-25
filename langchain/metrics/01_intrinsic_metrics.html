@@ -1,0 +1,1065 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Intrinsic (Model-Centric) Metrics &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/metrics/01_intrinsic_metrics';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/metrics/01_intrinsic_metrics.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/metrics/01_intrinsic_metrics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/metrics/01_intrinsic_metrics.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Intrinsic (Model-Centric) Metrics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Intrinsic (Model-Centric) Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#core-model-intrinsic-metrics">Core Model Intrinsic Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#why-intrinsic-metrics-matter">Why Intrinsic Metrics Matter</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#key-metric-perplexity-demonstration">Key Metric: Perplexity (Demonstration)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formula">Formula</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-demonstration-pytorch-style">Example Demonstration (PyTorch-style)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#negative-log-likelihood-nll">Negative Log-Likelihood (NLL)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bits-per-token">Bits-per-Token</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-uncertainty">Entropy (Uncertainty)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-intrinsic-metrics">When to Use Intrinsic Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#why-intrinsic-metrics-fail-for-real-systems">Why Intrinsic Metrics Fail for Real Systems</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#task-quality-metrics">Task &amp; Quality Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-knowledge-grounding-metrics">RAG &amp; Knowledge Grounding Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#safety-alignment-metrics">Safety &amp; Alignment Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-metrics">Performance Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-efficiency-metrics">Cost &amp; Efficiency Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reliability-stability-metrics">Reliability &amp; Stability Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#user-experience-metrics">User Experience Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-mental-model">Final Mental Model</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#intrinsic-model-centric-metrics" id="id1">Intrinsic (Model-Centric) Metrics</a></p></li>
+<li><p><a class="reference internal" href="#core-model-intrinsic-metrics" id="id2">Core Model Intrinsic Metrics</a></p></li>
+<li><p><a class="reference internal" href="#why-intrinsic-metrics-matter" id="id3">Why Intrinsic Metrics Matter</a></p></li>
+<li><p><a class="reference internal" href="#key-metric-perplexity-demonstration" id="id4">Key Metric: Perplexity (Demonstration)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#formula" id="id5">Formula</a></p></li>
+<li><p><a class="reference internal" href="#example-demonstration-pytorch-style" id="id6">Example Demonstration (PyTorch-style)</a></p></li>
+<li><p><a class="reference internal" href="#interpretation" id="id7">Interpretation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#negative-log-likelihood-nll" id="id8">Negative Log-Likelihood (NLL)</a></p></li>
+<li><p><a class="reference internal" href="#bits-per-token" id="id9">Bits-per-Token</a></p></li>
+<li><p><a class="reference internal" href="#entropy-uncertainty" id="id10">Entropy (Uncertainty)</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-intrinsic-metrics" id="id11">When to Use Intrinsic Metrics</a></p></li>
+<li><p><a class="reference internal" href="#why-intrinsic-metrics-fail-for-real-systems" id="id12">Why Intrinsic Metrics Fail for Real Systems</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id13">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#task-quality-metrics" id="id14">Task &amp; Quality Metrics</a></p></li>
+<li><p><a class="reference internal" href="#rag-knowledge-grounding-metrics" id="id15">RAG &amp; Knowledge Grounding Metrics</a></p></li>
+<li><p><a class="reference internal" href="#safety-alignment-metrics" id="id16">Safety &amp; Alignment Metrics</a></p></li>
+<li><p><a class="reference internal" href="#performance-metrics" id="id17">Performance Metrics</a></p></li>
+<li><p><a class="reference internal" href="#cost-efficiency-metrics" id="id18">Cost &amp; Efficiency Metrics</a></p></li>
+<li><p><a class="reference internal" href="#reliability-stability-metrics" id="id19">Reliability &amp; Stability Metrics</a></p></li>
+<li><p><a class="reference internal" href="#user-experience-metrics" id="id20">User Experience Metrics</a></p></li>
+<li><p><a class="reference internal" href="#final-mental-model" id="id21">Final Mental Model</a></p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="intrinsic-model-centric-metrics">
+<h1><a class="toc-backref" href="#id1">Intrinsic (Model-Centric) Metrics</a><a class="headerlink" href="#intrinsic-model-centric-metrics" title="Permalink to this heading">#</a></h1>
+<p><em>Used during training &amp; research</em></p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Perplexity</p></td>
+<td><p>How well the model predicts tokens</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cross-Entropy Loss</p></td>
+<td><p>Training optimization objective</p></td>
+</tr>
+<tr class="row-even"><td><p>Negative Log-Likelihood</p></td>
+<td><p>Token probability accuracy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bits-per-Token</p></td>
+<td><p>Compression efficiency</p></td>
+</tr>
+<tr class="row-even"><td><p>Entropy</p></td>
+<td><p>Uncertainty of predictions</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These answer:</p>
+<blockquote>
+<div><p><em>Is this a good language model mathematically?</em></p>
+</div></blockquote>
+<p><strong>Model intrinsic metrics</strong> measure the <strong>internal quality of the language model itself</strong>, independent of any downstream task.</p>
+<p>They answer one question:</p>
+<blockquote>
+<div><p><strong>How good is this model as a probabilistic language model?</strong></p>
+</div></blockquote>
+<p>They are mainly used during:</p>
+<ul class="simple">
+<li><p>Pretraining</p></li>
+<li><p>Fine-tuning</p></li>
+<li><p>Research benchmarking</p></li>
+</ul>
+<p>Not for production product evaluation.</p>
+<hr class="docutils" />
+</section>
+<section id="core-model-intrinsic-metrics">
+<h1><a class="toc-backref" href="#id2">Core Model Intrinsic Metrics</a><a class="headerlink" href="#core-model-intrinsic-metrics" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>What It Measures</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Perplexity</p></td>
+<td><p>How well the model predicts the next token</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cross-Entropy Loss</p></td>
+<td><p>Training optimization objective</p></td>
+</tr>
+<tr class="row-even"><td><p>Negative Log-Likelihood</p></td>
+<td><p>Log probability of tokens</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bits-per-Token</p></td>
+<td><p>Compression efficiency</p></td>
+</tr>
+<tr class="row-even"><td><p>Entropy</p></td>
+<td><p>Uncertainty of predictions</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="why-intrinsic-metrics-matter">
+<h1><a class="toc-backref" href="#id3">Why Intrinsic Metrics Matter</a><a class="headerlink" href="#why-intrinsic-metrics-matter" title="Permalink to this heading">#</a></h1>
+<p>Intrinsic metrics:</p>
+<ul class="simple">
+<li><p>Track training progress</p></li>
+<li><p>Compare base models</p></li>
+<li><p>Diagnose under/overfitting</p></li>
+<li><p>Guide architecture changes</p></li>
+</ul>
+<p>They <strong>do not</strong> measure usefulness, safety, or business success.</p>
+<hr class="docutils" />
+</section>
+<section id="key-metric-perplexity-demonstration">
+<h1><a class="toc-backref" href="#id4">Key Metric: Perplexity (Demonstration)</a><a class="headerlink" href="#key-metric-perplexity-demonstration" title="Permalink to this heading">#</a></h1>
+<section id="formula">
+<h2><a class="toc-backref" href="#id5">Formula</a><a class="headerlink" href="#formula" title="Permalink to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[
+\text{Perplexity} = e^{\text{Cross-Entropy Loss}}
+\]</div>
+<p>Lower = better language modeling.</p>
+</section>
+<hr class="docutils" />
+<section id="example-demonstration-pytorch-style">
+<h2><a class="toc-backref" href="#id6">Example Demonstration (PyTorch-style)</a><a class="headerlink" href="#example-demonstration-pytorch-style" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="c1"># Example predicted token probabilities</span>
+<span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]])</span>  <span class="c1"># model output</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>               <span class="c1"># correct token index</span>
+
+<span class="c1"># Compute cross-entropy loss</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+<span class="c1"># Compute perplexity</span>
+<span class="n">perplexity</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cross-Entropy Loss:&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Perplexity:&quot;</span><span class="p">,</span> <span class="n">perplexity</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="interpretation">
+<h2><a class="toc-backref" href="#id7">Interpretation</a><a class="headerlink" href="#interpretation" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Lower loss → lower perplexity → better model</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="negative-log-likelihood-nll">
+<h1><a class="toc-backref" href="#id8">Negative Log-Likelihood (NLL)</a><a class="headerlink" href="#negative-log-likelihood-nll" title="Permalink to this heading">#</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">log_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">nll</span> <span class="o">=</span> <span class="o">-</span><span class="n">log_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">target</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Measures how surprised the model is by the correct token.</p>
+<hr class="docutils" />
+</section>
+<section id="bits-per-token">
+<h1><a class="toc-backref" href="#id9">Bits-per-Token</a><a class="headerlink" href="#bits-per-token" title="Permalink to this heading">#</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bits_per_token</span> <span class="o">=</span> <span class="n">loss</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Lower bits → more efficient language representation.</p>
+<hr class="docutils" />
+</section>
+<section id="entropy-uncertainty">
+<h1><a class="toc-backref" href="#id10">Entropy (Uncertainty)</a><a class="headerlink" href="#entropy-uncertainty" title="Permalink to this heading">#</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">entropy</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">probs</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>High entropy = model unsure
+Low entropy = confident predictions</p>
+<hr class="docutils" />
+</section>
+<section id="when-to-use-intrinsic-metrics">
+<h1><a class="toc-backref" href="#id11">When to Use Intrinsic Metrics</a><a class="headerlink" href="#when-to-use-intrinsic-metrics" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Phase</p></th>
+<th class="head"><p>Used?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Pretraining</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fine-tuning</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Model architecture research</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Prompt evaluation</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>RAG systems</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Chatbot quality</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="why-intrinsic-metrics-fail-for-real-systems">
+<h1><a class="toc-backref" href="#id12">Why Intrinsic Metrics Fail for Real Systems</a><a class="headerlink" href="#why-intrinsic-metrics-fail-for-real-systems" title="Permalink to this heading">#</a></h1>
+<p>A model with low perplexity can still:</p>
+<ul class="simple">
+<li><p>Hallucinate</p></li>
+<li><p>Be unsafe</p></li>
+<li><p>Be irrelevant</p></li>
+<li><p>Be useless for business tasks</p></li>
+</ul>
+<p>Hence intrinsic metrics ≠ product quality.</p>
+<hr class="docutils" />
+</section>
+<section id="mental-model">
+<h1><a class="toc-backref" href="#id13">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Intrinsic Metrics → Model Fitness
+Extrinsic Metrics → System Success
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="task-quality-metrics">
+<h1><a class="toc-backref" href="#id14">Task &amp; Quality Metrics</a><a class="headerlink" href="#task-quality-metrics" title="Permalink to this heading">#</a></h1>
+<p><em>Used in real applications</em></p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Correctness</p></td>
+<td><p>Factual accuracy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Relevance</p></td>
+<td><p>Question–answer alignment</p></td>
+</tr>
+<tr class="row-even"><td><p>Completeness</p></td>
+<td><p>Coverage of requirements</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fluency</p></td>
+<td><p>Grammar &amp; naturalness</p></td>
+</tr>
+<tr class="row-even"><td><p>Coherence</p></td>
+<td><p>Logical structure</p></td>
+</tr>
+<tr class="row-odd"><td><p>Consistency</p></td>
+<td><p>Stability across runs</p></td>
+</tr>
+<tr class="row-even"><td><p>Specificity</p></td>
+<td><p>Avoids generic answers</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conciseness</p></td>
+<td><p>Avoids unnecessary verbosity</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="rag-knowledge-grounding-metrics">
+<h1><a class="toc-backref" href="#id15">RAG &amp; Knowledge Grounding Metrics</a><a class="headerlink" href="#rag-knowledge-grounding-metrics" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Retrieval Precision&#64;K</p></td>
+<td><p>Relevant docs ratio</p></td>
+</tr>
+<tr class="row-odd"><td><p>Retrieval Recall&#64;K</p></td>
+<td><p>Was required info retrieved</p></td>
+</tr>
+<tr class="row-even"><td><p>MRR</p></td>
+<td><p>Ranking quality</p></td>
+</tr>
+<tr class="row-odd"><td><p>Context Relevance</p></td>
+<td><p>Context usefulness</p></td>
+</tr>
+<tr class="row-even"><td><p>Faithfulness / Groundedness</p></td>
+<td><p>Hallucination detection</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hallucination Rate</p></td>
+<td><p>% unsupported claims</p></td>
+</tr>
+<tr class="row-even"><td><p>Context Coverage</p></td>
+<td><p>Info completeness</p></td>
+</tr>
+<tr class="row-odd"><td><p>Attribution Accuracy</p></td>
+<td><p>Traceability to sources</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="safety-alignment-metrics">
+<h1><a class="toc-backref" href="#id16">Safety &amp; Alignment Metrics</a><a class="headerlink" href="#safety-alignment-metrics" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Toxicity Score</p></td>
+<td><p>Harmful language</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bias Score</p></td>
+<td><p>Fairness</p></td>
+</tr>
+<tr class="row-even"><td><p>Policy Compliance</p></td>
+<td><p>Rule adherence</p></td>
+</tr>
+<tr class="row-odd"><td><p>Jailbreak Resistance</p></td>
+<td><p>Attack robustness</p></td>
+</tr>
+<tr class="row-even"><td><p>Refusal Accuracy</p></td>
+<td><p>Proper denial behavior</p></td>
+</tr>
+<tr class="row-odd"><td><p>PII Leakage Rate</p></td>
+<td><p>Privacy risk</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="performance-metrics">
+<h1><a class="toc-backref" href="#id17">Performance Metrics</a><a class="headerlink" href="#performance-metrics" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Latency</p></td>
+<td><p>Response time</p></td>
+</tr>
+<tr class="row-odd"><td><p>p50 / p95 / p99</p></td>
+<td><p>Tail latency</p></td>
+</tr>
+<tr class="row-even"><td><p>TTFT</p></td>
+<td><p>Streaming speed</p></td>
+</tr>
+<tr class="row-odd"><td><p>Throughput</p></td>
+<td><p>Requests/sec</p></td>
+</tr>
+<tr class="row-even"><td><p>Error Rate</p></td>
+<td><p>Failure ratio</p></td>
+</tr>
+<tr class="row-odd"><td><p>Availability</p></td>
+<td><p>Uptime</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="cost-efficiency-metrics">
+<h1><a class="toc-backref" href="#id18">Cost &amp; Efficiency Metrics</a><a class="headerlink" href="#cost-efficiency-metrics" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Token Usage</p></td>
+<td><p>Cost driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cost per Request</p></td>
+<td><p>Dollar spend</p></td>
+</tr>
+<tr class="row-even"><td><p>Cost per User</p></td>
+<td><p>Monetization</p></td>
+</tr>
+<tr class="row-odd"><td><p>Retry Cost</p></td>
+<td><p>Reliability indicator</p></td>
+</tr>
+<tr class="row-even"><td><p>Fallback Cost</p></td>
+<td><p>Capacity indicator</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cache Hit Ratio</p></td>
+<td><p>Cost optimization</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="reliability-stability-metrics">
+<h1><a class="toc-backref" href="#id19">Reliability &amp; Stability Metrics</a><a class="headerlink" href="#reliability-stability-metrics" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Regression Delta</p></td>
+<td><p>Quality change</p></td>
+</tr>
+<tr class="row-odd"><td><p>Consistency Drift</p></td>
+<td><p>Stability over time</p></td>
+</tr>
+<tr class="row-even"><td><p>Model Degradation Rate</p></td>
+<td><p>Long-term health</p></td>
+</tr>
+<tr class="row-odd"><td><p>Retry Rate</p></td>
+<td><p>Infra health</p></td>
+</tr>
+<tr class="row-even"><td><p>Fallback Rate</p></td>
+<td><p>Capacity health</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timeout Rate</p></td>
+<td><p>SLA risk</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="user-experience-metrics">
+<h1><a class="toc-backref" href="#id20">User Experience Metrics</a><a class="headerlink" href="#user-experience-metrics" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>User Satisfaction Score</p></td>
+<td><p>Human rating</p></td>
+</tr>
+<tr class="row-odd"><td><p>Resolution Rate</p></td>
+<td><p>Task success</p></td>
+</tr>
+<tr class="row-even"><td><p>Escalation Rate</p></td>
+<td><p>Automation effectiveness</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conversation Length</p></td>
+<td><p>Efficiency</p></td>
+</tr>
+<tr class="row-even"><td><p>Abandonment Rate</p></td>
+<td><p>UX health</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="final-mental-model">
+<h1><a class="toc-backref" href="#id21">Final Mental Model</a><a class="headerlink" href="#final-mental-model" title="Permalink to this heading">#</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Training Phase → Intrinsic Metrics (Perplexity, Loss)
+Production Phase → All Other Metrics
+</pre></div>
+</div>
+<p>Perplexity belongs <strong>only</strong> in <strong>Intrinsic Metrics</strong>.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\metrics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Intrinsic (Model-Centric) Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#core-model-intrinsic-metrics">Core Model Intrinsic Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#why-intrinsic-metrics-matter">Why Intrinsic Metrics Matter</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#key-metric-perplexity-demonstration">Key Metric: Perplexity (Demonstration)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formula">Formula</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-demonstration-pytorch-style">Example Demonstration (PyTorch-style)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#negative-log-likelihood-nll">Negative Log-Likelihood (NLL)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bits-per-token">Bits-per-Token</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-uncertainty">Entropy (Uncertainty)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-intrinsic-metrics">When to Use Intrinsic Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#why-intrinsic-metrics-fail-for-real-systems">Why Intrinsic Metrics Fail for Real Systems</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#task-quality-metrics">Task &amp; Quality Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-knowledge-grounding-metrics">RAG &amp; Knowledge Grounding Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#safety-alignment-metrics">Safety &amp; Alignment Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-metrics">Performance Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-efficiency-metrics">Cost &amp; Efficiency Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reliability-stability-metrics">Reliability &amp; Stability Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#user-experience-metrics">User Experience Metrics</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-mental-model">Final Mental Model</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

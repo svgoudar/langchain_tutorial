@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Faithfulness &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/evaluation/03_faithfulness';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/evaluation/03_faithfulness.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/evaluation/03_faithfulness.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/evaluation/03_faithfulness.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Faithfulness</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-faithfulness-is-critical">Why Faithfulness Is Critical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-vs-correctness">Faithfulness vs Correctness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-context-and-question">Example Context and Question</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieved-context">Retrieved Context</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#question">Question</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithful-vs-unfaithful-answers">Faithful vs Unfaithful Answers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faithful-answer">Faithful Answer ✅</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unfaithful-answer">Unfaithful Answer ❌</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-evaluation-using-langchain">Faithfulness Evaluation Using LangChain</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-faithfulness-evaluator">Load the Faithfulness Evaluator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-a-faithful-answer">Evaluate a Faithful Answer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-an-unfaithful-answer">Evaluate an Unfaithful Answer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-in-a-real-rag-pipeline">Faithfulness in a Real RAG Pipeline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-output-retrieved-docs">RAG Output + Retrieved Docs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-check-on-rag-output">Faithfulness Check on RAG Output</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-faithfulness-scores">Interpreting Faithfulness Scores</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-faithfulness-failure-patterns">Common Faithfulness Failure Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-vs-safety">Faithfulness vs Safety</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-to-improve-faithfulness">Best Practices to Improve Faithfulness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#faithfulness" id="id1">Faithfulness</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-faithfulness-is-critical" id="id2">Why Faithfulness Is Critical</a></p></li>
+<li><p><a class="reference internal" href="#faithfulness-vs-correctness" id="id3">Faithfulness vs Correctness</a></p></li>
+<li><p><a class="reference internal" href="#architecture-view" id="id4">Architecture View</a></p></li>
+<li><p><a class="reference internal" href="#example-context-and-question" id="id5">Example Context and Question</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retrieved-context" id="id6">Retrieved Context</a></p></li>
+<li><p><a class="reference internal" href="#question" id="id7">Question</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#faithful-vs-unfaithful-answers" id="id8">Faithful vs Unfaithful Answers</a></p>
+<ul>
+<li><p><a class="reference internal" href="#faithful-answer" id="id9">Faithful Answer ✅</a></p></li>
+<li><p><a class="reference internal" href="#unfaithful-answer" id="id10">Unfaithful Answer ❌</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#faithfulness-evaluation-using-langchain" id="id11">Faithfulness Evaluation Using LangChain</a></p>
+<ul>
+<li><p><a class="reference internal" href="#load-the-faithfulness-evaluator" id="id12">Load the Faithfulness Evaluator</a></p></li>
+<li><p><a class="reference internal" href="#evaluate-a-faithful-answer" id="id13">Evaluate a Faithful Answer</a></p></li>
+<li><p><a class="reference internal" href="#evaluate-an-unfaithful-answer" id="id14">Evaluate an Unfaithful Answer</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#faithfulness-in-a-real-rag-pipeline" id="id15">Faithfulness in a Real RAG Pipeline</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rag-output-retrieved-docs" id="id16">RAG Output + Retrieved Docs</a></p></li>
+<li><p><a class="reference internal" href="#faithfulness-check-on-rag-output" id="id17">Faithfulness Check on RAG Output</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#interpreting-faithfulness-scores" id="id18">Interpreting Faithfulness Scores</a></p></li>
+<li><p><a class="reference internal" href="#common-faithfulness-failure-patterns" id="id19">Common Faithfulness Failure Patterns</a></p></li>
+<li><p><a class="reference internal" href="#faithfulness-vs-safety" id="id20">Faithfulness vs Safety</a></p></li>
+<li><p><a class="reference internal" href="#best-practices-to-improve-faithfulness" id="id21">Best Practices to Improve Faithfulness</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id22">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id23">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="faithfulness">
+<h1><a class="toc-backref" href="#id1">Faithfulness</a><a class="headerlink" href="#faithfulness" title="Permalink to this heading">#</a></h1>
+<p><strong>Faithfulness</strong> measures whether an LLM’s answer is <strong>strictly grounded in the provided context</strong> and <strong>does not introduce unsupported facts</strong> (hallucinations).</p>
+<p>In RAG systems, faithfulness answers one critical question:</p>
+<blockquote>
+<div><p><strong>Is every claim in the answer supported by the retrieved documents?</strong></p>
+</div></blockquote>
+<p>Faithfulness is a <strong>core evaluation dimension</strong> in LangChain and RAG systems.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Context (Sources)
+   ↓
+LLM Answer
+   ↓
+Faithfulness Check
+   → Supported ✅
+   → Unsupported ❌ (Hallucination)
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="why-faithfulness-is-critical">
+<h2><a class="toc-backref" href="#id2">Why Faithfulness Is Critical</a><a class="headerlink" href="#why-faithfulness-is-critical" title="Permalink to this heading">#</a></h2>
+<p>An answer can be:</p>
+<ul class="simple">
+<li><p>Fluent ❌</p></li>
+<li><p>Confident ❌</p></li>
+<li><p>Wrong ❌</p></li>
+</ul>
+<p>Faithfulness ensures:</p>
+<ul class="simple">
+<li><p>No hallucinated facts</p></li>
+<li><p>Trustworthy answers</p></li>
+<li><p>Explainability via sources</p></li>
+<li><p>Production safety</p></li>
+</ul>
+<p>This is <strong>more important than fluency</strong> in enterprise RAG.</p>
+</section>
+<hr class="docutils" />
+<section id="faithfulness-vs-correctness">
+<h2><a class="toc-backref" href="#id3">Faithfulness vs Correctness</a><a class="headerlink" href="#faithfulness-vs-correctness" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Dimension</p></th>
+<th class="head"><p>Faithfulness</p></th>
+<th class="head"><p>Correctness</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Depends on context</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Detects hallucinations</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>Checks factual truth</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>RAG-specific</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>An answer can be <strong>correct but unfaithful</strong> if it uses outside knowledge.</p>
+</section>
+<hr class="docutils" />
+<section id="architecture-view">
+<h2><a class="toc-backref" href="#id4">Architecture View</a><a class="headerlink" href="#architecture-view" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://miro.medium.com/v2/resize%3Afit%3A1400/0%2A0VW2uHaAq2dB_AuH.png" /></p>
+<p><img alt="Image" src="https://substackcdn.com/image/fetch/%24s_%21mGi3%21%2Cf_auto%2Cq_auto%3Agood%2Cfl_progressive%3Asteep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7a1c4ac0-aa62-40a6-8c6d-446756abee60_1400x1018.png" /></p>
+<p><img alt="Image" src="https://miro.medium.com/v2/resize%3Afit%3A1208/0%2AgJeMETTHMmgG2siR.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="example-context-and-question">
+<h2><a class="toc-backref" href="#id5">Example Context and Question</a><a class="headerlink" href="#example-context-and-question" title="Permalink to this heading">#</a></h2>
+<section id="retrieved-context">
+<h3><a class="toc-backref" href="#id6">Retrieved Context</a><a class="headerlink" href="#retrieved-context" title="Permalink to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RAG (Retrieval-Augmented Generation) combines document retrieval
+with language model generation to answer user questions.
+</pre></div>
+</div>
+</section>
+<section id="question">
+<h3><a class="toc-backref" href="#id7">Question</a><a class="headerlink" href="#question" title="Permalink to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>What is RAG?
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="faithful-vs-unfaithful-answers">
+<h2><a class="toc-backref" href="#id8">Faithful vs Unfaithful Answers</a><a class="headerlink" href="#faithful-vs-unfaithful-answers" title="Permalink to this heading">#</a></h2>
+<section id="faithful-answer">
+<h3><a class="toc-backref" href="#id9">Faithful Answer ✅</a><a class="headerlink" href="#faithful-answer" title="Permalink to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RAG combines document retrieval with language model generation.
+</pre></div>
+</div>
+<p>✔ Every statement appears in the context.</p>
+</section>
+<hr class="docutils" />
+<section id="unfaithful-answer">
+<h3><a class="toc-backref" href="#id10">Unfaithful Answer ❌</a><a class="headerlink" href="#unfaithful-answer" title="Permalink to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RAG retrieves documents and fine-tunes the model in real time.
+</pre></div>
+</div>
+<p>❌ “fine-tunes the model” is <strong>not present</strong> in the context → hallucination.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="faithfulness-evaluation-using-langchain">
+<h2><a class="toc-backref" href="#id11">Faithfulness Evaluation Using LangChain</a><a class="headerlink" href="#faithfulness-evaluation-using-langchain" title="Permalink to this heading">#</a></h2>
+<section id="load-the-faithfulness-evaluator">
+<h3><a class="toc-backref" href="#id12">Load the Faithfulness Evaluator</a><a class="headerlink" href="#load-the-faithfulness-evaluator" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_evaluator</span>
+
+<span class="n">faithfulness_eval</span> <span class="o">=</span> <span class="n">load_evaluator</span><span class="p">(</span><span class="s2">&quot;faithfulness&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="evaluate-a-faithful-answer">
+<h3><a class="toc-backref" href="#id13">Evaluate a Faithful Answer</a><a class="headerlink" href="#evaluate-a-faithful-answer" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">faithfulness_eval</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="s2">&quot;What is RAG?&quot;</span><span class="p">,</span>
+    <span class="n">prediction</span><span class="o">=</span><span class="s2">&quot;RAG combines document retrieval with language model generation.&quot;</span><span class="p">,</span>
+    <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;RAG combines document retrieval with language model generation.&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output (example)</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="s2">&quot;All claims are supported by the context.&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="evaluate-an-unfaithful-answer">
+<h3><a class="toc-backref" href="#id14">Evaluate an Unfaithful Answer</a><a class="headerlink" href="#evaluate-an-unfaithful-answer" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">faithfulness_eval</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="s2">&quot;What is RAG?&quot;</span><span class="p">,</span>
+    <span class="n">prediction</span><span class="o">=</span><span class="s2">&quot;RAG retrieves documents and fine-tunes models in real time.&quot;</span><span class="p">,</span>
+    <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;RAG combines document retrieval with language model generation.&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output (example)</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="s2">&quot;The answer includes unsupported claims.&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This flags <strong>hallucination</strong>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="faithfulness-in-a-real-rag-pipeline">
+<h2><a class="toc-backref" href="#id15">Faithfulness in a Real RAG Pipeline</a><a class="headerlink" href="#faithfulness-in-a-real-rag-pipeline" title="Permalink to this heading">#</a></h2>
+<section id="rag-output-retrieved-docs">
+<h3><a class="toc-backref" href="#id16">RAG Output + Retrieved Docs</a><a class="headerlink" href="#rag-output-retrieved-docs" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">answer</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+<span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">page_content</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">retrieved_docs</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="faithfulness-check-on-rag-output">
+<h3><a class="toc-backref" href="#id17">Faithfulness Check on RAG Output</a><a class="headerlink" href="#faithfulness-check-on-rag-output" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">faithfulness_eval</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+    <span class="n">prediction</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span>
+    <span class="n">reference</span><span class="o">=</span><span class="n">context</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This is how <strong>production RAG systems validate grounding</strong>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="interpreting-faithfulness-scores">
+<h2><a class="toc-backref" href="#id18">Interpreting Faithfulness Scores</a><a class="headerlink" href="#interpreting-faithfulness-scores" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Score</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1.0</p></td>
+<td><p>Fully grounded</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.5</p></td>
+<td><p>Partially grounded</p></td>
+</tr>
+<tr class="row-even"><td><p>0.0</p></td>
+<td><p>Hallucinated</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Thresholds are usually:</p>
+<ul class="simple">
+<li><p><strong>≥ 0.8 → Accept</strong></p></li>
+<li><p><strong>&lt; 0.8 → Reject / regenerate</strong></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-faithfulness-failure-patterns">
+<h2><a class="toc-backref" href="#id19">Common Faithfulness Failure Patterns</a><a class="headerlink" href="#common-faithfulness-failure-patterns" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pattern</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Added facts</p></td>
+<td><p>“fine-tuned in real time”</p></td>
+</tr>
+<tr class="row-odd"><td><p>External knowledge</p></td>
+<td><p>Info not in docs</p></td>
+</tr>
+<tr class="row-even"><td><p>Over-generalization</p></td>
+<td><p>Claims beyond context</p></td>
+</tr>
+<tr class="row-odd"><td><p>Assumptions</p></td>
+<td><p>“typically”, “usually”</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="faithfulness-vs-safety">
+<h2><a class="toc-backref" href="#id20">Faithfulness vs Safety</a><a class="headerlink" href="#faithfulness-vs-safety" title="Permalink to this heading">#</a></h2>
+<p>Faithfulness protects against:</p>
+<ul class="simple">
+<li><p>Misinformation</p></li>
+<li><p>Legal risk</p></li>
+<li><p>Medical / financial hallucinations</p></li>
+</ul>
+<p>It is a <strong>precondition for safety</strong>, not a replacement.</p>
+</section>
+<hr class="docutils" />
+<section id="best-practices-to-improve-faithfulness">
+<h2><a class="toc-backref" href="#id21">Best Practices to Improve Faithfulness</a><a class="headerlink" href="#best-practices-to-improve-faithfulness" title="Permalink to this heading">#</a></h2>
+<ul>
+<li><p>Use strict prompts:</p>
+<blockquote>
+<div><p>“Answer using <strong>only</strong> the provided context”</p>
+</div></blockquote>
+</li>
+<li><p>Reduce context size</p></li>
+<li><p>Improve retrieval precision</p></li>
+<li><p>Use citations</p></li>
+<li><p>Reject low-faithfulness outputs</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id22">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Faithfulness is a <strong>contract</strong>:</p>
+<blockquote>
+<div><p><em>If it’s not in the context, it must not be in the answer.</em></p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id23">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Faithfulness checks <strong>groundedness</strong>, not truth</p></li>
+<li><p>Core metric for RAG evaluation</p></li>
+<li><p>Detects hallucinations reliably</p></li>
+<li><p>More important than fluency</p></li>
+<li><p>Mandatory for production RAG systems</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\evaluation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-faithfulness-is-critical">Why Faithfulness Is Critical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-vs-correctness">Faithfulness vs Correctness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-context-and-question">Example Context and Question</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieved-context">Retrieved Context</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#question">Question</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithful-vs-unfaithful-answers">Faithful vs Unfaithful Answers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faithful-answer">Faithful Answer ✅</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unfaithful-answer">Unfaithful Answer ❌</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-evaluation-using-langchain">Faithfulness Evaluation Using LangChain</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-faithfulness-evaluator">Load the Faithfulness Evaluator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-a-faithful-answer">Evaluate a Faithful Answer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-an-unfaithful-answer">Evaluate an Unfaithful Answer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-in-a-real-rag-pipeline">Faithfulness in a Real RAG Pipeline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-output-retrieved-docs">RAG Output + Retrieved Docs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-check-on-rag-output">Faithfulness Check on RAG Output</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-faithfulness-scores">Interpreting Faithfulness Scores</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-faithfulness-failure-patterns">Common Faithfulness Failure Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-vs-safety">Faithfulness vs Safety</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-to-improve-faithfulness">Best Practices to Improve Faithfulness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

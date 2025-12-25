@@ -1,0 +1,1051 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Embeddings &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/04_embeddings';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/04_embeddings.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/04_embeddings.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/04_embeddings.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Embeddings</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-embeddings-are">What Embeddings Are</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-embeddings-are-needed">Why Embeddings Are Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-embeddings-fit-in-the-rag-pipeline">Where Embeddings Fit in the RAG Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-an-embedding-vector-looks-like">What an Embedding Vector Looks Like</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-similarity-is-measured">How Similarity Is Measured</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine-similarity-most-common">Cosine Similarity (Most Common)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-metrics">Other Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-in-langchain">Embeddings in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-embedding-demonstration">Basic Embedding Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-a-single-query">Embedding a Single Query</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-multiple-documents">Embedding Multiple Documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-vector-store-typical-usage">Embeddings + Vector Store (Typical Usage)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-time-embedding">Query-Time Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-vs-llms-critical-difference">Embeddings vs LLMs (Critical Difference)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-vs-tf-idf-bm25">Embeddings vs TF-IDF / BM25</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-embedding-models">Common Embedding Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openai">OpenAI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#open-source">Open Source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-models">Local Models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-an-embedding-model">Choosing an Embedding Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-factors">Key Factors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-recommendations">General Recommendations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-and-chunking-very-important">Embeddings and Chunking (Very Important)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-full-documents">Embedding full documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-chunk-overlap">No chunk overlap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-embedding-at-query-time">Re-embedding at query time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixing-embedding-models">Mixing embedding models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-are-not-knowledge">Embeddings Are NOT Knowledge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#embeddings" id="id1">Embeddings</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-embeddings-are" id="id2">What Embeddings Are</a></p></li>
+<li><p><a class="reference internal" href="#why-embeddings-are-needed" id="id3">Why Embeddings Are Needed</a></p></li>
+<li><p><a class="reference internal" href="#where-embeddings-fit-in-the-rag-pipeline" id="id4">Where Embeddings Fit in the RAG Pipeline</a></p></li>
+<li><p><a class="reference internal" href="#what-an-embedding-vector-looks-like" id="id5">What an Embedding Vector Looks Like</a></p></li>
+<li><p><a class="reference internal" href="#how-similarity-is-measured" id="id6">How Similarity Is Measured</a></p></li>
+<li><p><a class="reference internal" href="#cosine-similarity-most-common" id="id7">Cosine Similarity (Most Common)</a></p></li>
+<li><p><a class="reference internal" href="#other-metrics" id="id8">Other Metrics</a></p></li>
+<li><p><a class="reference internal" href="#embeddings-in-langchain" id="id9">Embeddings in LangChain</a></p></li>
+<li><p><a class="reference internal" href="#basic-embedding-demonstration" id="id10">Basic Embedding Demonstration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#embedding-a-single-query" id="id11">Embedding a Single Query</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#embedding-multiple-documents" id="id12">Embedding Multiple Documents</a></p></li>
+<li><p><a class="reference internal" href="#embeddings-vector-store-typical-usage" id="id13">Embeddings + Vector Store (Typical Usage)</a></p></li>
+<li><p><a class="reference internal" href="#query-time-embedding" id="id14">Query-Time Embedding</a></p></li>
+<li><p><a class="reference internal" href="#embeddings-vs-llms-critical-difference" id="id15">Embeddings vs LLMs (Critical Difference)</a></p></li>
+<li><p><a class="reference internal" href="#embeddings-vs-tf-idf-bm25" id="id16">Embeddings vs TF-IDF / BM25</a></p></li>
+<li><p><a class="reference internal" href="#common-embedding-models" id="id17">Common Embedding Models</a></p>
+<ul>
+<li><p><a class="reference internal" href="#openai" id="id18">OpenAI</a></p></li>
+<li><p><a class="reference internal" href="#open-source" id="id19">Open Source</a></p></li>
+<li><p><a class="reference internal" href="#local-models" id="id20">Local Models</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#choosing-an-embedding-model" id="id21">Choosing an Embedding Model</a></p>
+<ul>
+<li><p><a class="reference internal" href="#key-factors" id="id22">Key Factors</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#general-recommendations" id="id23">General Recommendations</a></p></li>
+<li><p><a class="reference internal" href="#embeddings-and-chunking-very-important" id="id24">Embeddings and Chunking (Very Important)</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id25">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#embedding-full-documents" id="id26">Embedding full documents</a></p></li>
+<li><p><a class="reference internal" href="#no-chunk-overlap" id="id27">No chunk overlap</a></p></li>
+<li><p><a class="reference internal" href="#re-embedding-at-query-time" id="id28">Re-embedding at query time</a></p></li>
+<li><p><a class="reference internal" href="#mixing-embedding-models" id="id29">Mixing embedding models</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#embeddings-are-not-knowledge" id="id30">Embeddings Are NOT Knowledge</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id31">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id32">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id33">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="embeddings">
+<h1><a class="toc-backref" href="#id1">Embeddings</a><a class="headerlink" href="#embeddings" title="Permalink to this heading">#</a></h1>
+<section id="what-embeddings-are">
+<h2><a class="toc-backref" href="#id2">What Embeddings Are</a><a class="headerlink" href="#what-embeddings-are" title="Permalink to this heading">#</a></h2>
+<p><strong>Embeddings</strong> are <strong>numerical vector representations of text</strong> that capture <strong>semantic meaning</strong>.
+Similar meanings → vectors are <strong>close in vector space</strong>.</p>
+<blockquote>
+<div><p>Embeddings convert text into numbers so machines can <strong>search, compare, and retrieve meaning</strong>, not just keywords.</p>
+</div></blockquote>
+<p>They are a <strong>core primitive</strong> for RAG, semantic search, clustering, and recommendation systems.</p>
+</section>
+<hr class="docutils" />
+<section id="why-embeddings-are-needed">
+<h2><a class="toc-backref" href="#id3">Why Embeddings Are Needed</a><a class="headerlink" href="#why-embeddings-are-needed" title="Permalink to this heading">#</a></h2>
+<p>LLMs are generative.
+Embeddings are <strong>representational</strong>.</p>
+<p>Without embeddings:</p>
+<ul class="simple">
+<li><p>Keyword search only</p></li>
+<li><p>Poor semantic recall</p></li>
+<li><p>No similarity matching</p></li>
+</ul>
+<p>With embeddings:</p>
+<ul class="simple">
+<li><p>Semantic search</p></li>
+<li><p>Context-aware retrieval</p></li>
+<li><p>Scalable RAG pipelines</p></li>
+<li><p>Efficient similarity comparisons</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="where-embeddings-fit-in-the-rag-pipeline">
+<h2><a class="toc-backref" href="#id4">Where Embeddings Fit in the RAG Pipeline</a><a class="headerlink" href="#where-embeddings-fit-in-the-rag-pipeline" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Raw Data
+   ↓
+Document Loader
+   ↓
+Text Splitter
+   ↓
+Chunks
+   ↓
+Embeddings  ← (THIS STEP)
+   ↓
+Vector Store
+   ↓
+Retriever
+   ↓
+LLM
+</pre></div>
+</div>
+<p>Embeddings are created at <strong>ingestion time</strong> and reused at <strong>query time</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="what-an-embedding-vector-looks-like">
+<h2><a class="toc-backref" href="#id5">What an Embedding Vector Looks Like</a><a class="headerlink" href="#what-an-embedding-vector-looks-like" title="Permalink to this heading">#</a></h2>
+<p>Example (simplified):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;Email service is down&quot;
+→ [0.021, -0.113, 0.884, ..., -0.042]
+</pre></div>
+</div>
+<p>Properties:</p>
+<ul class="simple">
+<li><p>Fixed length (e.g., 384, 768, 1536 dimensions)</p></li>
+<li><p>Dense floating-point numbers</p></li>
+<li><p>Meaning encoded geometrically</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="how-similarity-is-measured">
+<h2><a class="toc-backref" href="#id6">How Similarity Is Measured</a><a class="headerlink" href="#how-similarity-is-measured" title="Permalink to this heading">#</a></h2>
+<p>Common distance metrics:</p>
+</section>
+<section id="cosine-similarity-most-common">
+<h2><a class="toc-backref" href="#id7">Cosine Similarity (Most Common)</a><a class="headerlink" href="#cosine-similarity-most-common" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cosine(v1, v2) → similarity score
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Closer to 1 → more similar</p></li>
+<li><p>Closer to 0 → unrelated</p></li>
+</ul>
+</section>
+<section id="other-metrics">
+<h2><a class="toc-backref" href="#id8">Other Metrics</a><a class="headerlink" href="#other-metrics" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Euclidean distance</p></li>
+<li><p>Dot product</p></li>
+</ul>
+<p>Vector stores choose the metric.</p>
+</section>
+<hr class="docutils" />
+<section id="embeddings-in-langchain">
+<h2><a class="toc-backref" href="#id9">Embeddings in LangChain</a><a class="headerlink" href="#embeddings-in-langchain" title="Permalink to this heading">#</a></h2>
+<p>LangChain provides a <strong>standard Embeddings interface</strong> that abstracts providers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;text-embedding-3-small&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This object:</p>
+<ul class="simple">
+<li><p>Converts text → vectors</p></li>
+<li><p>Handles batching</p></li>
+<li><p>Is provider-agnostic</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="basic-embedding-demonstration">
+<h2><a class="toc-backref" href="#id10">Basic Embedding Demonstration</a><a class="headerlink" href="#basic-embedding-demonstration" title="Permalink to this heading">#</a></h2>
+<section id="embedding-a-single-query">
+<h3><a class="toc-backref" href="#id11">Embedding a Single Query</a><a class="headerlink" href="#embedding-a-single-query" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span> <span class="o">=</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span>
+    <span class="s2">&quot;What is LangChain?&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1536</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="embedding-multiple-documents">
+<h2><a class="toc-backref" href="#id12">Embedding Multiple Documents</a><a class="headerlink" href="#embedding-multiple-documents" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;LangChain is a framework for LLM applications&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RAG combines retrieval with generation&quot;</span>
+<span class="p">]</span>
+
+<span class="n">vectors</span> <span class="o">=</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each text → one vector.</p>
+</section>
+<hr class="docutils" />
+<section id="embeddings-vector-store-typical-usage">
+<h2><a class="toc-backref" href="#id13">Embeddings + Vector Store (Typical Usage)</a><a class="headerlink" href="#embeddings-vector-store-typical-usage" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span>
+    <span class="n">texts</span><span class="o">=</span><span class="n">texts</span><span class="p">,</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="n">embeddings</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Now the data is:</p>
+<ul class="simple">
+<li><p>Embedded</p></li>
+<li><p>Indexed</p></li>
+<li><p>Searchable</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="query-time-embedding">
+<h2><a class="toc-backref" href="#id14">Query-Time Embedding</a><a class="headerlink" href="#query-time-embedding" title="Permalink to this heading">#</a></h2>
+<p>At query time:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">get_relevant_documents</span><span class="p">(</span>
+    <span class="s2">&quot;How does RAG work?&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Internally:</p>
+<ol class="arabic simple">
+<li><p>Query is embedded</p></li>
+<li><p>Similar vectors are searched</p></li>
+<li><p>Top-k documents are returned</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="embeddings-vs-llms-critical-difference">
+<h2><a class="toc-backref" href="#id15">Embeddings vs LLMs (Critical Difference)</a><a class="headerlink" href="#embeddings-vs-llms-critical-difference" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Embeddings</p></th>
+<th class="head"><p>LLM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Representation</p></td>
+<td><p>Generation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Output</p></td>
+<td><p>Vectors</p></td>
+<td><p>Text</p></td>
+</tr>
+<tr class="row-even"><td><p>Determinism</p></td>
+<td><p>High</p></td>
+<td><p>Variable</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cost</p></td>
+<td><p>Low</p></td>
+<td><p>Higher</p></td>
+</tr>
+<tr class="row-even"><td><p>Use case</p></td>
+<td><p>Search, clustering</p></td>
+<td><p>Answering</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="embeddings-vs-tf-idf-bm25">
+<h2><a class="toc-backref" href="#id16">Embeddings vs TF-IDF / BM25</a><a class="headerlink" href="#embeddings-vs-tf-idf-bm25" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Embeddings</p></th>
+<th class="head"><p>Keyword Search</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Semantic meaning</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Synonyms</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>Context-aware</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Explainability</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Hybrid search often combines both.</p>
+</section>
+<hr class="docutils" />
+<section id="common-embedding-models">
+<h2><a class="toc-backref" href="#id17">Common Embedding Models</a><a class="headerlink" href="#common-embedding-models" title="Permalink to this heading">#</a></h2>
+<section id="openai">
+<h3><a class="toc-backref" href="#id18">OpenAI</a><a class="headerlink" href="#openai" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">text-embedding-3-small</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">text-embedding-3-large</span></code></p></li>
+</ul>
+</section>
+<section id="open-source">
+<h3><a class="toc-backref" href="#id19">Open Source</a><a class="headerlink" href="#open-source" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>SentenceTransformers (e.g., all-MiniLM)</p></li>
+<li><p>BGE, E5 families</p></li>
+</ul>
+</section>
+<section id="local-models">
+<h3><a class="toc-backref" href="#id20">Local Models</a><a class="headerlink" href="#local-models" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>HuggingFace embeddings</p></li>
+<li><p>Ollama embeddings</p></li>
+</ul>
+<p>LangChain supports all via adapters.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="choosing-an-embedding-model">
+<h2><a class="toc-backref" href="#id21">Choosing an Embedding Model</a><a class="headerlink" href="#choosing-an-embedding-model" title="Permalink to this heading">#</a></h2>
+<section id="key-factors">
+<h3><a class="toc-backref" href="#id22">Key Factors</a><a class="headerlink" href="#key-factors" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Dimensionality</p></li>
+<li><p>Domain relevance</p></li>
+<li><p>Latency</p></li>
+<li><p>Cost</p></li>
+<li><p>Language support</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="general-recommendations">
+<h2><a class="toc-backref" href="#id23">General Recommendations</a><a class="headerlink" href="#general-recommendations" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Use Case</p></th>
+<th class="head"><p>Recommendation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>General RAG</p></td>
+<td><p>768–1536 dims</p></td>
+</tr>
+<tr class="row-odd"><td><p>Low latency</p></td>
+<td><p>Smaller models</p></td>
+</tr>
+<tr class="row-even"><td><p>Domain-specific</p></td>
+<td><p>Fine-tuned embeddings</p></td>
+</tr>
+<tr class="row-odd"><td><p>On-prem</p></td>
+<td><p>Open-source models</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="embeddings-and-chunking-very-important">
+<h2><a class="toc-backref" href="#id24">Embeddings and Chunking (Very Important)</a><a class="headerlink" href="#embeddings-and-chunking-very-important" title="Permalink to this heading">#</a></h2>
+<p>Embeddings work on <strong>chunks</strong>, not full documents.</p>
+<p>Bad chunking → bad embeddings.</p>
+<p>Rules:</p>
+<ul class="simple">
+<li><p>Split before embedding</p></li>
+<li><p>Use overlap</p></li>
+<li><p>Keep chunks semantically coherent</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id25">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="embedding-full-documents">
+<h3><a class="toc-backref" href="#id26">Embedding full documents</a><a class="headerlink" href="#embedding-full-documents" title="Permalink to this heading">#</a></h3>
+<p>❌ Too large, poor retrieval</p>
+</section>
+<section id="no-chunk-overlap">
+<h3><a class="toc-backref" href="#id27">No chunk overlap</a><a class="headerlink" href="#no-chunk-overlap" title="Permalink to this heading">#</a></h3>
+<p>❌ Boundary context loss</p>
+</section>
+<section id="re-embedding-at-query-time">
+<h3><a class="toc-backref" href="#id28">Re-embedding at query time</a><a class="headerlink" href="#re-embedding-at-query-time" title="Permalink to this heading">#</a></h3>
+<p>❌ Wasteful</p>
+</section>
+<section id="mixing-embedding-models">
+<h3><a class="toc-backref" href="#id29">Mixing embedding models</a><a class="headerlink" href="#mixing-embedding-models" title="Permalink to this heading">#</a></h3>
+<p>❌ Incompatible vectors</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="embeddings-are-not-knowledge">
+<h2><a class="toc-backref" href="#id30">Embeddings Are NOT Knowledge</a><a class="headerlink" href="#embeddings-are-not-knowledge" title="Permalink to this heading">#</a></h2>
+<p>Embeddings:</p>
+<ul class="simple">
+<li><p>Do not store facts</p></li>
+<li><p>Do not reason</p></li>
+<li><p>Do not answer questions</p></li>
+</ul>
+<p>They only help <strong>find relevant context</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id31">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Embed once, reuse many times</p></li>
+<li><p>Keep embedding model consistent</p></li>
+<li><p>Store metadata with vectors</p></li>
+<li><p>Monitor vector drift when data updates</p></li>
+<li><p>Re-embed if chunking strategy changes</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id32">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Embeddings are dense vector representations of text that capture semantic meaning. In LangChain, embeddings are used to index document chunks in vector stores, enabling semantic retrieval for RAG systems.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id33">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Search → Embeddings</strong></p></li>
+<li><p><strong>Answer → LLM</strong></p></li>
+<li><p><strong>Good RAG → Good chunking + good embeddings</strong></p></li>
+<li><p><strong>Change chunking → Re-embed</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-embeddings-are">What Embeddings Are</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-embeddings-are-needed">Why Embeddings Are Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-embeddings-fit-in-the-rag-pipeline">Where Embeddings Fit in the RAG Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-an-embedding-vector-looks-like">What an Embedding Vector Looks Like</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-similarity-is-measured">How Similarity Is Measured</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine-similarity-most-common">Cosine Similarity (Most Common)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-metrics">Other Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-in-langchain">Embeddings in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-embedding-demonstration">Basic Embedding Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-a-single-query">Embedding a Single Query</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-multiple-documents">Embedding Multiple Documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-vector-store-typical-usage">Embeddings + Vector Store (Typical Usage)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-time-embedding">Query-Time Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-vs-llms-critical-difference">Embeddings vs LLMs (Critical Difference)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-vs-tf-idf-bm25">Embeddings vs TF-IDF / BM25</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-embedding-models">Common Embedding Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openai">OpenAI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#open-source">Open Source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-models">Local Models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-an-embedding-model">Choosing an Embedding Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-factors">Key Factors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-recommendations">General Recommendations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-and-chunking-very-important">Embeddings and Chunking (Very Important)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-full-documents">Embedding full documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-chunk-overlap">No chunk overlap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-embedding-at-query-time">Re-embedding at query time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixing-embedding-models">Mixing embedding models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-are-not-knowledge">Embeddings Are NOT Knowledge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

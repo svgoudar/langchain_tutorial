@@ -1,0 +1,952 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Maximal Marginal Relevance (MMR) &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/07_mmr';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/07_mmr.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/07_mmr.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/07_mmr.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Maximal Marginal Relevance (MMR)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-mmr-is-needed">Why MMR Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-goal">Conceptual Goal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mmr-formula-intuition">The MMR Formula (Intuition)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lambda-explained">Lambda (λ) Explained</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-mmr-fits-in-rag">Where MMR Fits in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-mmr-works-step-by-step">How MMR Works Step-by-Step</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-vs-similarity-search">MMR vs Similarity Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-demonstration-langchain">MMR Demonstration (LangChain)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-mmr-in-a-retriever">Using MMR in a Retriever</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-with-mmr">Querying with MMR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-vs-reranking">MMR vs Reranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-mmr-helps-most">When MMR Helps Most</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-mmr-is-less-useful">When MMR Is Less Useful</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-and-chunk-overlap">MMR and Chunk Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-tuning-guidelines">Production Tuning Guidelines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-defaults">Recommended Defaults</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tradeoffs">Tradeoffs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-mmr-alone">Using MMR alone</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#very-low-lambda">Very low lambda</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#small-fetch-k">Small fetch_k</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-mmr-at-ingestion-time">Applying MMR at ingestion time</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#maximal-marginal-relevance-mmr" id="id1">Maximal Marginal Relevance (MMR)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-mmr-is-needed" id="id2">Why MMR Is Needed</a></p></li>
+<li><p><a class="reference internal" href="#conceptual-goal" id="id3">Conceptual Goal</a></p></li>
+<li><p><a class="reference internal" href="#the-mmr-formula-intuition" id="id4">The MMR Formula (Intuition)</a></p></li>
+<li><p><a class="reference internal" href="#lambda-explained" id="id5">Lambda (λ) Explained</a></p></li>
+<li><p><a class="reference internal" href="#where-mmr-fits-in-rag" id="id6">Where MMR Fits in RAG</a></p></li>
+<li><p><a class="reference internal" href="#how-mmr-works-step-by-step" id="id7">How MMR Works Step-by-Step</a></p></li>
+<li><p><a class="reference internal" href="#mmr-vs-similarity-search" id="id8">MMR vs Similarity Search</a></p></li>
+<li><p><a class="reference internal" href="#mmr-demonstration-langchain" id="id9">MMR Demonstration (LangChain)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#using-mmr-in-a-retriever" id="id10">Using MMR in a Retriever</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#querying-with-mmr" id="id11">Querying with MMR</a></p></li>
+<li><p><a class="reference internal" href="#mmr-vs-reranking" id="id12">MMR vs Reranking</a></p></li>
+<li><p><a class="reference internal" href="#when-mmr-helps-most" id="id13">When MMR Helps Most</a></p></li>
+<li><p><a class="reference internal" href="#when-mmr-is-less-useful" id="id14">When MMR Is Less Useful</a></p></li>
+<li><p><a class="reference internal" href="#mmr-and-chunk-overlap" id="id15">MMR and Chunk Overlap</a></p></li>
+<li><p><a class="reference internal" href="#production-tuning-guidelines" id="id16">Production Tuning Guidelines</a></p></li>
+<li><p><a class="reference internal" href="#recommended-defaults" id="id17">Recommended Defaults</a></p></li>
+<li><p><a class="reference internal" href="#tradeoffs" id="id18">Tradeoffs</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id19">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#using-mmr-alone" id="id20">Using MMR alone</a></p></li>
+<li><p><a class="reference internal" href="#very-low-lambda" id="id21">Very low lambda</a></p></li>
+<li><p><a class="reference internal" href="#small-fetch-k" id="id22">Small fetch_k</a></p></li>
+<li><p><a class="reference internal" href="#applying-mmr-at-ingestion-time" id="id23">Applying MMR at ingestion time</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices" id="id24">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id25">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id26">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="maximal-marginal-relevance-mmr">
+<h1><a class="toc-backref" href="#id1">Maximal Marginal Relevance (MMR)</a><a class="headerlink" href="#maximal-marginal-relevance-mmr" title="Permalink to this heading">#</a></h1>
+<p><strong>Maximal Marginal Relevance (MMR)</strong> is a <strong>retrieval re-ranking strategy</strong> that balances:</p>
+<ul class="simple">
+<li><p><strong>Relevance</strong> to the query</p></li>
+<li><p><strong>Diversity</strong> among retrieved documents</p></li>
+</ul>
+<blockquote>
+<div><p>MMR reduces redundancy by avoiding multiple chunks that say the same thing.</p>
+</div></blockquote>
+<p>It is commonly used <strong>after similarity search</strong> and <strong>before sending context to the LLM</strong>.</p>
+<hr class="docutils" />
+<section id="why-mmr-is-needed">
+<h2><a class="toc-backref" href="#id2">Why MMR Is Needed</a><a class="headerlink" href="#why-mmr-is-needed" title="Permalink to this heading">#</a></h2>
+<p>Pure similarity search often returns:</p>
+<ul class="simple">
+<li><p>Highly similar chunks</p></li>
+<li><p>Near-duplicate passages</p></li>
+<li><p>Redundant context</p></li>
+</ul>
+<p>This causes:</p>
+<ul class="simple">
+<li><p>Wasted context window</p></li>
+<li><p>Lower answer quality</p></li>
+<li><p>Higher hallucination risk</p></li>
+</ul>
+<p>MMR ensures the retrieved set covers <strong>different aspects</strong> of the query.</p>
+</section>
+<hr class="docutils" />
+<section id="conceptual-goal">
+<h2><a class="toc-backref" href="#id3">Conceptual Goal</a><a class="headerlink" href="#conceptual-goal" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Maximize</span> <span class="n">relevance</span>
+<span class="n">AND</span>
+<span class="n">Minimize</span> <span class="n">redundancy</span>
+</pre></div>
+</div>
+<p>MMR explicitly trades off between the two.</p>
+</section>
+<hr class="docutils" />
+<section id="the-mmr-formula-intuition">
+<h2><a class="toc-backref" href="#id4">The MMR Formula (Intuition)</a><a class="headerlink" href="#the-mmr-formula-intuition" title="Permalink to this heading">#</a></h2>
+<p>For each candidate document ( d ):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>MMR(d) = λ · sim(d, query)
+         − (1 − λ) · max sim(d, selected_docs)
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sim(d,</span> <span class="pre">query)</span></code> → relevance</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sim(d,</span> <span class="pre">selected_docs)</span></code> → redundancy</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">λ</span></code> (lambda) ∈ [0, 1] controls the tradeoff</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="lambda-explained">
+<h2><a class="toc-backref" href="#id5">Lambda (λ) Explained</a><a class="headerlink" href="#lambda-explained" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>λ value</p></th>
+<th class="head"><p>Behavior</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1.0</p></td>
+<td><p>Pure relevance (same as similarity search)</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.5</p></td>
+<td><p>Balanced relevance + diversity</p></td>
+</tr>
+<tr class="row-even"><td><p>0.0</p></td>
+<td><p>Maximum diversity (rarely useful)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Typical production value:</strong> <code class="docutils literal notranslate"><span class="pre">λ</span> <span class="pre">=</span> <span class="pre">0.5–0.7</span></code></p>
+</section>
+<hr class="docutils" />
+<section id="where-mmr-fits-in-rag">
+<h2><a class="toc-backref" href="#id6">Where MMR Fits in RAG</a><a class="headerlink" href="#where-mmr-fits-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Query
+  ↓
+Vector / Hybrid Retrieval (Top-N)
+  ↓
+MMR Selection (Diverse Top-K)
+  ↓
+LLM
+</pre></div>
+</div>
+<p>MMR is a <strong>query-time</strong> operation.</p>
+</section>
+<hr class="docutils" />
+<section id="how-mmr-works-step-by-step">
+<h2><a class="toc-backref" href="#id7">How MMR Works Step-by-Step</a><a class="headerlink" href="#how-mmr-works-step-by-step" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Select the most relevant document</p></li>
+<li><p>For remaining candidates:</p>
+<ul class="simple">
+<li><p>Penalize similarity to already selected docs</p></li>
+</ul>
+</li>
+<li><p>Iteratively select documents that add <strong>new information</strong></p></li>
+<li><p>Stop when K documents are selected</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="mmr-vs-similarity-search">
+<h2><a class="toc-backref" href="#id8">MMR vs Similarity Search</a><a class="headerlink" href="#mmr-vs-similarity-search" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Similarity Search</p></th>
+<th class="head"><p>MMR</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Goal</p></td>
+<td><p>Relevance only</p></td>
+<td><p>Relevance + diversity</p></td>
+</tr>
+<tr class="row-odd"><td><p>Redundancy</p></td>
+<td><p>High</p></td>
+<td><p>Low</p></td>
+</tr>
+<tr class="row-even"><td><p>Context efficiency</p></td>
+<td><p>Lower</p></td>
+<td><p>Higher</p></td>
+</tr>
+<tr class="row-odd"><td><p>LLM answer quality</p></td>
+<td><p>Medium</p></td>
+<td><p>Higher</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="mmr-demonstration-langchain">
+<h2><a class="toc-backref" href="#id9">MMR Demonstration (LangChain)</a><a class="headerlink" href="#mmr-demonstration-langchain" title="Permalink to this heading">#</a></h2>
+<section id="using-mmr-in-a-retriever">
+<h3><a class="toc-backref" href="#id10">Using MMR in a Retriever</a><a class="headerlink" href="#using-mmr-in-a-retriever" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+
+<span class="c1"># Use the existing vectorstore that was already created in a previous cell</span>
+<span class="c1"># If you need to recreate it, uncomment the line below:</span>
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
+
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
+    <span class="n">search_type</span><span class="o">=</span><span class="s2">&quot;mmr&quot;</span><span class="p">,</span>
+    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>          <span class="c1"># final results</span>
+        <span class="s2">&quot;fetch_k&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>   <span class="c1"># initial candidate pool</span>
+        <span class="s2">&quot;lambda_mult&quot;</span><span class="p">:</span> <span class="mf">0.6</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch_k</span></code>: how many to retrieve initially</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: how many to return after MMR</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lambda_mult</span></code>: λ value</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="querying-with-mmr">
+<h2><a class="toc-backref" href="#id11">Querying with MMR</a><a class="headerlink" href="#querying-with-mmr" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">get_relevant_documents</span><span class="p">(</span>
+    <span class="s2">&quot;How does Jira ticket escalation work?&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Returned documents:</p>
+<ul class="simple">
+<li><p>Relevant</p></li>
+<li><p>Non-redundant</p></li>
+<li><p>Cover multiple facets</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mmr-vs-reranking">
+<h2><a class="toc-backref" href="#id12">MMR vs Reranking</a><a class="headerlink" href="#mmr-vs-reranking" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>MMR</p></th>
+<th class="head"><p>Reranking</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Type</p></td>
+<td><p>Heuristic</p></td>
+<td><p>Model-based</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cost</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>Latency</p></td>
+<td><p>Very low</p></td>
+<td><p>Higher</p></td>
+</tr>
+<tr class="row-odd"><td><p>Precision</p></td>
+<td><p>Medium</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>Diversity</p></td>
+<td><p>High</p></td>
+<td><p>Medium</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Production pattern:</strong>
+<code class="docutils literal notranslate"><span class="pre">Hybrid</span> <span class="pre">Search</span> <span class="pre">→</span> <span class="pre">MMR</span> <span class="pre">→</span> <span class="pre">Reranker</span> <span class="pre">→</span> <span class="pre">LLM</span></code></p>
+</section>
+<hr class="docutils" />
+<section id="when-mmr-helps-most">
+<h2><a class="toc-backref" href="#id13">When MMR Helps Most</a><a class="headerlink" href="#when-mmr-helps-most" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Highly repetitive documents</p></li>
+<li><p>Long manuals or policies</p></li>
+<li><p>Logs and ticket histories</p></li>
+<li><p>RAG systems with chunk overlap</p></li>
+<li><p>When context window is tight</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-mmr-is-less-useful">
+<h2><a class="toc-backref" href="#id14">When MMR Is Less Useful</a><a class="headerlink" href="#when-mmr-is-less-useful" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Very small datasets</p></li>
+<li><p>Highly precise fact lookup</p></li>
+<li><p>When reranking is already applied aggressively</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mmr-and-chunk-overlap">
+<h2><a class="toc-backref" href="#id15">MMR and Chunk Overlap</a><a class="headerlink" href="#mmr-and-chunk-overlap" title="Permalink to this heading">#</a></h2>
+<p>Chunk overlap increases redundancy.
+MMR counteracts this by:</p>
+<ul class="simple">
+<li><p>Selecting only one chunk from overlapping regions</p></li>
+<li><p>Preserving coverage while reducing noise</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="production-tuning-guidelines">
+<h2><a class="toc-backref" href="#id16">Production Tuning Guidelines</a><a class="headerlink" href="#production-tuning-guidelines" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="recommended-defaults">
+<h2><a class="toc-backref" href="#id17">Recommended Defaults</a><a class="headerlink" href="#recommended-defaults" title="Permalink to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fetch_k = 20–50
+k = 3–7
+lambda = 0.5–0.7
+</pre></div>
+</div>
+</section>
+<section id="tradeoffs">
+<h2><a class="toc-backref" href="#id18">Tradeoffs</a><a class="headerlink" href="#tradeoffs" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Higher <code class="docutils literal notranslate"><span class="pre">fetch_k</span></code> → better diversity, higher cost</p></li>
+<li><p>Lower <code class="docutils literal notranslate"><span class="pre">lambda</span></code> → more diversity, less relevance</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id19">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="using-mmr-alone">
+<h3><a class="toc-backref" href="#id20">Using MMR alone</a><a class="headerlink" href="#using-mmr-alone" title="Permalink to this heading">#</a></h3>
+<p>❌ Does not replace reranking</p>
+</section>
+<section id="very-low-lambda">
+<h3><a class="toc-backref" href="#id21">Very low lambda</a><a class="headerlink" href="#very-low-lambda" title="Permalink to this heading">#</a></h3>
+<p>❌ Results become off-topic</p>
+</section>
+<section id="small-fetch-k">
+<h3><a class="toc-backref" href="#id22">Small fetch_k</a><a class="headerlink" href="#small-fetch-k" title="Permalink to this heading">#</a></h3>
+<p>❌ No diversity benefit</p>
+</section>
+<section id="applying-mmr-at-ingestion-time">
+<h3><a class="toc-backref" href="#id23">Applying MMR at ingestion time</a><a class="headerlink" href="#applying-mmr-at-ingestion-time" title="Permalink to this heading">#</a></h3>
+<p>❌ Must be query-time only</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id24">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use MMR after initial retrieval</p></li>
+<li><p>Combine with hybrid search</p></li>
+<li><p>Tune lambda per domain</p></li>
+<li><p>Log selected chunks for observability</p></li>
+<li><p>Pair with reranking for accuracy</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id25">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Maximal Marginal Relevance (MMR) is a retrieval strategy that balances relevance to the query with diversity among selected documents. It reduces redundancy in RAG systems and improves context efficiency.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id26">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Similarity search → relevance</strong></p></li>
+<li><p><strong>MMR → diversity</strong></p></li>
+<li><p><strong>Reranker → precision</strong></p></li>
+<li><p><strong>Best RAG = all three</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-mmr-is-needed">Why MMR Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-goal">Conceptual Goal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mmr-formula-intuition">The MMR Formula (Intuition)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lambda-explained">Lambda (λ) Explained</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-mmr-fits-in-rag">Where MMR Fits in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-mmr-works-step-by-step">How MMR Works Step-by-Step</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-vs-similarity-search">MMR vs Similarity Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-demonstration-langchain">MMR Demonstration (LangChain)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-mmr-in-a-retriever">Using MMR in a Retriever</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-with-mmr">Querying with MMR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-vs-reranking">MMR vs Reranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-mmr-helps-most">When MMR Helps Most</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-mmr-is-less-useful">When MMR Is Less Useful</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-and-chunk-overlap">MMR and Chunk Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-tuning-guidelines">Production Tuning Guidelines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-defaults">Recommended Defaults</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tradeoffs">Tradeoffs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-mmr-alone">Using MMR alone</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#very-low-lambda">Very low lambda</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#small-fetch-k">Small fetch_k</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-mmr-at-ingestion-time">Applying MMR at ingestion time</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

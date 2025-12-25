@@ -1,0 +1,1128 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Runnable Interface &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/core/06_runnable_interface';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/core/06_runnable_interface.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/core/06_runnable_interface.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/core/06_runnable_interface.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Runnable Interface</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-runnable-interface">What is the Runnable Interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-runnable-exists">Why Runnable Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnable-mental-model">Runnable Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-runnable-capabilities">Core Runnable Capabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-runnable-example">Basic Runnable Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-as-a-runnable">LLM as a Runnable</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-as-a-runnable">Prompt as a Runnable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnable-composition-lcel">Runnable Composition (LCEL)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-operator-lcel">The <code class="docutils literal notranslate"><span class="pre">|</span></code> Operator (LCEL)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-runnable-chain-demonstration">Full Runnable Chain Demonstration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnablelambda-custom-logic">RunnableLambda (Custom Logic)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap-any-python-function-as-a-runnable">Wrap any Python function as a Runnable</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnablepassthrough">RunnablePassthrough</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pass-input-through-unchanged-or-assign-values">Pass input through unchanged (or assign values)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnableparallel">RunnableParallel</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#execute-multiple-runnables-in-parallel">Execute multiple Runnables in parallel</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-runnables">Streaming with Runnables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#async-execution">Async Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution">Batch Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-fallback">Retry &amp; Fallback</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retry">Retry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback">Fallback</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnable-configuration-tracing">Runnable Configuration &amp; Tracing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnables-in-agents">Runnables in Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnables-in-rag">Runnables in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-not-a-runnable">What is NOT a Runnable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-runnable-types-cheat-sheet">Common Runnable Types (Cheat Sheet)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#runnable-interface" id="id1">Runnable Interface</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-is-the-runnable-interface" id="id2">What is the Runnable Interface</a></p></li>
+<li><p><a class="reference internal" href="#why-runnable-exists" id="id3">Why Runnable Exists</a></p></li>
+<li><p><a class="reference internal" href="#runnable-mental-model" id="id4">Runnable Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#core-runnable-capabilities" id="id5">Core Runnable Capabilities</a></p></li>
+<li><p><a class="reference internal" href="#basic-runnable-example" id="id6">Basic Runnable Example</a></p>
+<ul>
+<li><p><a class="reference internal" href="#llm-as-a-runnable" id="id7">LLM as a Runnable</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#prompt-as-a-runnable" id="id8">Prompt as a Runnable</a></p></li>
+<li><p><a class="reference internal" href="#runnable-composition-lcel" id="id9">Runnable Composition (LCEL)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#the-operator-lcel" id="id10">The <code class="docutils literal notranslate"><span class="pre">|</span></code> Operator (LCEL)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#full-runnable-chain-demonstration" id="id11">Full Runnable Chain Demonstration</a></p></li>
+<li><p><a class="reference internal" href="#runnablelambda-custom-logic" id="id12">RunnableLambda (Custom Logic)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#wrap-any-python-function-as-a-runnable" id="id13">Wrap any Python function as a Runnable</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#runnablepassthrough" id="id14">RunnablePassthrough</a></p>
+<ul>
+<li><p><a class="reference internal" href="#pass-input-through-unchanged-or-assign-values" id="id15">Pass input through unchanged (or assign values)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#runnableparallel" id="id16">RunnableParallel</a></p>
+<ul>
+<li><p><a class="reference internal" href="#execute-multiple-runnables-in-parallel" id="id17">Execute multiple Runnables in parallel</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#streaming-with-runnables" id="id18">Streaming with Runnables</a></p></li>
+<li><p><a class="reference internal" href="#async-execution" id="id19">Async Execution</a></p></li>
+<li><p><a class="reference internal" href="#batch-execution" id="id20">Batch Execution</a></p></li>
+<li><p><a class="reference internal" href="#retry-fallback" id="id21">Retry &amp; Fallback</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retry" id="id22">Retry</a></p></li>
+<li><p><a class="reference internal" href="#fallback" id="id23">Fallback</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#runnable-configuration-tracing" id="id24">Runnable Configuration &amp; Tracing</a></p></li>
+<li><p><a class="reference internal" href="#runnables-in-agents" id="id25">Runnables in Agents</a></p></li>
+<li><p><a class="reference internal" href="#runnables-in-rag" id="id26">Runnables in RAG</a></p></li>
+<li><p><a class="reference internal" href="#what-is-not-a-runnable" id="id27">What is NOT a Runnable</a></p></li>
+<li><p><a class="reference internal" href="#common-runnable-types-cheat-sheet" id="id28">Common Runnable Types (Cheat Sheet)</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id29">Common Mistakes</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id30">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id31">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="runnable-interface">
+<h1><a class="toc-backref" href="#id1">Runnable Interface</a><a class="headerlink" href="#runnable-interface" title="Permalink to this heading">#</a></h1>
+<section id="what-is-the-runnable-interface">
+<h2><a class="toc-backref" href="#id2">What is the Runnable Interface</a><a class="headerlink" href="#what-is-the-runnable-interface" title="Permalink to this heading">#</a></h2>
+<p>The <strong>Runnable interface</strong> is the <strong>core execution abstraction in LangChain</strong>.
+Every executable component in LangChain (LLMs, prompts, chains, retrievers, parsers, agents) is implemented as a <strong>Runnable</strong>.</p>
+<blockquote>
+<div><p>A Runnable is <strong>anything that can be invoked, composed, streamed, batched, retried, or executed asynchronously</strong> in a uniform way.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="why-runnable-exists">
+<h2><a class="toc-backref" href="#id3">Why Runnable Exists</a><a class="headerlink" href="#why-runnable-exists" title="Permalink to this heading">#</a></h2>
+<p>Before Runnable:</p>
+<ul class="simple">
+<li><p>Chains were rigid</p></li>
+<li><p>Limited composition</p></li>
+<li><p>Poor async &amp; streaming support</p></li>
+</ul>
+<p>With Runnable:</p>
+<ul class="simple">
+<li><p>Everything is composable</p></li>
+<li><p>Declarative pipelines</p></li>
+<li><p>Built-in async, streaming, retries</p></li>
+<li><p>One mental model for all components</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="runnable-mental-model">
+<h2><a class="toc-backref" href="#id4">Runnable Mental Model</a><a class="headerlink" href="#runnable-mental-model" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Input
+  ↓
+Runnable
+  ↓
+Output
+</pre></div>
+</div>
+<p>And multiple Runnables can be composed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Runnable → Runnable → Runnable
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="core-runnable-capabilities">
+<h2><a class="toc-backref" href="#id5">Core Runnable Capabilities</a><a class="headerlink" href="#core-runnable-capabilities" title="Permalink to this heading">#</a></h2>
+<p>Every Runnable supports:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">invoke()</span></code> – sync execution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ainvoke()</span></code> – async execution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stream()</span></code> – token streaming</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">batch()</span></code> – batch processing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">with_retry()</span></code> – retries</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">with_fallbacks()</span></code> – fallback logic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">with_config()</span></code> – tracing &amp; metadata</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="basic-runnable-example">
+<h2><a class="toc-backref" href="#id6">Basic Runnable Example</a><a class="headerlink" href="#basic-runnable-example" title="Permalink to this heading">#</a></h2>
+<section id="llm-as-a-runnable">
+<h3><a class="toc-backref" href="#id7">LLM as a Runnable</a><a class="headerlink" href="#llm-as-a-runnable" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain LangChain in one sentence&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LangChain is a framework designed for developing applications that leverage language models (LLMs) by facilitating their integration, chaining, and interaction with other data sources and tools.
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ChatOpenAI</span></code> is a <strong>Runnable</strong>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="prompt-as-a-runnable">
+<h2><a class="toc-backref" href="#id8">Prompt as a Runnable</a><a class="headerlink" href="#prompt-as-a-runnable" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;You are a helpful assistant&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;What is RAG?&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code> is also a <strong>Runnable</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="runnable-composition-lcel">
+<h2><a class="toc-backref" href="#id9">Runnable Composition (LCEL)</a><a class="headerlink" href="#runnable-composition-lcel" title="Permalink to this heading">#</a></h2>
+<section id="the-operator-lcel">
+<h3><a class="toc-backref" href="#id10">The <code class="docutils literal notranslate"><span class="pre">|</span></code> Operator (LCEL)</a><a class="headerlink" href="#the-operator-lcel" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This creates a <strong>RunnableSequence</strong>.</p>
+<p>Execution flow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dict → prompt → messages → llm → AIMessage
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="full-runnable-chain-demonstration">
+<h2><a class="toc-backref" href="#id11">Full Runnable Chain Demonstration</a><a class="headerlink" href="#full-runnable-chain-demonstration" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain RAG&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RAG stands for Retrieval-Augmented Generation, which is a framework used in natural language processing, particularly in the context of language models and information retrieval. The main idea behind RAG is to combine the strengths of both retrieval-based methods and generation-based methods to improve the accuracy and relevance of generated responses.
+
+### Key Components of RAG:
+
+1. **Retrieval**:
+   - In the first step of the RAG process, relevant documents or pieces of information are retrieved from a large corpus or knowledge base. This is typically done using a retrieval model that identifies content that is semantically similar to the input query.
+   - The retrieval component can use various techniques, including traditional information retrieval methods (like TF-IDF, BM25) or more advanced neural models (like dense embeddings).
+
+2. **Augmentation**:
+   - The retrieved documents are then used to provide additional context and information to the generative model. This helps ensure that the generation process is grounded in actual knowledge, rather than relying solely on the model&#39;s pre-learned knowledge.
+
+3. **Generation**:
+   - The generative model takes both the user&#39;s query and the relevant, retrieved documents as input to produce a coherent and contextually appropriate response. This model could be a transformer-based architecture, such as GPT or BERT.
+
+### Advantages of RAG:
+
+- **Improved Relevance**: By incorporating real-time retrieval of relevant documents, RAG can often provide more accurate and up-to-date information than models that solely rely on pre-learned data.
+- **Broader Knowledge Base**: RAG can leverage vast external knowledge sources, allowing for responses that might not be strictly contained within the pre-trained model&#39;s training set.
+- **Contextual Awareness**: The retrieved information helps ground the output in specific facts or contexts, which can improve the quality and factuality of the responses.
+
+### Applications of RAG:
+
+RAG can be applied in various domains including:
+
+- **Question Answering**: Enhancing the accuracy of answers based on dynamic retrieval of relevant documents.
+- **Chatbots**: Building conversational agents that provide responses based on up-to-date knowledge.
+- **Content Generation**: Assisting in generating content that requires factual accuracy and context based on large datasets.
+
+In summary, RAG is a powerful approach that combines information retrieval with text generation, leading to improved quality and relevance in various applications of language technology.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each component is a Runnable.</p>
+</section>
+<hr class="docutils" />
+<section id="runnablelambda-custom-logic">
+<h2><a class="toc-backref" href="#id12">RunnableLambda (Custom Logic)</a><a class="headerlink" href="#runnablelambda-custom-logic" title="Permalink to this heading">#</a></h2>
+<section id="wrap-any-python-function-as-a-runnable">
+<h3><a class="toc-backref" href="#id13">Wrap any Python function as a Runnable</a><a class="headerlink" href="#wrap-any-python-function-as-a-runnable" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+<span class="n">uppercase</span> <span class="o">=</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+<span class="n">uppercase</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;HELLO&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Useful for:</p>
+<ul class="simple">
+<li><p>Pre-processing</p></li>
+<li><p>Post-processing</p></li>
+<li><p>Glue logic</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="runnablepassthrough">
+<h2><a class="toc-backref" href="#id14">RunnablePassthrough</a><a class="headerlink" href="#runnablepassthrough" title="Permalink to this heading">#</a></h2>
+<section id="pass-input-through-unchanged-or-assign-values">
+<h3><a class="toc-backref" href="#id15">Pass input through unchanged (or assign values)</a><a class="headerlink" href="#pass-input-through-unchanged-or-assign-values" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnablePassthrough</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnablePassthrough</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+        <span class="n">length</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">])</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;LangChain&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;input&#39;: &#39;LangChain&#39;, &#39;length&#39;: 9}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Used heavily in:</p>
+<ul class="simple">
+<li><p>Agents</p></li>
+<li><p>Prompt variable injection</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="runnableparallel">
+<h2><a class="toc-backref" href="#id16">RunnableParallel</a><a class="headerlink" href="#runnableparallel" title="Permalink to this heading">#</a></h2>
+<section id="execute-multiple-runnables-in-parallel">
+<h3><a class="toc-backref" href="#id17">Execute multiple Runnables in parallel</a><a class="headerlink" href="#execute-multiple-runnables-in-parallel" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableParallel</span>
+
+<span class="n">parallel</span> <span class="o">=</span> <span class="n">RunnableParallel</span><span class="p">(</span>
+    <span class="n">answer</span><span class="o">=</span><span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span><span class="p">,</span>
+    <span class="n">length</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+
+<span class="n">parallel</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain LangChain&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;answer&#39;: AIMessage(content=&#39;LangChain is a framework designed to facilitate the development of applications that integrate with large language models (LLMs). It provides a suite of tools, components, and utilities that allow developers to build sophisticated natural language processing workflows and applications with ease. Here are some key aspects of LangChain:\n\n1. **Modular Components**: LangChain is built around modular components that can be used independently or combined to create complex systems. These components include things like language models, prompt templates, chains, and agents.\n\n2. **Language Models**: LangChain supports multiple LLMs, providing a uniform interface for interacting with different models, whether they are hosted by companies like OpenAI, Hugging Face, or others.\n\n3. **Prompt Management**: The framework includes tools for creating and managing prompts, enhancing the way developers can structure their interactions with language models. This can help optimize responses and improve overall application performance.\n\n4. **Chains and Workflows**: LangChain allows developers to create &quot;chains&quot; of operations, where the output of one component feeds into the input of another. This is useful for tasks that require multiple steps of processing or decision-making.\n\n5. **Memory**: The framework supports memory management, allowing applications to maintain context over interactions. This can enhance user experience in applications like chatbots or personal assistants, where remembering past interactions can be crucial.\n\n6. **Integrations**: LangChain is designed for easy integration with other systems and APIs, allowing developers to combine LLM capabilities with various data sources and services.\n\n7. **Use Cases**: Common use cases for LangChain include chatbots, content generation tools, question-answering systems, data analysis, and more. It\&#39;s particularly well-suited for applications that require high-level natural language understanding or generation.\n\n8. **Community and Ecosystem**: LangChain is an open-source framework with a growing community of developers. This ensures continuous improvement, support, and a variety of shared resources and tutorials for getting started.\n\nOverall, LangChain aims to simplify the process of building applications that leverage the power of language models while providing flexibility and extensibility to suit various use cases.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 429, &#39;prompt_tokens&#39;: 19, &#39;total_tokens&#39;: 448, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-4o-mini-2024-07-18&#39;, &#39;system_fingerprint&#39;: &#39;fp_644f11dd4d&#39;, &#39;id&#39;: &#39;chatcmpl-Cp4pxwi6p9dIl7naHVedbn50xl4YJ&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b3f0c-b869-7232-bfc4-b26e66b9b1de-0&#39;, usage_metadata={&#39;input_tokens&#39;: 19, &#39;output_tokens&#39;: 429, &#39;total_tokens&#39;: 448, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}),
+ &#39;length&#39;: 17}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="n">AIMessage</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+  <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="mi">18</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="streaming-with-runnables">
+<h2><a class="toc-backref" href="#id18">Streaming with Runnables</a><a class="headerlink" href="#streaming-with-runnables" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">llm</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="s2">&quot;Explain LangChain&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Works for:</p>
+<ul class="simple">
+<li><p>Chat UIs</p></li>
+<li><p>SSE</p></li>
+<li><p>WebSockets</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="async-execution">
+<h2><a class="toc-backref" href="#id19">Async Execution</a><a class="headerlink" href="#async-execution" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">(</span><span class="s2">&quot;Explain RAG&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Every Runnable supports async.</p>
+</section>
+<hr class="docutils" />
+<section id="batch-execution">
+<h2><a class="toc-backref" href="#id20">Batch Execution</a><a class="headerlink" href="#batch-execution" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span><span class="o">.</span><span class="n">batch</span><span class="p">([</span>
+    <span class="s2">&quot;What is LangChain?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;What is RAG?&quot;</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>Used for:</p>
+<ul class="simple">
+<li><p>Embedding generation</p></li>
+<li><p>Bulk inference</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="retry-fallback">
+<h2><a class="toc-backref" href="#id21">Retry &amp; Fallback</a><a class="headerlink" href="#retry-fallback" title="Permalink to this heading">#</a></h2>
+<section id="retry">
+<h3><a class="toc-backref" href="#id22">Retry</a><a class="headerlink" href="#retry" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">safe_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">safe_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain LangChain&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fallback">
+<h3><a class="toc-backref" href="#id23">Fallback</a><a class="headerlink" href="#fallback" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fallback_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">([</span><span class="n">backup_llm</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="runnable-configuration-tracing">
+<h2><a class="toc-backref" href="#id24">Runnable Configuration &amp; Tracing</a><a class="headerlink" href="#runnable-configuration-tracing" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain LangChain&quot;</span><span class="p">},</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;demo&quot;</span><span class="p">],</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;env&quot;</span><span class="p">:</span> <span class="s2">&quot;dev&quot;</span><span class="p">}}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Used by:</p>
+<ul class="simple">
+<li><p>LangSmith</p></li>
+<li><p>Observability tools</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="runnables-in-agents">
+<h2><a class="toc-backref" href="#id25">Runnables in Agents</a><a class="headerlink" href="#runnables-in-agents" title="Permalink to this heading">#</a></h2>
+<p>Internally, agents are <strong>Runnable graphs</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Input
+ ↓
+Prompt Runnable
+ ↓
+LLM Runnable
+ ↓
+Tool Runnable
+ ↓
+Parser Runnable
+</pre></div>
+</div>
+<p>This is why agents:</p>
+<ul class="simple">
+<li><p>Are composable</p></li>
+<li><p>Are debuggable</p></li>
+<li><p>Support streaming</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="runnables-in-rag">
+<h2><a class="toc-backref" href="#id26">Runnables in RAG</a><a class="headerlink" href="#runnables-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rag_chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">RunnablePassthrough</span><span class="p">()}</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">llm</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Retriever, prompt, LLM → all Runnables.</p>
+</section>
+<hr class="docutils" />
+<section id="what-is-not-a-runnable">
+<h2><a class="toc-backref" href="#id27">What is NOT a Runnable</a><a class="headerlink" href="#what-is-not-a-runnable" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Plain strings</p></li>
+<li><p>Raw Python objects</p></li>
+<li><p>SDK responses (without wrapping)</p></li>
+</ul>
+<p>Everything must be <strong>wrapped</strong> or <strong>adapted</strong> into a Runnable.</p>
+</section>
+<hr class="docutils" />
+<section id="common-runnable-types-cheat-sheet">
+<h2><a class="toc-backref" href="#id28">Common Runnable Types (Cheat Sheet)</a><a class="headerlink" href="#common-runnable-types-cheat-sheet" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Runnable</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LLM / ChatModel</p></td>
+<td><p>Model invocation</p></td>
+</tr>
+<tr class="row-odd"><td><p>PromptTemplate</p></td>
+<td><p>Prompt formatting</p></td>
+</tr>
+<tr class="row-even"><td><p>Retriever</p></td>
+<td><p>Document retrieval</p></td>
+</tr>
+<tr class="row-odd"><td><p>OutputParser</p></td>
+<td><p>Structured parsing</p></td>
+</tr>
+<tr class="row-even"><td><p>RunnableLambda</p></td>
+<td><p>Custom logic</p></td>
+</tr>
+<tr class="row-odd"><td><p>RunnableParallel</p></td>
+<td><p>Fan-out</p></td>
+</tr>
+<tr class="row-even"><td><p>RunnablePassthrough</p></td>
+<td><p>Input wiring</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id29">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Mixing sync and async incorrectly</p></li>
+<li><p>Forgetting that prompt output ≠ string</p></li>
+<li><p>Manual chaining instead of LCEL</p></li>
+<li><p>Overusing custom glue code</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id30">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“The Runnable interface is LangChain’s execution backbone. Every component—LLMs, prompts, retrievers, agents—is a Runnable, enabling uniform invocation, streaming, batching, retries, and composable pipelines using LCEL.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id31">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<p>If it <strong>executes</strong>, it should be a <strong>Runnable</strong>.
+If it <strong>doesn’t compose</strong>, you’re doing it wrong.</p>
+<hr class="docutils" />
+<p>If you want next:</p>
+<ul class="simple">
+<li><p>Runnable internals</p></li>
+<li><p>Runnable vs Chain vs Agent</p></li>
+<li><p>Debugging Runnable graphs</p></li>
+<li><p>LangGraph vs Runnable</p></li>
+<li><p>Performance tuning with Runnables</p></li>
+</ul>
+<p>State which one.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\core"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-runnable-interface">What is the Runnable Interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-runnable-exists">Why Runnable Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnable-mental-model">Runnable Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-runnable-capabilities">Core Runnable Capabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-runnable-example">Basic Runnable Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-as-a-runnable">LLM as a Runnable</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-as-a-runnable">Prompt as a Runnable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnable-composition-lcel">Runnable Composition (LCEL)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-operator-lcel">The <code class="docutils literal notranslate"><span class="pre">|</span></code> Operator (LCEL)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-runnable-chain-demonstration">Full Runnable Chain Demonstration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnablelambda-custom-logic">RunnableLambda (Custom Logic)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap-any-python-function-as-a-runnable">Wrap any Python function as a Runnable</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnablepassthrough">RunnablePassthrough</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pass-input-through-unchanged-or-assign-values">Pass input through unchanged (or assign values)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnableparallel">RunnableParallel</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#execute-multiple-runnables-in-parallel">Execute multiple Runnables in parallel</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-runnables">Streaming with Runnables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#async-execution">Async Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution">Batch Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-fallback">Retry &amp; Fallback</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retry">Retry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback">Fallback</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnable-configuration-tracing">Runnable Configuration &amp; Tracing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnables-in-agents">Runnables in Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnables-in-rag">Runnables in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-not-a-runnable">What is NOT a Runnable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-runnable-types-cheat-sheet">Common Runnable Types (Cheat Sheet)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

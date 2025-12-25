@@ -1,0 +1,921 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Batch Execution &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/lcel/06_batch_execution';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/lcel/06_batch_execution.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/lcel/06_batch_execution.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/lcel/06_batch_execution.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Batch Execution</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-batch-execution-is-needed">Why Batch Execution Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-batch-execution-works-internally">How Batch Execution Works Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-batch-execution-runnablelambda">Basic Batch Execution (RunnableLambda)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution-with-runnablesequence">Batch Execution with RunnableSequence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution-with-llms-very-common">Batch Execution with LLMs (Very Common)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution-in-rag-pipelines">Batch Execution in RAG Pipelines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution-with-runnableparallel">Batch Execution with RunnableParallel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#async-batch-execution-abatch">Async Batch Execution (<code class="docutils literal notranslate"><span class="pre">abatch</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-vs-streaming-vs-parallel">Batch vs Streaming vs Parallel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling-in-batch-execution">Error Handling in Batch Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-batch-execution">When to Use Batch Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#batch-execution" id="id1">Batch Execution</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-batch-execution-is-needed" id="id2">Why Batch Execution Is Needed</a></p></li>
+<li><p><a class="reference internal" href="#how-batch-execution-works-internally" id="id3">How Batch Execution Works Internally</a></p></li>
+<li><p><a class="reference internal" href="#basic-batch-execution-runnablelambda" id="id4">Basic Batch Execution (RunnableLambda)</a></p></li>
+<li><p><a class="reference internal" href="#batch-execution-with-runnablesequence" id="id5">Batch Execution with RunnableSequence</a></p></li>
+<li><p><a class="reference internal" href="#batch-execution-with-llms-very-common" id="id6">Batch Execution with LLMs (Very Common)</a></p></li>
+<li><p><a class="reference internal" href="#batch-execution-in-rag-pipelines" id="id7">Batch Execution in RAG Pipelines</a></p></li>
+<li><p><a class="reference internal" href="#batch-execution-with-runnableparallel" id="id8">Batch Execution with RunnableParallel</a></p></li>
+<li><p><a class="reference internal" href="#async-batch-execution-abatch" id="id9">Async Batch Execution (<code class="docutils literal notranslate"><span class="pre">abatch</span></code>)</a></p></li>
+<li><p><a class="reference internal" href="#batch-vs-streaming-vs-parallel" id="id10">Batch vs Streaming vs Parallel</a></p></li>
+<li><p><a class="reference internal" href="#error-handling-in-batch-execution" id="id11">Error Handling in Batch Execution</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-batch-execution" id="id12">When to Use Batch Execution</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id13">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id14">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="batch-execution">
+<h1><a class="toc-backref" href="#id1">Batch Execution</a><a class="headerlink" href="#batch-execution" title="Permalink to this heading">#</a></h1>
+<p><strong>Batch execution</strong> runs the <strong>same runnable pipeline on multiple inputs at once</strong> instead of invoking it repeatedly in a loop.
+It is natively supported by runnables in LangChain via <code class="docutils literal notranslate"><span class="pre">.batch()</span></code> / <code class="docutils literal notranslate"><span class="pre">.abatch()</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[input1, input2, input3]
+          ↓
+      Runnable
+          ↓
+[output1, output2, output3]
+</pre></div>
+</div>
+<p>Each input is processed <strong>independently</strong>, but execution is optimized.</p>
+<hr class="docutils" />
+<section id="why-batch-execution-is-needed">
+<h2><a class="toc-backref" href="#id2">Why Batch Execution Is Needed</a><a class="headerlink" href="#why-batch-execution-is-needed" title="Permalink to this heading">#</a></h2>
+<p>Batch execution:</p>
+<ul class="simple">
+<li><p>Reduces overhead (fewer model calls / RPCs)</p></li>
+<li><p>Improves throughput</p></li>
+<li><p>Enables parallelism</p></li>
+<li><p>Is cost-efficient for embeddings, LLM calls, and retrieval</p></li>
+</ul>
+<p>Instead of:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+    <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You do:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="how-batch-execution-works-internally">
+<h2><a class="toc-backref" href="#id3">How Batch Execution Works Internally</a><a class="headerlink" href="#how-batch-execution-works-internally" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Inputs are collected into a list</p></li>
+<li><p>Runnable executes them concurrently (where possible)</p></li>
+<li><p>Results are returned <strong>in the same order</strong></p></li>
+</ol>
+<p>Important:</p>
+<ul class="simple">
+<li><p><strong>No shared state between inputs</strong></p></li>
+<li><p>One failure affects only that input (by default)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="basic-batch-execution-runnablelambda">
+<h2><a class="toc-backref" href="#id4">Basic Batch Execution (RunnableLambda)</a><a class="headerlink" href="#basic-batch-execution-runnablelambda" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+<span class="n">to_upper</span> <span class="o">=</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+<span class="n">to_upper</span><span class="o">.</span><span class="n">batch</span><span class="p">([</span><span class="s2">&quot;rag&quot;</span><span class="p">,</span> <span class="s2">&quot;agents&quot;</span><span class="p">,</span> <span class="s2">&quot;memory&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;RAG&#39;, &#39;AGENTS&#39;, &#39;MEMORY&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Output</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;RAG&quot;</span><span class="p">,</span> <span class="s2">&quot;AGENTS&quot;</span><span class="p">,</span> <span class="s2">&quot;MEMORY&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="batch-execution-with-runnablesequence">
+<h2><a class="toc-backref" href="#id5">Batch Execution with RunnableSequence</a><a class="headerlink" href="#batch-execution-with-runnablesequence" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="o">|</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="p">)</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">batch</span><span class="p">([</span>
+    <span class="s2">&quot;  LangChain  &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  RUNNABLES &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  BATCH MODE &quot;</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;langchain&#39;, &#39;runnables&#39;, &#39;batch mode&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Output</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;langchain&quot;</span><span class="p">,</span> <span class="s2">&quot;runnables&quot;</span><span class="p">,</span> <span class="s2">&quot;batch mode&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Each input flows through the <strong>entire sequence independently</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="batch-execution-with-llms-very-common">
+<h2><a class="toc-backref" href="#id6">Batch Execution with LLMs (Very Common)</a><a class="headerlink" href="#batch-execution-with-llms-very-common" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">()</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">batch</span><span class="p">([</span>
+    <span class="s2">&quot;Explain RAG&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Explain agents&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Explain memory&quot;</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[AIMessage(content=&#39;RAG stands for Red, Amber, Green and is a method used to prioritize tasks or projects based on their urgency and importance. \n\n- Red: Indicates tasks or projects that are critical and require immediate attention. These are high priority items that need to be addressed as soon as possible. \n- Amber: Indicates tasks or projects that are important but not as urgent as red items. These may require attention in the near future, but can be delayed momentarily without major consequences. \n- Green: Indicates tasks or projects that are not urgent and can be addressed when time allows. These are low priority items that can be completed once more critical tasks have been taken care of. \n\nBy using the RAG system, individuals or teams can easily identify which tasks or projects need immediate action and which can be deferred or completed at a later time. This helps to streamline workflow, prioritize work effectively and ensure that critical tasks are not overlooked.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 184, &#39;prompt_tokens&#39;: 11, &#39;total_tokens&#39;: 195, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-CpzGsINVFEwUjQuyQw8BK56ZVHqM9&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4bfa-db90-7170-a19a-d09d8954ebd3-0&#39;, usage_metadata={&#39;input_tokens&#39;: 11, &#39;output_tokens&#39;: 184, &#39;total_tokens&#39;: 195, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}),
+ AIMessage(content=&#39;Agents are individuals or entities that act on behalf of another party to carry out tasks, make decisions, or represent interests. They can be human beings, such as sales representatives, lawyers, or property managers, or non-human entities, such as software programs or automated systems. Agents typically have the authority to make decisions or take actions within a defined scope on behalf of the principal, who is the party that the agent is representing. Agents are bound by certain legal obligations to act in the best interests of their principal and follow their instructions. The relationship between an agent and a principal is usually governed by a contract or agreement outlining the terms of the arrangement.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 129, &#39;prompt_tokens&#39;: 10, &#39;total_tokens&#39;: 139, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-CpzGtXKEyLdq6lCoblzX2cml3QoBA&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4bfa-db9f-7312-9329-c3999ce5b883-0&#39;, usage_metadata={&#39;input_tokens&#39;: 10, &#39;output_tokens&#39;: 129, &#39;total_tokens&#39;: 139, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}),
+ AIMessage(content=&#39;Memory is the cognitive process of storing and retrieving information. It involves encoding, storing, and retrieving information in the brain. There are different types of memory, including short-term memory, long-term memory, and working memory.\n\nWhen information is first encountered, it is encoded into short-term memory, which has a limited capacity and duration. If the information is deemed important or rehearsed repeatedly, it may be transferred into long-term memory for more permanent storage.\n\nMemory retrieval is the process of recalling information stored in the brain. This can be done through recognition (identifying information as familiar) or recall (retrieving information from memory without any cues).\n\nMemory is a crucial aspect of cognitive functioning and plays a key role in learning, problem-solving, decision-making, and overall functioning in daily life. It can be influenced by various factors such as attention, motivation, emotional state, and prior experiences.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 178, &#39;prompt_tokens&#39;: 10, &#39;total_tokens&#39;: 188, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-CpzGsyNkAPA6cDosv6LoUxBFR6nx8&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4bfa-dbaa-7170-bc4d-396f36000d13-0&#39;, usage_metadata={&#39;input_tokens&#39;: 10, &#39;output_tokens&#39;: 178, &#39;total_tokens&#39;: 188, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Benefits:</p>
+<ul class="simple">
+<li><p>One optimized batch call</p></li>
+<li><p>Lower latency than sequential <code class="docutils literal notranslate"><span class="pre">.invoke()</span></code></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="batch-execution-in-rag-pipelines">
+<h2><a class="toc-backref" href="#id7">Batch Execution in RAG Pipelines</a><a class="headerlink" href="#batch-execution-in-rag-pipelines" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup for RAG batch example</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="c1"># Sample documents</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;RAG (Retrieval Augmented Generation) combines retrieval with LLMs to answer questions using external knowledge.&quot;</span><span class="p">),</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;Vector memory stores embeddings of documents for semantic search and retrieval.&quot;</span><span class="p">),</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;LCEL (LangChain Expression Language) is a declarative way to compose chains using the pipe operator.&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># Create retriever</span>
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_documents</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">OpenAIEmbeddings</span><span class="p">())</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+
+<span class="c1"># Create prompt template</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Answer the question using the context:</span><span class="se">\n\n</span><span class="s2">Context: </span><span class="si">{context}</span><span class="se">\n\n</span><span class="s2">Question: </span><span class="si">{question}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span>
+    <span class="p">}</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">llm</span>
+<span class="p">)</span>
+
+<span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;What is RAG?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;What is vector memory?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;What is LCEL?&quot;</span>
+<span class="p">]</span>
+
+<span class="n">responses</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
+<span class="n">responses</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[AIMessage(content=&#39;RAG (Retrieval Augmented Generation) combines retrieval with LLMs to answer questions using external knowledge.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 23, &#39;prompt_tokens&#39;: 180, &#39;total_tokens&#39;: 203, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-CpzJ118uxNeAILL4rLUKK2QGemwPH&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4bfc-e4e8-71e0-bffb-33f53f60d698-0&#39;, usage_metadata={&#39;input_tokens&#39;: 180, &#39;output_tokens&#39;: 23, &#39;total_tokens&#39;: 203, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}),
+ AIMessage(content=&#39;Vector memory stores embeddings of documents for semantic search and retrieval.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 12, &#39;prompt_tokens&#39;: 180, &#39;total_tokens&#39;: 192, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-CpzJ1zhhZKnOmeaJmiia97NaxEBi7&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4bfc-e4ee-7430-be4d-1ff976d774a5-0&#39;, usage_metadata={&#39;input_tokens&#39;: 180, &#39;output_tokens&#39;: 12, &#39;total_tokens&#39;: 192, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}),
+ AIMessage(content=&#39;LCEL (LangChain Expression Language) is a declarative way to compose chains using the pipe operator.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 21, &#39;prompt_tokens&#39;: 180, &#39;total_tokens&#39;: 201, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-CpzJ1VO91UxHNvutFu41ImkywHPGm&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4bfc-e4f1-7fc1-9fe6-3f085f4097a0-0&#39;, usage_metadata={&#39;input_tokens&#39;: 180, &#39;output_tokens&#39;: 21, &#39;total_tokens&#39;: 201, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each question:</p>
+<ul class="simple">
+<li><p>Runs retrieval</p></li>
+<li><p>Builds prompt</p></li>
+<li><p>Calls LLM</p></li>
+<li><p>Returns its own answer</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="batch-execution-with-runnableparallel">
+<h2><a class="toc-backref" href="#id8">Batch Execution with RunnableParallel</a><a class="headerlink" href="#batch-execution-with-runnableparallel" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableParallel</span>
+
+<span class="n">parallel</span> <span class="o">=</span> <span class="n">RunnableParallel</span><span class="p">(</span>
+    <span class="n">length</span><span class="o">=</span><span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span>
+    <span class="n">words</span><span class="o">=</span><span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+<span class="p">)</span>
+
+<span class="n">parallel</span><span class="o">.</span><span class="n">batch</span><span class="p">([</span>
+    <span class="s2">&quot;Runnable batch execution&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Parallel runnables&quot;</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;length&#39;: 24, &#39;words&#39;: 3}, {&#39;length&#39;: 18, &#39;words&#39;: 2}]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Output</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">{</span><span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;words&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+  <span class="p">{</span><span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s2">&quot;words&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Each input produces a <strong>structured result</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="async-batch-execution-abatch">
+<h2><a class="toc-backref" href="#id9">Async Batch Execution (<code class="docutils literal notranslate"><span class="pre">abatch</span></code>)</a><a class="headerlink" href="#async-batch-execution-abatch" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">chain</span><span class="o">.</span><span class="n">abatch</span><span class="p">([</span>
+    <span class="s2">&quot;Explain batching&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Explain streaming&quot;</span>
+<span class="p">])</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[AIMessage(content=&#39;Batching is a technique used in various machine learning tasks to process multiple inputs simultaneously in order to improve efficiency and speed. In the context of the provided documents, batching could refer to processing multiple embeddings of documents in vector memory, composing multiple chains using LCEL, or answering multiple questions using external knowledge and LLMs in a Retrieval Augmented Generation system. This approach allows for parallel processing of data and enables faster computation compared to processing inputs one by one.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 92, &#39;prompt_tokens&#39;: 177, &#39;total_tokens&#39;: 269, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-CpzKK8oR9O2GtBGbyGa55H60kThkv&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4bfe-203e-7c02-95fd-b0ef09727aeb-0&#39;, usage_metadata={&#39;input_tokens&#39;: 177, &#39;output_tokens&#39;: 92, &#39;total_tokens&#39;: 269, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}),
+ AIMessage(content=&#39;Streaming refers to the process of continuously transferring or transmitting data, typically audio or video content, over a network. In the context of the provided documents, streaming could also refer to the continuous flow of data or information in a particular format or structure, such as the vector memory storing embeddings of documents for semantic search and retrieval.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 64, &#39;prompt_tokens&#39;: 177, &#39;total_tokens&#39;: 241, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-CpzKK6qdzhOiU2fshV65g83bMbtbO&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4bfe-203e-7c02-95fd-b0f2d873f555-0&#39;, usage_metadata={&#39;input_tokens&#39;: 177, &#39;output_tokens&#39;: 64, &#39;total_tokens&#39;: 241, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use when:</p>
+<ul class="simple">
+<li><p>Running in async frameworks</p></li>
+<li><p>Handling high concurrency</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="batch-vs-streaming-vs-parallel">
+<h2><a class="toc-backref" href="#id10">Batch vs Streaming vs Parallel</a><a class="headerlink" href="#batch-vs-streaming-vs-parallel" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Concept</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Batch</p></td>
+<td><p>Many inputs</p></td>
+</tr>
+<tr class="row-odd"><td><p>Streaming</p></td>
+<td><p>Partial outputs</p></td>
+</tr>
+<tr class="row-even"><td><p>Parallel</p></td>
+<td><p>Many branches</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>They solve <strong>different problems</strong> and can be combined.</p>
+</section>
+<hr class="docutils" />
+<section id="error-handling-in-batch-execution">
+<h2><a class="toc-backref" href="#id11">Error Handling in Batch Execution</a><a class="headerlink" href="#error-handling-in-batch-execution" title="Permalink to this heading">#</a></h2>
+<p>By default:</p>
+<ul class="simple">
+<li><p>One failing input does <strong>not</strong> stop others</p></li>
+</ul>
+<p>Optional:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">return_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-batch-execution">
+<h2><a class="toc-backref" href="#id12">When to Use Batch Execution</a><a class="headerlink" href="#when-to-use-batch-execution" title="Permalink to this heading">#</a></h2>
+<p>Use it when:</p>
+<ul class="simple">
+<li><p>Processing multiple user queries</p></li>
+<li><p>Generating embeddings</p></li>
+<li><p>Running offline jobs</p></li>
+<li><p>Evaluations / benchmarks</p></li>
+<li><p>Indexing pipelines</p></li>
+</ul>
+<p>Avoid it when:</p>
+<ul class="simple">
+<li><p>Each input depends on previous output</p></li>
+<li><p>You need conversational state</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id13">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Batch execution is <strong>horizontal scaling</strong> of a runnable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Same pipeline × many inputs
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id14">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Batch execution runs <strong>one runnable on many inputs</strong></p></li>
+<li><p>Uses <code class="docutils literal notranslate"><span class="pre">.batch()</span></code> / <code class="docutils literal notranslate"><span class="pre">.abatch()</span></code></p></li>
+<li><p>Faster and cheaper than loops</p></li>
+<li><p>Preserves input–output ordering</p></li>
+<li><p>Essential for production workloads</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\lcel"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-batch-execution-is-needed">Why Batch Execution Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-batch-execution-works-internally">How Batch Execution Works Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-batch-execution-runnablelambda">Basic Batch Execution (RunnableLambda)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution-with-runnablesequence">Batch Execution with RunnableSequence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution-with-llms-very-common">Batch Execution with LLMs (Very Common)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution-in-rag-pipelines">Batch Execution in RAG Pipelines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-execution-with-runnableparallel">Batch Execution with RunnableParallel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#async-batch-execution-abatch">Async Batch Execution (<code class="docutils literal notranslate"><span class="pre">abatch</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-vs-streaming-vs-parallel">Batch vs Streaming vs Parallel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling-in-batch-execution">Error Handling in Batch Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-batch-execution">When to Use Batch Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

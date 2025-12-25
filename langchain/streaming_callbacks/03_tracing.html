@@ -1,0 +1,1100 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tracing &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/streaming_callbacks/03_tracing';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/streaming_callbacks/03_tracing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/streaming_callbacks/03_tracing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/streaming_callbacks/03_tracing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tracing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-tracing-is-critical">Why Tracing Is Critical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-gets-traced">What Gets Traced</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-tracing-minimal-setup">Enable Tracing (Minimal Setup)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trace-a-simple-chain">Trace a Simple Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-a-runnablesequence-step-by-step">Tracing a RunnableSequence (Step-by-Step)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-with-retrieval-rag">Tracing with Retrieval (RAG)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-retries-and-fallbacks">Tracing Retries and Fallbacks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-with-callbacks-custom-metadata">Tracing with Callbacks (Custom Metadata)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#async-streaming-tracing">Async + Streaming Tracing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-trace-looks-like-conceptually">What a Trace Looks Like (Conceptually)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-vs-logging">Tracing vs Logging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#tracing" id="id1">Tracing</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-tracing-is-critical" id="id2">Why Tracing Is Critical</a></p></li>
+<li><p><a class="reference internal" href="#what-gets-traced" id="id3">What Gets Traced</a></p></li>
+<li><p><a class="reference internal" href="#architecture-view" id="id4">Architecture View</a></p></li>
+<li><p><a class="reference internal" href="#enable-tracing-minimal-setup" id="id5">Enable Tracing (Minimal Setup)</a></p></li>
+<li><p><a class="reference internal" href="#trace-a-simple-chain" id="id6">Trace a Simple Chain</a></p></li>
+<li><p><a class="reference internal" href="#tracing-a-runnablesequence-step-by-step" id="id7">Tracing a RunnableSequence (Step-by-Step)</a></p></li>
+<li><p><a class="reference internal" href="#tracing-with-retrieval-rag" id="id8">Tracing with Retrieval (RAG)</a></p></li>
+<li><p><a class="reference internal" href="#tracing-retries-and-fallbacks" id="id9">Tracing Retries and Fallbacks</a></p></li>
+<li><p><a class="reference internal" href="#tracing-with-callbacks-custom-metadata" id="id10">Tracing with Callbacks (Custom Metadata)</a></p></li>
+<li><p><a class="reference internal" href="#async-streaming-tracing" id="id11">Async + Streaming Tracing</a></p></li>
+<li><p><a class="reference internal" href="#what-a-trace-looks-like-conceptually" id="id12">What a Trace Looks Like (Conceptually)</a></p></li>
+<li><p><a class="reference internal" href="#tracing-vs-logging" id="id13">Tracing vs Logging</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id14">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id15">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id16">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="tracing">
+<h1><a class="toc-backref" href="#id1">Tracing</a><a class="headerlink" href="#tracing" title="Permalink to this heading">#</a></h1>
+<p><strong>Tracing</strong> is the process of <strong>recording every step of an LLM workflow</strong>—inputs, outputs, timings, errors, retries, and tool calls—so you can <strong>observe, debug, and optimize</strong> executions.</p>
+<p>In practice, tracing answers:</p>
+<ul class="simple">
+<li><p><em>What happened?</em></p></li>
+<li><p><em>Why did it happen?</em></p></li>
+<li><p><em>Where is time/cost spent?</em></p></li>
+</ul>
+<p>Tracing is natively supported in LangChain and commonly visualized using LangSmith.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Input
+  ↓
+Retriever → Prompt → LLM → Tool → LLM
+  ↓
+Structured Trace (timeline + metadata)
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="why-tracing-is-critical">
+<h2><a class="toc-backref" href="#id2">Why Tracing Is Critical</a><a class="headerlink" href="#why-tracing-is-critical" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Debug incorrect answers</p></li>
+<li><p>Diagnose latency bottlenecks</p></li>
+<li><p>Track retries/fallbacks</p></li>
+<li><p>Measure token usage and cost</p></li>
+<li><p>Audit tool usage</p></li>
+<li><p>Compare model versions</p></li>
+</ul>
+<p>Without tracing, LLM pipelines are a <strong>black box</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="what-gets-traced">
+<h2><a class="toc-backref" href="#id3">What Gets Traced</a><a class="headerlink" href="#what-gets-traced" title="Permalink to this heading">#</a></h2>
+<p>A trace typically includes:</p>
+<ul class="simple">
+<li><p>Chain / runnable start &amp; end</p></li>
+<li><p>Inputs and outputs (optionally redacted)</p></li>
+<li><p>LLM calls (model, tokens, latency)</p></li>
+<li><p>Tool calls and results</p></li>
+<li><p>Errors, retries, fallbacks</p></li>
+<li><p>Hierarchical parent–child relationships</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="architecture-view">
+<h2><a class="toc-backref" href="#id4">Architecture View</a><a class="headerlink" href="#architecture-view" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://mintcdn.com/langchain-5e9cc07a/rqYqeBEA_2oeiw17/langsmith/images/cloud-arch-light.png?auto=format&amp;fit=max&amp;n=rqYqeBEA_2oeiw17&amp;q=85&amp;s=0790cbdf4fe131c74d1e60bb120834e3" /></p>
+<p><img alt="Image" src="https://media.licdn.com/dms/image/v2/D4E22AQHa-BlQogFLPA/feedshare-shrink_800/B4EZemSmlkHgAg-/0/1750841585548?e=2147483647&amp;t=ENr_EwR-JgI4UTvt_YWFco9c-4dG15fTxtrDfURh3aM&amp;v=beta" /></p>
+<p><img alt="Image" src="https://blog.langchain.com/content/images/size/w1200/2024/01/Screenshot-2024-01-28-at-5.03.55-PM.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="enable-tracing-minimal-setup">
+<h2><a class="toc-backref" href="#id5">Enable Tracing (Minimal Setup)</a><a class="headerlink" href="#enable-tracing-minimal-setup" title="Permalink to this heading">#</a></h2>
+<p>Set environment variables (once per environment):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_TRACING_V2</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_API_KEY</span><span class="o">=</span>your_langsmith_api_key
+<span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_PROJECT</span><span class="o">=</span>demo-tracing
+</pre></div>
+</div>
+<p>This automatically traces <strong>all LangChain executions</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="trace-a-simple-chain">
+<h2><a class="toc-backref" href="#id6">Trace a Simple Chain</a><a class="headerlink" href="#trace-a-simple-chain" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Explain </span><span class="si">{topic}</span><span class="s2"> in one sentence.&quot;</span>
+<span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">()</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="s2">&quot;tracing&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;Tracing is the act of following or tracking the path or movement of something, typically in order to understand its location, development, or progress.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 29, &#39;prompt_tokens&#39;: 14, &#39;total_tokens&#39;: 43, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-Cq0BNDE7PdNKpOCsmX7VVVd7kRO6Z&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4c30-4c9a-7cb3-a477-fd82e93265b5-0&#39;, usage_metadata={&#39;input_tokens&#39;: 14, &#39;output_tokens&#39;: 29, &#39;total_tokens&#39;: 43, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>What you get</strong></p>
+<ul class="simple">
+<li><p>A trace showing:</p>
+<ul>
+<li><p>Prompt rendering</p></li>
+<li><p>LLM call</p></li>
+<li><p>Tokens used</p></li>
+<li><p>Latency</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="tracing-a-runnablesequence-step-by-step">
+<h2><a class="toc-backref" href="#id7">Tracing a RunnableSequence (Step-by-Step)</a><a class="headerlink" href="#tracing-a-runnablesequence-step-by-step" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="o">|</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">llm</span>
+<span class="p">)</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;  tracing in langchain  &quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;Tracing in langchain is the process of analyzing and recording the execution of code to understand how different parts of the program interact and behave.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 28, &#39;prompt_tokens&#39;: 17, &#39;total_tokens&#39;: 45, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-Cq0BkOOg98wZHFNw8mE8MR2CWSFrh&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4c30-a706-7a53-a300-e1022b586d1e-0&#39;, usage_metadata={&#39;input_tokens&#39;: 17, &#39;output_tokens&#39;: 28, &#39;total_tokens&#39;: 45, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>Trace shows:</p>
+<ul class="simple">
+<li><p>Each lambda step</p></li>
+<li><p>Data shape changes</p></li>
+<li><p>Final LLM output</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="tracing-with-retrieval-rag">
+<h2><a class="toc-backref" href="#id8">Tracing with Retrieval (RAG)</a><a class="headerlink" href="#tracing-with-retrieval-rag" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="c1"># Create a sample retriever for demonstration</span>
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;Tracing records every step of an LLM workflow including inputs, outputs, timings, and errors.&quot;</span><span class="p">],</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+
+<span class="c1"># Create LLM instance</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span>
+    <span class="p">}</span>
+    <span class="o">|</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+        <span class="s2">&quot;Answer using context.</span><span class="se">\n</span><span class="s2">Q: </span><span class="si">{question}</span><span class="se">\n</span><span class="s2">C: </span><span class="si">{context}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="o">|</span> <span class="n">llm</span>
+<span class="p">)</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;What is tracing?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;Tracing is the process of recording every step of a workflow, including inputs, outputs, timings, and errors.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 23, &#39;prompt_tokens&#39;: 71, &#39;total_tokens&#39;: 94, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-Cq0D0aRXJEIsAfZ6IZjQrtomxgyRz&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4c31-d777-7c40-b2f0-ec20229bbc6a-0&#39;, usage_metadata={&#39;input_tokens&#39;: 71, &#39;output_tokens&#39;: 23, &#39;total_tokens&#39;: 94, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>Trace highlights:</p>
+<ul class="simple">
+<li><p>Retriever latency</p></li>
+<li><p>Documents returned</p></li>
+<li><p>Prompt size growth</p></li>
+<li><p>LLM generation time</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="tracing-retries-and-fallbacks">
+<h2><a class="toc-backref" href="#id9">Tracing Retries and Fallbacks</a><a class="headerlink" href="#tracing-retries-and-fallbacks" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">primary</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span><span class="n">stop_after_attempt</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">backup</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">primary</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">([</span><span class="n">backup</span><span class="p">])</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain tracing briefly&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;Tracing is a process used to monitor or investigate the behavior and data flow of an application or system. It involves the collection of information about the operation of the program, such as function or method calls, events, or messages. This data then can be utilized for debugging, performance tuning, or understanding complex systems. Tracing is a critical component in software engineering, to identify and solve issues that could affect the functionality or performance of an application.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 89, &#39;prompt_tokens&#39;: 11, &#39;total_tokens&#39;: 100, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-4-0613&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-Cq0DQjjrOiB8Ed6Zj5wc8doRD9t9O&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4c32-3cea-7593-9d93-8d74bf5b4828-0&#39;, usage_metadata={&#39;input_tokens&#39;: 11, &#39;output_tokens&#39;: 89, &#39;total_tokens&#39;: 100, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>Trace clearly shows:</p>
+<ul class="simple">
+<li><p>Failed attempts</p></li>
+<li><p>Retry count</p></li>
+<li><p>Fallback model used</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="tracing-with-callbacks-custom-metadata">
+<h2><a class="toc-backref" href="#id10">Tracing with Callbacks (Custom Metadata)</a><a class="headerlink" href="#tracing-with-callbacks-custom-metadata" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.callbacks.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCallbackHandler</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TraceMeta</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serialized</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tracing chain with inputs:&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="s2">&quot;observability&quot;</span><span class="p">},</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;callbacks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">TraceMeta</span><span class="p">()]}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tracing chain with inputs: {&#39;topic&#39;: &#39;observability&#39;}
+Tracing chain with inputs: {&#39;topic&#39;: &#39;observability&#39;}
+Tracing chain with inputs: {&#39;topic&#39;: &#39;observability&#39;}
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">7</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serialized</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tracing chain with inputs:&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">7</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="p">{</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="s2">&quot;observability&quot;</span><span class="p">},</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;callbacks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">TraceMeta</span><span class="p">()]}</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="p">)</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_core\runnables\base.py:3149,</span> in <span class="ni">RunnableSequence.invoke</span><span class="nt">(self, input, config, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3147</span> <span class="k">with</span> <span class="n">set_config_context</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3148</span>     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3149</span>         <span class="n">input_</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">invoke</span><span class="p">,</span> <span class="n">input_</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3150</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3151</span>         <span class="n">input_</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">invoke</span><span class="p">,</span> <span class="n">input_</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_core\runnables\base.py:3876,</span> in <span class="ni">RunnableParallel.invoke</span><span class="nt">(self, input, config, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3870</span>     <span class="k">with</span> <span class="n">get_executor_for_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3871</span>         <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span>
+<span class="g g-Whitespace">   </span><span class="mi">3872</span>             <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">_invoke_step</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+<span class="nn">   3873             for key, step</span> in <span class="ni">steps.items</span><span class="nt">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">3874</span>         <span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">3875</span>         <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
+<span class="ne">-&gt; </span><span class="mi">3876</span>             <span class="n">key</span><span class="p">:</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="nn">   3877             for key, future</span> in <span class="ni">zip</span><span class="nt">(steps, futures, strict=False)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3878</span>         <span class="p">}</span>
+<span class="g g-Whitespace">   </span><span class="mi">3879</span> <span class="c1"># finish the root run</span>
+<span class="g g-Whitespace">   </span><span class="mi">3880</span> <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\concurrent\futures\_base.py:456,</span> in <span class="ni">Future.result</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">454</span>     <span class="k">raise</span> <span class="n">CancelledError</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">455</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">==</span> <span class="n">FINISHED</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">456</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_result</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">457</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">458</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">()</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\concurrent\futures\_base.py:401,</span> in <span class="ni">Future.__get_result</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">399</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">400</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">401</span>         <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span>
+<span class="g g-Whitespace">    </span><span class="mi">402</span>     <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">403</span>         <span class="c1"># Break a reference cycle with the exception in self._exception</span>
+<span class="g g-Whitespace">    </span><span class="mi">404</span>         <span class="bp">self</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\concurrent\futures\thread.py:59,</span> in <span class="ni">_WorkItem.run</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">56</span>     <span class="k">return</span>
+<span class="g g-Whitespace">     </span><span class="mi">58</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">59</span>     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span> <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span>     <span class="bp">self</span><span class="o">.</span><span class="n">future</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_core\runnables\base.py:3859,</span> in <span class="ni">RunnableParallel.invoke.&lt;locals&gt;._invoke_step</span><span class="nt">(step, input_, config, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3853</span> <span class="n">child_config</span> <span class="o">=</span> <span class="n">patch_config</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">3854</span>     <span class="n">config</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">3855</span>     <span class="c1"># mark each step as a child run</span>
+<span class="g g-Whitespace">   </span><span class="mi">3856</span>     <span class="n">callbacks</span><span class="o">=</span><span class="n">run_manager</span><span class="o">.</span><span class="n">get_child</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;map:key:</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">3857</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3858</span> <span class="k">with</span> <span class="n">set_config_context</span><span class="p">(</span><span class="n">child_config</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3859</span>     <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">3860</span>         <span class="n">step</span><span class="o">.</span><span class="n">invoke</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">3861</span>         <span class="n">input_</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">3862</span>         <span class="n">child_config</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">3863</span>     <span class="p">)</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_core\retrievers.py:216,</span> in <span class="ni">BaseRetriever.invoke</span><span class="nt">(self, input, config, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">214</span> <span class="n">kwargs_</span> <span class="o">=</span> <span class="n">kwargs</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expects_other_args</span> <span class="k">else</span> <span class="p">{}</span>
+<span class="g g-Whitespace">    </span><span class="mi">215</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_arg_supported</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">216</span>     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_relevant_documents</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">217</span>         <span class="nb">input</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_</span>
+<span class="g g-Whitespace">    </span><span class="mi">218</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">219</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_relevant_documents</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_</span><span class="p">)</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_core\vectorstores\base.py:1040,</span> in <span class="ni">VectorStoreRetriever._get_relevant_documents</span><span class="nt">(self, query, run_manager, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1038</span> <span class="n">kwargs_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span> <span class="o">|</span> <span class="n">kwargs</span>
+<span class="g g-Whitespace">   </span><span class="mi">1039</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">&quot;similarity&quot;</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1040</span>     <span class="n">docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectorstore</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1041</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">&quot;similarity_score_threshold&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1042</span>     <span class="n">docs_and_similarities</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1043</span>         <span class="bp">self</span><span class="o">.</span><span class="n">vectorstore</span><span class="o">.</span><span class="n">similarity_search_with_relevance_scores</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1044</span>             <span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_</span>
+<span class="g g-Whitespace">   </span><span class="mi">1045</span>         <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1046</span>     <span class="p">)</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_community\vectorstores\faiss.py:643,</span> in <span class="ni">FAISS.similarity_search</span><span class="nt">(self, query, k, filter, fetch_k, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">623</span> <span class="k">def</span><span class="w"> </span><span class="nf">similarity_search</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">624</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">625</span>     <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">629</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">630</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="g g-Whitespace">    </span><span class="mi">631</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Return docs most similar to query.</span>
+<span class="g g-Whitespace">    </span><span class="mi">632</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">633</span><span class="sd">     Args:</span>
+<span class="sd">   (...)    641         List of Documents most similar to the query.</span>
+<span class="g g-Whitespace">    </span><span class="mi">642</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">643</span>     <span class="n">docs_and_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">similarity_search_with_score</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">644</span>         <span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">fetch_k</span><span class="o">=</span><span class="n">fetch_k</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="g g-Whitespace">    </span><span class="mi">645</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">646</span>     <span class="k">return</span> <span class="p">[</span><span class="n">doc</span> <span class="k">for</span> <span class="n">doc</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">docs_and_scores</span><span class="p">]</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_community\vectorstores\faiss.py:515,</span> in <span class="ni">FAISS.similarity_search_with_score</span><span class="nt">(self, query, k, filter, fetch_k, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">491</span> <span class="k">def</span><span class="w"> </span><span class="nf">similarity_search_with_score</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">492</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">493</span>     <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">497</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">498</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="g g-Whitespace">    </span><span class="mi">499</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Return docs most similar to query.</span>
+<span class="g g-Whitespace">    </span><span class="mi">500</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">501</span><span class="sd">     Args:</span>
+<span class="sd">   (...)    513         L2 distance in float. Lower score represents more similarity.</span>
+<span class="g g-Whitespace">    </span><span class="mi">514</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">515</span>     <span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">516</span>     <span class="n">docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">similarity_search_with_score_by_vector</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">517</span>         <span class="n">embedding</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">518</span>         <span class="n">k</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">521</span>         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">522</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">523</span>     <span class="k">return</span> <span class="n">docs</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_community\vectorstores\faiss.py:266,</span> in <span class="ni">FAISS._embed_query</span><span class="nt">(self, text)</span>
+<span class="g g-Whitespace">    </span><span class="mi">264</span> <span class="k">def</span><span class="w"> </span><span class="nf">_embed_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_function</span><span class="p">,</span> <span class="n">Embeddings</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">266</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_function</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">267</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">268</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_function</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_openai\embeddings\base.py:759,</span> in <span class="ni">OpenAIEmbeddings.embed_query</span><span class="nt">(self, text, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">749</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Call out to OpenAI&#39;s embedding endpoint for embedding query text.</span>
+<span class="g g-Whitespace">    </span><span class="mi">750</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">751</span><span class="sd"> Args:</span>
+<span class="sd">   (...)    756     Embedding for the text.</span>
+<span class="g g-Whitespace">    </span><span class="mi">757</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">758</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_sync_client_available</span><span class="p">()</span>
+<span class="ne">--&gt; </span><span class="mi">759</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">([</span><span class="n">text</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_openai\embeddings\base.py:709,</span> in <span class="ni">OpenAIEmbeddings.embed_documents</span><span class="nt">(self, texts, chunk_size, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span> <span class="c1"># Unconditionally call _get_len_safe_embeddings to handle length safety.</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span> <span class="c1"># This could be optimized to avoid double work when all texts are short enough.</span>
+<span class="g g-Whitespace">    </span><span class="mi">708</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deployment</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">709</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_len_safe_embeddings</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">texts</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="p">)</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_openai\embeddings\base.py:553,</span> in <span class="ni">OpenAIEmbeddings._get_len_safe_embeddings</span><span class="nt">(self, texts, engine, chunk_size, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">551</span> <span class="n">_chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
+<span class="g g-Whitespace">    </span><span class="mi">552</span> <span class="n">client_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_invocation_params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
+<span class="ne">--&gt; </span><span class="mi">553</span> <span class="n">_iter</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">token_counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenize</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">_chunk_size</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">554</span> <span class="n">batched_embeddings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="g g-Whitespace">    </span><span class="mi">556</span> <span class="c1"># Process in batches respecting the token limit</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\langchain_openai\embeddings\base.py:508,</span> in <span class="ni">OpenAIEmbeddings._tokenize</span><span class="nt">(self, texts, chunk_size)</span>
+<span class="g g-Whitespace">    </span><span class="mi">506</span>     <span class="n">token</span> <span class="o">=</span> <span class="n">encoding</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">encoder_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">507</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">508</span>     <span class="n">token</span> <span class="o">=</span> <span class="n">encoding</span><span class="o">.</span><span class="n">encode_ordinary</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">510</span> <span class="c1"># Split tokens into chunks respecting the embedding_ctx_length</span>
+<span class="g g-Whitespace">    </span><span class="mi">511</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_ctx_length</span><span class="p">):</span>
+
+<span class="nn">File c:\Users\sangouda\Python3.1210\Lib\site-packages\tiktoken\core.py:73,</span> in <span class="ni">Encoding.encode_ordinary</span><span class="nt">(self, text)</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Encodes a string into tokens, ignoring special tokens.</span>
+<span class="g g-Whitespace">     </span><span class="mi">65</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">66</span><span class="sd"> This is equivalent to `encode(text, disallowed_special=())` (but slightly faster).</span>
+<span class="sd">   (...)     70 [31373, 995]</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">73</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_core_bpe</span><span class="o">.</span><span class="n">encode_ordinary</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="k">except</span> <span class="ne">UnicodeEncodeError</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>     <span class="c1"># See comment in encode</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>     <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-16&quot;</span><span class="p">,</span> <span class="s2">&quot;surrogatepass&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-16&quot;</span><span class="p">,</span> <span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: argument &#39;text&#39;: &#39;dict&#39; object cannot be converted to &#39;PyString&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Callbacks <strong>augment</strong> traces with custom logs.</p>
+</section>
+<hr class="docutils" />
+<section id="async-streaming-tracing">
+<h2><a class="toc-backref" href="#id11">Async + Streaming Tracing</a><a class="headerlink" href="#async-streaming-tracing" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">llm</span><span class="o">.</span><span class="n">astream</span><span class="p">(</span>
+    <span class="s2">&quot;Explain tracing with streaming&quot;</span>
+<span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Trace includes:</p>
+<ul class="simple">
+<li><p>Stream start</p></li>
+<li><p>Token-by-token timings</p></li>
+<li><p>Stream end</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="what-a-trace-looks-like-conceptually">
+<h2><a class="toc-backref" href="#id12">What a Trace Looks Like (Conceptually)</a><a class="headerlink" href="#what-a-trace-looks-like-conceptually" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Run
+ ├─ RunnableSequence
+ │   ├─ RunnableLambda (5 ms)
+ │   ├─ PromptTemplate (1 ms)
+ │   └─ ChatOpenAI (620 ms, 412 tokens)
+ └─ Output
+</pre></div>
+</div>
+<p>Each node is clickable in the UI.</p>
+</section>
+<hr class="docutils" />
+<section id="tracing-vs-logging">
+<h2><a class="toc-backref" href="#id13">Tracing vs Logging</a><a class="headerlink" href="#tracing-vs-logging" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Tracing</p></th>
+<th class="head"><p>Logging</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Structure</p></td>
+<td><p>Hierarchical</p></td>
+<td><p>Flat</p></td>
+</tr>
+<tr class="row-odd"><td><p>Context</p></td>
+<td><p>Full execution</p></td>
+<td><p>Partial</p></td>
+</tr>
+<tr class="row-even"><td><p>Latency insight</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>Token usage</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>Tool visibility</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Tracing ≠ logging. Tracing is <strong>execution-aware</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id14">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Enable tracing in <strong>dev/staging</strong></p></li>
+<li><p>Redact PII/secrets</p></li>
+<li><p>Use projects per environment</p></li>
+<li><p>Trace before optimizing</p></li>
+<li><p>Keep sampling in prod if needed</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id15">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Tracing is a <strong>flight recorder</strong> for LLM pipelines.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Something went wrong → open trace → see exactly where and why
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id16">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Tracing provides <strong>full visibility</strong> into LLM workflows</p></li>
+<li><p>Automatic with LangChain when enabled</p></li>
+<li><p>Essential for debugging, cost control, and reliability</p></li>
+<li><p>Foundation for production-grade LLM systems</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\streaming_callbacks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-tracing-is-critical">Why Tracing Is Critical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-gets-traced">What Gets Traced</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-tracing-minimal-setup">Enable Tracing (Minimal Setup)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trace-a-simple-chain">Trace a Simple Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-a-runnablesequence-step-by-step">Tracing a RunnableSequence (Step-by-Step)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-with-retrieval-rag">Tracing with Retrieval (RAG)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-retries-and-fallbacks">Tracing Retries and Fallbacks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-with-callbacks-custom-metadata">Tracing with Callbacks (Custom Metadata)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#async-streaming-tracing">Async + Streaming Tracing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-trace-looks-like-conceptually">What a Trace Looks Like (Conceptually)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing-vs-logging">Tracing vs Logging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

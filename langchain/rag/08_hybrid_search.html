@@ -1,0 +1,1048 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Hybrid Search &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/08_hybrid_search';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/08_hybrid_search.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/08_hybrid_search.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/08_hybrid_search.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hybrid Search</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-hybrid-search-is-needed">Why Hybrid Search Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems-with-semantic-vector-search">Problems with Semantic (Vector) Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems-with-keyword-search">Problems with Keyword Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-hybrid-search-fits-in-rag">Where Hybrid Search Fits in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components-of-hybrid-search">Core Components of Hybrid Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lexical-retriever">Lexical Retriever</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-retriever">Vector Retriever</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#score-fusion">Score Fusion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-strategies">Hybrid Search Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategy-1-union-rerank-most-common">Strategy 1: Union + Rerank (Most Common)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategy-2-weighted-score-fusion">Strategy 2: Weighted Score Fusion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategy-3-filter-semantic-search">Strategy 3: Filter + Semantic Search</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-demonstration-langchain-conceptual">Hybrid Search Demonstration (LangChain Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Vector Retriever</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keyword-retriever-bm25">Keyword Retriever (BM25)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-retriever-hybrid">Ensemble Retriever (Hybrid)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-hybrid-search">Querying Hybrid Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-with-reranking-production-pattern">Hybrid Search with Reranking (Production Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-vs-pure-vector-search">Hybrid Search vs Pure Vector Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-vs-mmr">Hybrid Search vs MMR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-considerations">Production-Grade Considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#score-normalization">Score Normalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-budget">Latency Budget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-filtering-mandatory">Metadata Filtering (Mandatory)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observability">Observability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-control">Cost Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-vector-only-search-in-production">Using vector-only search in production</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-reranking">No reranking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#large-k-values">Large k values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-score-normalization">No score normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-hybrid-search">When to Use Hybrid Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-hybrid-search-is-overkill">When Hybrid Search Is Overkill</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#hybrid-search" id="id2">Hybrid Search</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-hybrid-search-is-needed" id="id3">Why Hybrid Search Is Needed</a></p></li>
+<li><p><a class="reference internal" href="#problems-with-semantic-vector-search" id="id4">Problems with Semantic (Vector) Search</a></p></li>
+<li><p><a class="reference internal" href="#problems-with-keyword-search" id="id5">Problems with Keyword Search</a></p></li>
+<li><p><a class="reference internal" href="#conceptual-flow" id="id6">Conceptual Flow</a></p></li>
+<li><p><a class="reference internal" href="#where-hybrid-search-fits-in-rag" id="id7">Where Hybrid Search Fits in RAG</a></p></li>
+<li><p><a class="reference internal" href="#core-components-of-hybrid-search" id="id8">Core Components of Hybrid Search</a></p>
+<ul>
+<li><p><a class="reference internal" href="#lexical-retriever" id="id9">Lexical Retriever</a></p></li>
+<li><p><a class="reference internal" href="#vector-retriever" id="id10">Vector Retriever</a></p></li>
+<li><p><a class="reference internal" href="#score-fusion" id="id11">Score Fusion</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#hybrid-search-strategies" id="id12">Hybrid Search Strategies</a></p>
+<ul>
+<li><p><a class="reference internal" href="#strategy-1-union-rerank-most-common" id="id13">Strategy 1: Union + Rerank (Most Common)</a></p></li>
+<li><p><a class="reference internal" href="#strategy-2-weighted-score-fusion" id="id14">Strategy 2: Weighted Score Fusion</a></p></li>
+<li><p><a class="reference internal" href="#strategy-3-filter-semantic-search" id="id15">Strategy 3: Filter + Semantic Search</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#hybrid-search-demonstration-langchain-conceptual" id="id16">Hybrid Search Demonstration (LangChain Conceptual)</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id17">Vector Retriever</a></p></li>
+<li><p><a class="reference internal" href="#keyword-retriever-bm25" id="id18">Keyword Retriever (BM25)</a></p></li>
+<li><p><a class="reference internal" href="#ensemble-retriever-hybrid" id="id19">Ensemble Retriever (Hybrid)</a></p></li>
+<li><p><a class="reference internal" href="#querying-hybrid-search" id="id20">Querying Hybrid Search</a></p></li>
+<li><p><a class="reference internal" href="#hybrid-search-with-reranking-production-pattern" id="id21">Hybrid Search with Reranking (Production Pattern)</a></p></li>
+<li><p><a class="reference internal" href="#hybrid-search-vs-pure-vector-search" id="id22">Hybrid Search vs Pure Vector Search</a></p></li>
+<li><p><a class="reference internal" href="#hybrid-search-vs-mmr" id="id23">Hybrid Search vs MMR</a></p></li>
+<li><p><a class="reference internal" href="#production-grade-considerations" id="id24">Production-Grade Considerations</a></p></li>
+<li><p><a class="reference internal" href="#score-normalization" id="id25">Score Normalization</a></p></li>
+<li><p><a class="reference internal" href="#latency-budget" id="id26">Latency Budget</a></p></li>
+<li><p><a class="reference internal" href="#metadata-filtering-mandatory" id="id27">Metadata Filtering (Mandatory)</a></p></li>
+<li><p><a class="reference internal" href="#observability" id="id28">Observability</a></p></li>
+<li><p><a class="reference internal" href="#cost-control" id="id29">Cost Control</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id30">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#using-vector-only-search-in-production" id="id31">Using vector-only search in production</a></p></li>
+<li><p><a class="reference internal" href="#no-reranking" id="id32">No reranking</a></p></li>
+<li><p><a class="reference internal" href="#large-k-values" id="id33">Large k values</a></p></li>
+<li><p><a class="reference internal" href="#no-score-normalization" id="id34">No score normalization</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#when-to-use-hybrid-search" id="id35">When to Use Hybrid Search</a></p></li>
+<li><p><a class="reference internal" href="#when-hybrid-search-is-overkill" id="id36">When Hybrid Search Is Overkill</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id37">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id38">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="hybrid-search">
+<h1><a class="toc-backref" href="#id2">Hybrid Search</a><a class="headerlink" href="#hybrid-search" title="Permalink to this heading">#</a></h1>
+<p><strong>Hybrid Search</strong> is a retrieval strategy that <strong>combines semantic similarity search (embeddings)</strong> with <strong>lexical/keyword search (BM25 / TF-IDF)</strong> to retrieve the most relevant documents.</p>
+<blockquote>
+<div><p>Hybrid Search = <strong>Meaning-based retrieval + Keyword-based retrieval</strong></p>
+</div></blockquote>
+<p>It is the <strong>production-standard retrieval approach</strong> for enterprise RAG systems.</p>
+<hr class="docutils" />
+<section id="why-hybrid-search-is-needed">
+<h2><a class="toc-backref" href="#id3">Why Hybrid Search Is Needed</a><a class="headerlink" href="#why-hybrid-search-is-needed" title="Permalink to this heading">#</a></h2>
+<p>Neither approach alone is sufficient:</p>
+</section>
+<section id="problems-with-semantic-vector-search">
+<h2><a class="toc-backref" href="#id4">Problems with Semantic (Vector) Search</a><a class="headerlink" href="#problems-with-semantic-vector-search" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Misses exact keywords (IDs, error codes)</p></li>
+<li><p>Struggles with rare terms</p></li>
+<li><p>Weak on numbers, versions, acronyms</p></li>
+</ul>
+</section>
+<section id="problems-with-keyword-search">
+<h2><a class="toc-backref" href="#id5">Problems with Keyword Search</a><a class="headerlink" href="#problems-with-keyword-search" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>No semantic understanding</p></li>
+<li><p>Fails on paraphrases and synonyms</p></li>
+<li><p>Brittle to language variation</p></li>
+</ul>
+<p>Hybrid search <strong>balances recall and precision</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="conceptual-flow">
+<h2><a class="toc-backref" href="#id6">Conceptual Flow</a><a class="headerlink" href="#conceptual-flow" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Query
+   ├── Keyword Search (BM25)
+   ├── Vector Similarity Search
+   ↓
+Candidate Merge
+   ↓
+Score Normalization
+   ↓
+(Optional) Reranking
+   ↓
+Top-K Results
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="where-hybrid-search-fits-in-rag">
+<h2><a class="toc-backref" href="#id7">Where Hybrid Search Fits in RAG</a><a class="headerlink" href="#where-hybrid-search-fits-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Query
+  ↓
+Hybrid Retriever
+  ↓
+Relevant Chunks
+  ↓
+Prompt
+  ↓
+LLM
+</pre></div>
+</div>
+<p>Hybrid search is a <strong>query-time operation</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="core-components-of-hybrid-search">
+<h2><a class="toc-backref" href="#id8">Core Components of Hybrid Search</a><a class="headerlink" href="#core-components-of-hybrid-search" title="Permalink to this heading">#</a></h2>
+<section id="lexical-retriever">
+<h3><a class="toc-backref" href="#id9">Lexical Retriever</a><a class="headerlink" href="#lexical-retriever" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>BM25 / TF-IDF</p></li>
+<li><p>Exact term matching</p></li>
+<li><p>Strong on identifiers and structure</p></li>
+</ul>
+</section>
+<section id="vector-retriever">
+<h3><a class="toc-backref" href="#id10">Vector Retriever</a><a class="headerlink" href="#vector-retriever" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Embedding similarity</p></li>
+<li><p>Semantic meaning</p></li>
+<li><p>Strong on paraphrases</p></li>
+</ul>
+</section>
+<section id="score-fusion">
+<h3><a class="toc-backref" href="#id11">Score Fusion</a><a class="headerlink" href="#score-fusion" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Combines scores from both retrievers</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="hybrid-search-strategies">
+<h2><a class="toc-backref" href="#id12">Hybrid Search Strategies</a><a class="headerlink" href="#hybrid-search-strategies" title="Permalink to this heading">#</a></h2>
+<section id="strategy-1-union-rerank-most-common">
+<h3><a class="toc-backref" href="#id13">Strategy 1: Union + Rerank (Most Common)</a><a class="headerlink" href="#strategy-1-union-rerank-most-common" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>BM25 Top-K
+UNION
+Vector Top-K
+→ Reranker
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>High recall</p></li>
+<li><p>Reranker improves precision</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="strategy-2-weighted-score-fusion">
+<h3><a class="toc-backref" href="#id14">Strategy 2: Weighted Score Fusion</a><a class="headerlink" href="#strategy-2-weighted-score-fusion" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">final_score</span> <span class="o">=</span> <span class="n">α</span> <span class="o">*</span> <span class="n">vector_score</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">keyword_score</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Faster</p></li>
+<li><p>Requires tuning α</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="strategy-3-filter-semantic-search">
+<h3><a class="toc-backref" href="#id15">Strategy 3: Filter + Semantic Search</a><a class="headerlink" href="#strategy-3-filter-semantic-search" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Keyword Filter → Vector Search
+</pre></div>
+</div>
+<p>Used when:</p>
+<ul class="simple">
+<li><p>Hard constraints exist (tenant, product, date)</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="hybrid-search-demonstration-langchain-conceptual">
+<h2><a class="toc-backref" href="#id16">Hybrid Search Demonstration (LangChain Conceptual)</a><a class="headerlink" href="#hybrid-search-demonstration-langchain-conceptual" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="id1">
+<h2><a class="toc-backref" href="#id17">Vector Retriever</a><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vector_retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
+    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="keyword-retriever-bm25">
+<h2><a class="toc-backref" href="#id18">Keyword Retriever (BM25)</a><a class="headerlink" href="#keyword-retriever-bm25" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.retrievers</span><span class="w"> </span><span class="kn">import</span> <span class="n">BM25Retriever</span>
+
+<span class="n">bm25</span> <span class="o">=</span> <span class="n">BM25Retriever</span><span class="o">.</span><span class="n">from_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
+<span class="n">bm25</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="ensemble-retriever-hybrid">
+<h2><a class="toc-backref" href="#id19">Ensemble Retriever (Hybrid)</a><a class="headerlink" href="#ensemble-retriever-hybrid" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.retrievers</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnsembleRetriever</span>
+
+<span class="n">hybrid_retriever</span> <span class="o">=</span> <span class="n">EnsembleRetriever</span><span class="p">(</span>
+    <span class="n">retrievers</span><span class="o">=</span><span class="p">[</span><span class="n">bm25</span><span class="p">,</span> <span class="n">vector_retriever</span><span class="p">],</span>
+    <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="querying-hybrid-search">
+<h2><a class="toc-backref" href="#id20">Querying Hybrid Search</a><a class="headerlink" href="#querying-hybrid-search" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">hybrid_retriever</span><span class="o">.</span><span class="n">get_relevant_documents</span><span class="p">(</span>
+    <span class="s2">&quot;Jira ticket escalation error 500&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Results include:</p>
+<ul class="simple">
+<li><p>Exact keyword matches (<code class="docutils literal notranslate"><span class="pre">error</span> <span class="pre">500</span></code>)</p></li>
+<li><p>Semantically similar context</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="hybrid-search-with-reranking-production-pattern">
+<h2><a class="toc-backref" href="#id21">Hybrid Search with Reranking (Production Pattern)</a><a class="headerlink" href="#hybrid-search-with-reranking-production-pattern" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Hybrid Retriever → Top 20
+        ↓
+Cross-Encoder Reranker
+        ↓
+Top 5
+        ↓
+LLM
+</pre></div>
+</div>
+<p>This yields:</p>
+<ul class="simple">
+<li><p>High recall</p></li>
+<li><p>High precision</p></li>
+<li><p>Stable answers</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="hybrid-search-vs-pure-vector-search">
+<h2><a class="toc-backref" href="#id22">Hybrid Search vs Pure Vector Search</a><a class="headerlink" href="#hybrid-search-vs-pure-vector-search" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Vector Only</p></th>
+<th class="head"><p>Hybrid</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Semantic recall</p></td>
+<td><p>High</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>Keyword precision</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>Rare terms</p></td>
+<td><p>Weak</p></td>
+<td><p>Strong</p></td>
+</tr>
+<tr class="row-odd"><td><p>Production readiness</p></td>
+<td><p>Medium</p></td>
+<td><p>High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="hybrid-search-vs-mmr">
+<h2><a class="toc-backref" href="#id23">Hybrid Search vs MMR</a><a class="headerlink" href="#hybrid-search-vs-mmr" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Hybrid Search</p></th>
+<th class="head"><p>MMR</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Recall &amp; precision</p></td>
+<td><p>Diversity</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stage</p></td>
+<td><p>Retrieval</p></td>
+<td><p>Post-retrieval</p></td>
+</tr>
+<tr class="row-even"><td><p>Used together</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="production-grade-considerations">
+<h2><a class="toc-backref" href="#id24">Production-Grade Considerations</a><a class="headerlink" href="#production-grade-considerations" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="score-normalization">
+<h2><a class="toc-backref" href="#id25">Score Normalization</a><a class="headerlink" href="#score-normalization" title="Permalink to this heading">#</a></h2>
+<p>Vector and BM25 scores are not comparable by default.</p>
+<p>Solutions:</p>
+<ul class="simple">
+<li><p>Min–max normalization</p></li>
+<li><p>Rank-based fusion</p></li>
+<li><p>Reciprocal Rank Fusion (RRF)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="latency-budget">
+<h2><a class="toc-backref" href="#id26">Latency Budget</a><a class="headerlink" href="#latency-budget" title="Permalink to this heading">#</a></h2>
+<p>Typical production target:</p>
+<ul class="simple">
+<li><p>Hybrid retrieval: &lt; 100 ms</p></li>
+<li><p>Reranking: &lt; 150 ms</p></li>
+</ul>
+<p>Optimization:</p>
+<ul class="simple">
+<li><p>Small k per retriever</p></li>
+<li><p>Parallel retrieval</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="metadata-filtering-mandatory">
+<h2><a class="toc-backref" href="#id27">Metadata Filtering (Mandatory)</a><a class="headerlink" href="#metadata-filtering-mandatory" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tenant_id&quot;</span><span class="p">:</span> <span class="s2">&quot;org_123&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Applied <strong>before</strong> or <strong>after</strong> retrieval.</p>
+</section>
+<hr class="docutils" />
+<section id="observability">
+<h2><a class="toc-backref" href="#id28">Observability</a><a class="headerlink" href="#observability" title="Permalink to this heading">#</a></h2>
+<p>Log:</p>
+<ul class="simple">
+<li><p>Which retriever contributed which document</p></li>
+<li><p>Score breakdown</p></li>
+<li><p>Query types</p></li>
+</ul>
+<p>Critical for tuning.</p>
+</section>
+<hr class="docutils" />
+<section id="cost-control">
+<h2><a class="toc-backref" href="#id29">Cost Control</a><a class="headerlink" href="#cost-control" title="Permalink to this heading">#</a></h2>
+<p>Hybrid search reduces:</p>
+<ul class="simple">
+<li><p>LLM hallucinations</p></li>
+<li><p>Long prompts</p></li>
+<li><p>Retry cost</p></li>
+</ul>
+<p>It increases:</p>
+<ul class="simple">
+<li><p>Retrieval compute (acceptable tradeoff)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id30">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="using-vector-only-search-in-production">
+<h3><a class="toc-backref" href="#id31">Using vector-only search in production</a><a class="headerlink" href="#using-vector-only-search-in-production" title="Permalink to this heading">#</a></h3>
+<p>❌ Misses exact matches</p>
+</section>
+<section id="no-reranking">
+<h3><a class="toc-backref" href="#id32">No reranking</a><a class="headerlink" href="#no-reranking" title="Permalink to this heading">#</a></h3>
+<p>❌ Noisy context</p>
+</section>
+<section id="large-k-values">
+<h3><a class="toc-backref" href="#id33">Large k values</a><a class="headerlink" href="#large-k-values" title="Permalink to this heading">#</a></h3>
+<p>❌ Latency spikes</p>
+</section>
+<section id="no-score-normalization">
+<h3><a class="toc-backref" href="#id34">No score normalization</a><a class="headerlink" href="#no-score-normalization" title="Permalink to this heading">#</a></h3>
+<p>❌ Unstable ranking</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-hybrid-search">
+<h2><a class="toc-backref" href="#id35">When to Use Hybrid Search</a><a class="headerlink" href="#when-to-use-hybrid-search" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Enterprise RAG</p></li>
+<li><p>IT support / tickets</p></li>
+<li><p>Legal / compliance docs</p></li>
+<li><p>Product documentation</p></li>
+<li><p>Any high-accuracy system</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-hybrid-search-is-overkill">
+<h2><a class="toc-backref" href="#id36">When Hybrid Search Is Overkill</a><a class="headerlink" href="#when-hybrid-search-is-overkill" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Small datasets</p></li>
+<li><p>Prototypes</p></li>
+<li><p>Pure semantic discovery tasks</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id37">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Hybrid search combines vector-based semantic retrieval with keyword-based lexical search to achieve high recall and high precision. It is the standard retrieval strategy in production RAG systems.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id38">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Prototype → Vector search</strong></p></li>
+<li><p><strong>Production → Hybrid search</strong></p></li>
+<li><p><strong>Accuracy-critical → Hybrid + reranker</strong></p></li>
+<li><p><strong>Exact terms matter → Always hybrid</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-hybrid-search-is-needed">Why Hybrid Search Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems-with-semantic-vector-search">Problems with Semantic (Vector) Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems-with-keyword-search">Problems with Keyword Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-hybrid-search-fits-in-rag">Where Hybrid Search Fits in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components-of-hybrid-search">Core Components of Hybrid Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lexical-retriever">Lexical Retriever</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-retriever">Vector Retriever</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#score-fusion">Score Fusion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-strategies">Hybrid Search Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategy-1-union-rerank-most-common">Strategy 1: Union + Rerank (Most Common)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategy-2-weighted-score-fusion">Strategy 2: Weighted Score Fusion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategy-3-filter-semantic-search">Strategy 3: Filter + Semantic Search</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-demonstration-langchain-conceptual">Hybrid Search Demonstration (LangChain Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Vector Retriever</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keyword-retriever-bm25">Keyword Retriever (BM25)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-retriever-hybrid">Ensemble Retriever (Hybrid)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-hybrid-search">Querying Hybrid Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-with-reranking-production-pattern">Hybrid Search with Reranking (Production Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-vs-pure-vector-search">Hybrid Search vs Pure Vector Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-vs-mmr">Hybrid Search vs MMR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-considerations">Production-Grade Considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#score-normalization">Score Normalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-budget">Latency Budget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-filtering-mandatory">Metadata Filtering (Mandatory)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observability">Observability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-control">Cost Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-vector-only-search-in-production">Using vector-only search in production</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-reranking">No reranking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#large-k-values">Large k values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-score-normalization">No score normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-hybrid-search">When to Use Hybrid Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-hybrid-search-is-overkill">When Hybrid Search Is Overkill</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

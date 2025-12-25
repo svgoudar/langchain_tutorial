@@ -1,0 +1,999 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Chunk Overlap &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/03_chunk_overlap';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/03_chunk_overlap.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/03_chunk_overlap.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/03_chunk_overlap.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chunk Overlap</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-chunk-overlap-is-necessary">Why Chunk Overlap Is Necessary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-example">Conceptual Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#original-text">Original Text</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#without-overlap">Without Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-overlap-overlap-5-words">With Overlap (Overlap = 5 words)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-chunk-overlap-fits-in-the-pipeline">Where Chunk Overlap Fits in the Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-size-vs-chunk-overlap">Chunk Size vs Chunk Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-size">Chunk Size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Chunk Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration-langchain">Demonstration (LangChain)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-overlap-improves-retrieval">How Overlap Improves Retrieval</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Without Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-overlap">With Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-overlap-in-rag-answers">Chunk Overlap in RAG Answers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-overlap-size">Choosing the Right Overlap Size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-rule">General Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-values">Recommended Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-character-vs-token">Overlap: Character vs Token</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#character-based-overlap">Character-Based Overlap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-based-overlap">Token-Based Overlap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#too-little-overlap-problems">Too Little Overlap (Problems)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#too-much-overlap-problems">Too Much Overlap (Problems)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-0">Overlap = 0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-50">Overlap &gt; 50%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-overlap-at-query-time">Changing overlap at query time</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-overlap-vs-sliding-window">Chunk Overlap vs Sliding Window</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#chunk-overlap" id="id3">Chunk Overlap</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-chunk-overlap-is-necessary" id="id4">Why Chunk Overlap Is Necessary</a></p></li>
+<li><p><a class="reference internal" href="#conceptual-example" id="id5">Conceptual Example</a></p></li>
+<li><p><a class="reference internal" href="#original-text" id="id6">Original Text</a></p></li>
+<li><p><a class="reference internal" href="#without-overlap" id="id7">Without Overlap</a></p></li>
+<li><p><a class="reference internal" href="#with-overlap-overlap-5-words" id="id8">With Overlap (Overlap = 5 words)</a></p></li>
+<li><p><a class="reference internal" href="#where-chunk-overlap-fits-in-the-pipeline" id="id9">Where Chunk Overlap Fits in the Pipeline</a></p></li>
+<li><p><a class="reference internal" href="#chunk-size-vs-chunk-overlap" id="id10">Chunk Size vs Chunk Overlap</a></p></li>
+<li><p><a class="reference internal" href="#chunk-size" id="id11">Chunk Size</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id12">Chunk Overlap</a></p></li>
+<li><p><a class="reference internal" href="#demonstration-langchain" id="id13">Demonstration (LangChain)</a></p></li>
+<li><p><a class="reference internal" href="#how-overlap-improves-retrieval" id="id14">How Overlap Improves Retrieval</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id15">Without Overlap</a></p></li>
+<li><p><a class="reference internal" href="#with-overlap" id="id16">With Overlap</a></p></li>
+<li><p><a class="reference internal" href="#chunk-overlap-in-rag-answers" id="id17">Chunk Overlap in RAG Answers</a></p></li>
+<li><p><a class="reference internal" href="#choosing-the-right-overlap-size" id="id18">Choosing the Right Overlap Size</a></p></li>
+<li><p><a class="reference internal" href="#general-rule" id="id19">General Rule</a></p></li>
+<li><p><a class="reference internal" href="#recommended-values" id="id20">Recommended Values</a></p></li>
+<li><p><a class="reference internal" href="#overlap-character-vs-token" id="id21">Overlap: Character vs Token</a></p>
+<ul>
+<li><p><a class="reference internal" href="#character-based-overlap" id="id22">Character-Based Overlap</a></p></li>
+<li><p><a class="reference internal" href="#token-based-overlap" id="id23">Token-Based Overlap</a></p></li>
+<li><p><a class="reference internal" href="#too-little-overlap-problems" id="id24">Too Little Overlap (Problems)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#too-much-overlap-problems" id="id25">Too Much Overlap (Problems)</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id26">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overlap-0" id="id27">Overlap = 0</a></p></li>
+<li><p><a class="reference internal" href="#overlap-50" id="id28">Overlap &gt; 50%</a></p></li>
+<li><p><a class="reference internal" href="#changing-overlap-at-query-time" id="id29">Changing overlap at query time</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#chunk-overlap-vs-sliding-window" id="id30">Chunk Overlap vs Sliding Window</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id31">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id32">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id33">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="chunk-overlap">
+<h1><a class="toc-backref" href="#id3">Chunk Overlap</a><a class="headerlink" href="#chunk-overlap" title="Permalink to this heading">#</a></h1>
+<p><strong>Chunk overlap</strong> is the practice of <strong>repeating a small portion of text between consecutive chunks</strong> when splitting documents.</p>
+<blockquote>
+<div><p>It ensures that <strong>context at chunk boundaries is not lost</strong> during embedding and retrieval.</p>
+</div></blockquote>
+<p>Chunk overlap is applied by <strong>Text Splitters</strong>, not by retrievers or LLMs.</p>
+<hr class="docutils" />
+<section id="why-chunk-overlap-is-necessary">
+<h2><a class="toc-backref" href="#id4">Why Chunk Overlap Is Necessary</a><a class="headerlink" href="#why-chunk-overlap-is-necessary" title="Permalink to this heading">#</a></h2>
+<p>Without overlap:</p>
+<ul class="simple">
+<li><p>Sentences get cut in half</p></li>
+<li><p>Important references are split</p></li>
+<li><p>Retrieval misses relevant context</p></li>
+<li><p>Answers become incomplete or wrong</p></li>
+</ul>
+<p>Overlap preserves <strong>semantic continuity</strong> across chunks.</p>
+</section>
+<hr class="docutils" />
+<section id="conceptual-example">
+<h2><a class="toc-backref" href="#id5">Conceptual Example</a><a class="headerlink" href="#conceptual-example" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="original-text">
+<h2><a class="toc-backref" href="#id6">Original Text</a><a class="headerlink" href="#original-text" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LangChain</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">framework</span> <span class="k">for</span> <span class="n">building</span> <span class="n">LLM</span><span class="o">-</span><span class="n">powered</span> <span class="n">applications</span><span class="o">.</span>
+<span class="n">It</span> <span class="n">supports</span> <span class="n">prompts</span><span class="p">,</span> <span class="n">chains</span><span class="p">,</span> <span class="n">agents</span><span class="p">,</span> <span class="ow">and</span> <span class="n">retrieval</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="without-overlap">
+<h2><a class="toc-backref" href="#id7">Without Overlap</a><a class="headerlink" href="#without-overlap" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Chunk</span> <span class="mi">1</span><span class="p">:</span> <span class="n">LangChain</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">framework</span> <span class="k">for</span> <span class="n">building</span> <span class="n">LLM</span><span class="o">-</span><span class="n">powered</span>
+<span class="n">Chunk</span> <span class="mi">2</span><span class="p">:</span> <span class="n">applications</span><span class="o">.</span> <span class="n">It</span> <span class="n">supports</span> <span class="n">prompts</span><span class="p">,</span> <span class="n">chains</span><span class="p">,</span> <span class="n">agents</span><span class="p">,</span> <span class="ow">and</span> <span class="n">retrieval</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Meaning is fragmented.</p>
+</section>
+<hr class="docutils" />
+<section id="with-overlap-overlap-5-words">
+<h2><a class="toc-backref" href="#id8">With Overlap (Overlap = 5 words)</a><a class="headerlink" href="#with-overlap-overlap-5-words" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Chunk</span> <span class="mi">1</span><span class="p">:</span> <span class="n">LangChain</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">framework</span> <span class="k">for</span> <span class="n">building</span> <span class="n">LLM</span><span class="o">-</span><span class="n">powered</span> <span class="n">applications</span>
+<span class="n">Chunk</span> <span class="mi">2</span><span class="p">:</span> <span class="n">building</span> <span class="n">LLM</span><span class="o">-</span><span class="n">powered</span> <span class="n">applications</span><span class="o">.</span> <span class="n">It</span> <span class="n">supports</span> <span class="n">prompts</span><span class="p">,</span> <span class="n">chains</span><span class="p">,</span> <span class="n">agents</span><span class="p">,</span> <span class="ow">and</span> <span class="n">retrieval</span>
+</pre></div>
+</div>
+<p>Context is preserved.</p>
+</section>
+<hr class="docutils" />
+<section id="where-chunk-overlap-fits-in-the-pipeline">
+<h2><a class="toc-backref" href="#id9">Where Chunk Overlap Fits in the Pipeline</a><a class="headerlink" href="#where-chunk-overlap-fits-in-the-pipeline" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Document Loader
+   ↓
+Text Splitter (chunk_size + chunk_overlap)
+   ↓
+Chunks
+   ↓
+Embeddings
+   ↓
+Vector Store
+</pre></div>
+</div>
+<p>Chunk overlap is an <strong>ingestion-time decision</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="chunk-size-vs-chunk-overlap">
+<h2><a class="toc-backref" href="#id10">Chunk Size vs Chunk Overlap</a><a class="headerlink" href="#chunk-size-vs-chunk-overlap" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="chunk-size">
+<h2><a class="toc-backref" href="#id11">Chunk Size</a><a class="headerlink" href="#chunk-size" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Maximum length of each chunk</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2><a class="toc-backref" href="#id12">Chunk Overlap</a><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Portion of text reused in the next chunk</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>chunk_size = 500
+chunk_overlap = 50
+</pre></div>
+</div>
+<p>Each new chunk starts <strong>50 characters/tokens before</strong> the previous chunk ends.</p>
+</section>
+<hr class="docutils" />
+<section id="demonstration-langchain">
+<h2><a class="toc-backref" href="#id13">Demonstration (LangChain)</a><a class="headerlink" href="#demonstration-langchain" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.text_splitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+
+<span class="n">splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">20</span>
+<span class="p">)</span>
+
+<span class="n">long_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Large language models (LLMs) are very large deep learning models that are pre-trained on vast amounts of data. </span>
+<span class="s2">The underlying transformer is a set of neural networks that consist of an encoder and a decoder with self-attention capabilities. </span>
+<span class="s2">The encoder and decoder extract meanings from a sequence of text and understand the relationships between words and phrases in it.</span>
+
+<span class="s2">Transformer LLMs are capable of unsupervised training, although a more precise explanation is that transformers perform self-learning. </span>
+<span class="s2">It is through this process that transformers learn to understand basic grammar, languages, and knowledge.</span>
+
+<span class="s2">Unlike earlier recurrent neural networks (RNN) that sequentially process inputs, transformers process entire sequences in parallel. </span>
+<span class="s2">This allows the data scientists to use GPUs for training transformer-based LLMs, significantly reducing the training time.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">chunks</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">long_text</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chunk </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">chunk</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From C:\Users\sangouda\AppData\Roaming\Python\Python312\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+Chunk 0:
+Large language models (LLMs) are very large deep learning models that are pre-trained on vast
+
+Chunk 1:
+pre-trained on vast amounts of data.
+
+Chunk 2:
+The underlying transformer is a set of neural networks that consist of an encoder and a decoder
+
+Chunk 3:
+and a decoder with self-attention capabilities.
+
+Chunk 4:
+The encoder and decoder extract meanings from a sequence of text and understand the relationships
+
+Chunk 5:
+the relationships between words and phrases in it.
+
+Chunk 6:
+Transformer LLMs are capable of unsupervised training, although a more precise explanation is that
+
+Chunk 7:
+explanation is that transformers perform self-learning.
+
+Chunk 8:
+It is through this process that transformers learn to understand basic grammar, languages, and
+
+Chunk 9:
+languages, and knowledge.
+
+Chunk 10:
+Unlike earlier recurrent neural networks (RNN) that sequentially process inputs, transformers
+
+Chunk 11:
+transformers process entire sequences in parallel.
+
+Chunk 12:
+This allows the data scientists to use GPUs for training transformer-based LLMs, significantly
+
+Chunk 13:
+LLMs, significantly reducing the training time.
+</pre></div>
+</div>
+</div>
+</div>
+<p>You will observe:</p>
+<ul class="simple">
+<li><p>Last 20 characters of Chunk N</p></li>
+<li><p>Reappear at the start of Chunk N+1</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="how-overlap-improves-retrieval">
+<h2><a class="toc-backref" href="#id14">How Overlap Improves Retrieval</a><a class="headerlink" href="#how-overlap-improves-retrieval" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="id2">
+<h2><a class="toc-backref" href="#id15">Without Overlap</a><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Query matches partial concept</p></li>
+<li><p>Chunk score too low</p></li>
+<li><p>Not retrieved</p></li>
+</ul>
+</section>
+<section id="with-overlap">
+<h2><a class="toc-backref" href="#id16">With Overlap</a><a class="headerlink" href="#with-overlap" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Full concept appears in at least one chunk</p></li>
+<li><p>Higher embedding similarity</p></li>
+<li><p>Better recall</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="chunk-overlap-in-rag-answers">
+<h2><a class="toc-backref" href="#id17">Chunk Overlap in RAG Answers</a><a class="headerlink" href="#chunk-overlap-in-rag-answers" title="Permalink to this heading">#</a></h2>
+<p>Overlap helps when:</p>
+<ul class="simple">
+<li><p>Definitions span multiple sentences</p></li>
+<li><p>Pronouns reference earlier context</p></li>
+<li><p>Steps are explained across paragraphs</p></li>
+<li><p>Code blocks cross chunk boundaries</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="choosing-the-right-overlap-size">
+<h2><a class="toc-backref" href="#id18">Choosing the Right Overlap Size</a><a class="headerlink" href="#choosing-the-right-overlap-size" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="general-rule">
+<h2><a class="toc-backref" href="#id19">General Rule</a><a class="headerlink" href="#general-rule" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>chunk_overlap ≈ 10–20% of chunk_size
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="recommended-values">
+<h2><a class="toc-backref" href="#id20">Recommended Values</a><a class="headerlink" href="#recommended-values" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Chunk Size</p></th>
+<th class="head"><p>Overlap</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>300</p></td>
+<td><p>30–50</p></td>
+</tr>
+<tr class="row-odd"><td><p>500</p></td>
+<td><p>50–80</p></td>
+</tr>
+<tr class="row-even"><td><p>800</p></td>
+<td><p>80–120</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="overlap-character-vs-token">
+<h2><a class="toc-backref" href="#id21">Overlap: Character vs Token</a><a class="headerlink" href="#overlap-character-vs-token" title="Permalink to this heading">#</a></h2>
+<section id="character-based-overlap">
+<h3><a class="toc-backref" href="#id22">Character-Based Overlap</a><a class="headerlink" href="#character-based-overlap" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Simpler</p></li>
+<li><p>Language-agnostic</p></li>
+<li><p>Slightly imprecise for tokens</p></li>
+</ul>
+</section>
+<section id="token-based-overlap">
+<h3><a class="toc-backref" href="#id23">Token-Based Overlap</a><a class="headerlink" href="#token-based-overlap" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Precise for model limits</p></li>
+<li><p>More expensive</p></li>
+<li><p>Used with <code class="docutils literal notranslate"><span class="pre">TokenTextSplitter</span></code></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="too-little-overlap-problems">
+<h3><a class="toc-backref" href="#id24">Too Little Overlap (Problems)</a><a class="headerlink" href="#too-little-overlap-problems" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Broken sentences</p></li>
+<li><p>Lost references</p></li>
+<li><p>Lower recall</p></li>
+<li><p>Incomplete answers</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="too-much-overlap-problems">
+<h2><a class="toc-backref" href="#id25">Too Much Overlap (Problems)</a><a class="headerlink" href="#too-much-overlap-problems" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Duplicate embeddings</p></li>
+<li><p>Higher storage cost</p></li>
+<li><p>Redundant retrieval</p></li>
+<li><p>Slower indexing</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id26">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="overlap-0">
+<h3><a class="toc-backref" href="#id27">Overlap = 0</a><a class="headerlink" href="#overlap-0" title="Permalink to this heading">#</a></h3>
+<p>❌ Almost always bad for RAG</p>
+</section>
+<section id="overlap-50">
+<h3><a class="toc-backref" href="#id28">Overlap &gt; 50%</a><a class="headerlink" href="#overlap-50" title="Permalink to this heading">#</a></h3>
+<p>❌ Wasteful and noisy</p>
+</section>
+<section id="changing-overlap-at-query-time">
+<h3><a class="toc-backref" href="#id29">Changing overlap at query time</a><a class="headerlink" href="#changing-overlap-at-query-time" title="Permalink to this heading">#</a></h3>
+<p>❌ Overlap is ingestion-time only</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="chunk-overlap-vs-sliding-window">
+<h2><a class="toc-backref" href="#id30">Chunk Overlap vs Sliding Window</a><a class="headerlink" href="#chunk-overlap-vs-sliding-window" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Concept</p></th>
+<th class="head"><p>Chunk Overlap</p></th>
+<th class="head"><p>Sliding Window</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Preserve boundaries</p></td>
+<td><p>Continuous context</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cost</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>Usage</p></td>
+<td><p>RAG ingestion</p></td>
+<td><p>Time-series / streams</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id31">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Always use some overlap</p></li>
+<li><p>Tune overlap per document type</p></li>
+<li><p>Increase overlap for dense text</p></li>
+<li><p>Reduce overlap for repetitive text</p></li>
+<li><p>Keep overlap stable once indexed</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id32">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Chunk overlap is the intentional repetition of text between adjacent chunks to preserve semantic continuity. It improves retrieval recall and answer quality in RAG systems and is configured at ingestion time via text splitters.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id33">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>No overlap → broken context</strong></p></li>
+<li><p><strong>10–20% overlap → optimal</strong></p></li>
+<li><p><strong>More overlap → more cost</strong></p></li>
+<li><p><strong>Tune once, index once</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-chunk-overlap-is-necessary">Why Chunk Overlap Is Necessary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-example">Conceptual Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#original-text">Original Text</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#without-overlap">Without Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-overlap-overlap-5-words">With Overlap (Overlap = 5 words)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-chunk-overlap-fits-in-the-pipeline">Where Chunk Overlap Fits in the Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-size-vs-chunk-overlap">Chunk Size vs Chunk Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-size">Chunk Size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Chunk Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration-langchain">Demonstration (LangChain)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-overlap-improves-retrieval">How Overlap Improves Retrieval</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Without Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-overlap">With Overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-overlap-in-rag-answers">Chunk Overlap in RAG Answers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-overlap-size">Choosing the Right Overlap Size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-rule">General Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-values">Recommended Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-character-vs-token">Overlap: Character vs Token</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#character-based-overlap">Character-Based Overlap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-based-overlap">Token-Based Overlap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#too-little-overlap-problems">Too Little Overlap (Problems)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#too-much-overlap-problems">Too Much Overlap (Problems)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-0">Overlap = 0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-50">Overlap &gt; 50%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-overlap-at-query-time">Changing overlap at query time</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-overlap-vs-sliding-window">Chunk Overlap vs Sliding Window</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

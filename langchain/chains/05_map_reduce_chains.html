@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>MapReduce Chain &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/chains/05_map_reduce_chains';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/chains/05_map_reduce_chains.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/chains/05_map_reduce_chains.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/chains/05_map_reduce_chains.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MapReduce Chain</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-mapreduce-chain-is">What a MapReduce Chain Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-mapreduce-chain-exists">Why MapReduce Chain Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-phases-explained">Core Phases Explained</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-phase">Map Phase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduce-phase">Reduce Phase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-mapreduce-chain-demonstration">Basic MapReduce Chain Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-map-prompt">Step 1: Define Map Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-define-reduce-prompt">Step 2: Define Reduce Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-create-the-mapreduce-chain">Step 3: Create the MapReduce Chain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-run-the-chain">Step 4: Run the Chain</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#internal-execution-simplified">Internal Execution (Simplified)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapreduce-vs-stuff-chain">MapReduce vs Stuff Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapreduce-vs-refine-chain">MapReduce vs Refine Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-mapreduce-chain">Limitations of MapReduce Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapreduce-chain-vs-lcel-modern-approach">MapReduce Chain vs LCEL (Modern Approach)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#legacy-mapreduce">Legacy MapReduce</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-equivalent-conceptual">LCEL Equivalent (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-mapreduce-chain">When to Use MapReduce Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-it">When NOT to Use It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mapreduce-chain" id="id1">MapReduce Chain</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-a-mapreduce-chain-is" id="id2">What a MapReduce Chain Is</a></p></li>
+<li><p><a class="reference internal" href="#why-mapreduce-chain-exists" id="id3">Why MapReduce Chain Exists</a></p></li>
+<li><p><a class="reference internal" href="#conceptual-flow" id="id4">Conceptual Flow</a></p></li>
+<li><p><a class="reference internal" href="#core-phases-explained" id="id5">Core Phases Explained</a></p></li>
+<li><p><a class="reference internal" href="#map-phase" id="id6">Map Phase</a></p></li>
+<li><p><a class="reference internal" href="#reduce-phase" id="id7">Reduce Phase</a></p></li>
+<li><p><a class="reference internal" href="#basic-mapreduce-chain-demonstration" id="id8">Basic MapReduce Chain Demonstration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-define-map-prompt" id="id9">Step 1: Define Map Prompt</a></p></li>
+<li><p><a class="reference internal" href="#step-2-define-reduce-prompt" id="id10">Step 2: Define Reduce Prompt</a></p></li>
+<li><p><a class="reference internal" href="#step-3-create-the-mapreduce-chain" id="id11">Step 3: Create the MapReduce Chain</a></p></li>
+<li><p><a class="reference internal" href="#step-4-run-the-chain" id="id12">Step 4: Run the Chain</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#internal-execution-simplified" id="id13">Internal Execution (Simplified)</a></p></li>
+<li><p><a class="reference internal" href="#common-use-cases" id="id14">Common Use Cases</a></p></li>
+<li><p><a class="reference internal" href="#mapreduce-vs-stuff-chain" id="id15">MapReduce vs Stuff Chain</a></p></li>
+<li><p><a class="reference internal" href="#mapreduce-vs-refine-chain" id="id16">MapReduce vs Refine Chain</a></p></li>
+<li><p><a class="reference internal" href="#limitations-of-mapreduce-chain" id="id17">Limitations of MapReduce Chain</a></p></li>
+<li><p><a class="reference internal" href="#mapreduce-chain-vs-lcel-modern-approach" id="id18">MapReduce Chain vs LCEL (Modern Approach)</a></p></li>
+<li><p><a class="reference internal" href="#legacy-mapreduce" id="id19">Legacy MapReduce</a></p></li>
+<li><p><a class="reference internal" href="#lcel-equivalent-conceptual" id="id20">LCEL Equivalent (Conceptual)</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-mapreduce-chain" id="id21">When to Use MapReduce Chain</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-it" id="id22">When NOT to Use It</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id23">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id24">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id25">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="mapreduce-chain">
+<h1><a class="toc-backref" href="#id1">MapReduce Chain</a><a class="headerlink" href="#mapreduce-chain" title="Permalink to this heading">#</a></h1>
+<section id="what-a-mapreduce-chain-is">
+<h2><a class="toc-backref" href="#id2">What a MapReduce Chain Is</a><a class="headerlink" href="#what-a-mapreduce-chain-is" title="Permalink to this heading">#</a></h2>
+<p>A <strong>MapReduce Chain</strong> is a LangChain abstraction designed to <strong>process large inputs by splitting them into chunks</strong>, handling each chunk independently (<strong>Map phase</strong>), and then <strong>combining the partial results into a final answer</strong> (<strong>Reduce phase</strong>).</p>
+<blockquote>
+<div><p>It is inspired by the classic <strong>MapReduce</strong> pattern used in distributed systems.</p>
+</div></blockquote>
+<p>This chain is commonly used for <strong>summarization, analysis, and aggregation</strong> over large documents.</p>
+</section>
+<hr class="docutils" />
+<section id="why-mapreduce-chain-exists">
+<h2><a class="toc-backref" href="#id3">Why MapReduce Chain Exists</a><a class="headerlink" href="#why-mapreduce-chain-exists" title="Permalink to this heading">#</a></h2>
+<p>LLMs have <strong>context window limits</strong>.
+Large documents cannot be processed in a single prompt.</p>
+<p>MapReduce solves this by:</p>
+<ul class="simple">
+<li><p>Scaling to large inputs</p></li>
+<li><p>Avoiding context overflow</p></li>
+<li><p>Enabling parallel processing</p></li>
+<li><p>Improving reliability on long texts</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="conceptual-flow">
+<h2><a class="toc-backref" href="#id4">Conceptual Flow</a><a class="headerlink" href="#conceptual-flow" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Large Input
+   ↓
+Split into chunks
+   ↓
+Map: Process each chunk independently
+   ↓
+Reduce: Combine partial results
+   ↓
+Final Output
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="core-phases-explained">
+<h2><a class="toc-backref" href="#id5">Core Phases Explained</a><a class="headerlink" href="#core-phases-explained" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="map-phase">
+<h2><a class="toc-backref" href="#id6">Map Phase</a><a class="headerlink" href="#map-phase" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Each chunk is sent to the LLM independently</p></li>
+<li><p>Produces partial outputs (e.g., summaries, insights)</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Chunk 1 → Summary 1
+Chunk 2 → Summary 2
+Chunk 3 → Summary 3
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="reduce-phase">
+<h2><a class="toc-backref" href="#id7">Reduce Phase</a><a class="headerlink" href="#reduce-phase" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>All partial outputs are combined</p></li>
+<li><p>LLM synthesizes a final result</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[Summary 1, Summary 2, Summary 3] → Final Summary
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="basic-mapreduce-chain-demonstration">
+<h2><a class="toc-backref" href="#id8">Basic MapReduce Chain Demonstration</a><a class="headerlink" href="#basic-mapreduce-chain-demonstration" title="Permalink to this heading">#</a></h2>
+<section id="step-1-define-map-prompt">
+<h3><a class="toc-backref" href="#id9">Step 1: Define Map Prompt</a><a class="headerlink" href="#step-1-define-map-prompt" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span>
+
+<span class="n">map_prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Summarize the following text:</span><span class="se">\n</span><span class="si">{text}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-2-define-reduce-prompt">
+<h3><a class="toc-backref" href="#id10">Step 2: Define Reduce Prompt</a><a class="headerlink" href="#step-2-define-reduce-prompt" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reduce_prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Combine the following summaries into a concise final summary:</span><span class="se">\n</span><span class="si">{text}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-3-create-the-mapreduce-chain">
+<h3><a class="toc-backref" href="#id11">Step 3: Create the MapReduce Chain</a><a class="headerlink" href="#step-3-create-the-mapreduce-chain" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains.summarize</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_summarize_chain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">load_summarize_chain</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">chain_type</span><span class="o">=</span><span class="s2">&quot;map_reduce&quot;</span><span class="p">,</span>
+    <span class="n">map_prompt</span><span class="o">=</span><span class="n">map_prompt</span><span class="p">,</span>
+    <span class="n">combine_prompt</span><span class="o">=</span><span class="n">reduce_prompt</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From C:\Users\sangouda\AppData\Roaming\Python\Python312\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-4-run-the-chain">
+<h3><a class="toc-backref" href="#id12">Step 4: Run the Chain</a><a class="headerlink" href="#step-4-run-the-chain" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.documents</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="c1"># Create sample documents</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;Artificial Intelligence is transforming industries worldwide. Machine learning algorithms enable computers to learn from data and improve their performance over time without explicit programming.&quot;</span><span class="p">),</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;Natural Language Processing allows machines to understand and generate human language. Applications include chatbots, translation services, and sentiment analysis.&quot;</span><span class="p">),</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;Computer vision enables machines to interpret and understand visual information from the world. It powers technologies like facial recognition, autonomous vehicles, and medical image analysis.&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input_documents&quot;</span><span class="p">:</span> <span class="n">documents</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;output_text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Artificial Intelligence is transforming industries through machine learning algorithms that enable computers to autonomously improve their performance. Key areas of AI include Natural Language Processing (NLP), which allows machines to understand and generate human language for applications like chatbots and translation services, and computer vision, which enables the interpretation of visual information for technologies such as facial recognition and autonomous vehicles.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">documents</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">Document</span></code> objects</p></li>
+<li><p>Each document is processed in the map phase</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="internal-execution-simplified">
+<h2><a class="toc-backref" href="#id13">Internal Execution (Simplified)</a><a class="headerlink" href="#internal-execution-simplified" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">:</span>
+    <span class="n">map_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LLM</span><span class="p">(</span><span class="n">map_prompt</span><span class="p">(</span><span class="n">doc</span><span class="p">)))</span>
+
+<span class="n">final_output</span> <span class="o">=</span> <span class="n">LLM</span><span class="p">(</span><span class="n">reduce_prompt</span><span class="p">(</span><span class="n">map_output</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="common-use-cases">
+<h2><a class="toc-backref" href="#id14">Common Use Cases</a><a class="headerlink" href="#common-use-cases" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Long document summarization</p></li>
+<li><p>Meeting transcript summarization</p></li>
+<li><p>Log analysis</p></li>
+<li><p>Report aggregation</p></li>
+<li><p>Multi-document RAG summarization</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mapreduce-vs-stuff-chain">
+<h2><a class="toc-backref" href="#id15">MapReduce vs Stuff Chain</a><a class="headerlink" href="#mapreduce-vs-stuff-chain" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>MapReduce</p></th>
+<th class="head"><p>Stuff</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Scalability</p></td>
+<td><p>High</p></td>
+<td><p>Low</p></td>
+</tr>
+<tr class="row-odd"><td><p>Context size</p></td>
+<td><p>Small per chunk</p></td>
+<td><p>Entire input</p></td>
+</tr>
+<tr class="row-even"><td><p>Parallelism</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cost</p></td>
+<td><p>Higher</p></td>
+<td><p>Lower</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="mapreduce-vs-refine-chain">
+<h2><a class="toc-backref" href="#id16">MapReduce vs Refine Chain</a><a class="headerlink" href="#mapreduce-vs-refine-chain" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>MapReduce</p></th>
+<th class="head"><p>Refine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Processing</p></td>
+<td><p>Parallel</p></td>
+<td><p>Sequential</p></td>
+</tr>
+<tr class="row-odd"><td><p>Latency</p></td>
+<td><p>Lower (parallel)</p></td>
+<td><p>Higher</p></td>
+</tr>
+<tr class="row-even"><td><p>Accuracy</p></td>
+<td><p>Medium</p></td>
+<td><p>Higher</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="limitations-of-mapreduce-chain">
+<h2><a class="toc-backref" href="#id17">Limitations of MapReduce Chain</a><a class="headerlink" href="#limitations-of-mapreduce-chain" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>❌ More LLM calls (higher cost)</p></li>
+<li><p>❌ Loss of global context in map phase</p></li>
+<li><p>❌ Legacy abstraction</p></li>
+<li><p>❌ Less control than LCEL</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mapreduce-chain-vs-lcel-modern-approach">
+<h2><a class="toc-backref" href="#id18">MapReduce Chain vs LCEL (Modern Approach)</a><a class="headerlink" href="#mapreduce-chain-vs-lcel-modern-approach" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="legacy-mapreduce">
+<h2><a class="toc-backref" href="#id19">Legacy MapReduce</a><a class="headerlink" href="#legacy-mapreduce" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">load_summarize_chain</span><span class="p">(</span><span class="n">chain_type</span><span class="o">=</span><span class="s2">&quot;map_reduce&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="lcel-equivalent-conceptual">
+<h2><a class="toc-backref" href="#id20">LCEL Equivalent (Conceptual)</a><a class="headerlink" href="#lcel-equivalent-conceptual" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chunks</span> <span class="o">|</span> <span class="n">map_chain</span> <span class="o">|</span> <span class="n">reduce_chain</span>
+</pre></div>
+</div>
+<p>LCEL allows:</p>
+<ul class="simple">
+<li><p>Custom aggregation</p></li>
+<li><p>Parallelism</p></li>
+<li><p>Streaming</p></li>
+<li><p>Better observability</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-mapreduce-chain">
+<h2><a class="toc-backref" href="#id21">When to Use MapReduce Chain</a><a class="headerlink" href="#when-to-use-mapreduce-chain" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Very large documents</p></li>
+<li><p>Summarization tasks</p></li>
+<li><p>When context limits are hit</p></li>
+<li><p>Legacy LangChain codebases</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-not-to-use-it">
+<h2><a class="toc-backref" href="#id22">When NOT to Use It</a><a class="headerlink" href="#when-not-to-use-it" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Small inputs</p></li>
+<li><p>High-precision reasoning</p></li>
+<li><p>Agent-based workflows</p></li>
+<li><p>New projects (prefer LCEL)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id23">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use deterministic settings (temperature = 0)</p></li>
+<li><p>Keep map outputs concise</p></li>
+<li><p>Limit number of chunks</p></li>
+<li><p>Validate reduce output</p></li>
+<li><p>Monitor token usage</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id24">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“A MapReduce Chain in LangChain processes large inputs by splitting them into chunks, summarizing or analyzing each chunk independently, and then combining the results. It enables scalable LLM processing but is a legacy abstraction superseded by LCEL.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id25">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Large documents → MapReduce</strong></p></li>
+<li><p><strong>Small documents → Stuff</strong></p></li>
+<li><p><strong>Incremental understanding → Refine</strong></p></li>
+<li><p><strong>New systems → LCEL-based pipelines</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\chains"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-mapreduce-chain-is">What a MapReduce Chain Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-mapreduce-chain-exists">Why MapReduce Chain Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-phases-explained">Core Phases Explained</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-phase">Map Phase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduce-phase">Reduce Phase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-mapreduce-chain-demonstration">Basic MapReduce Chain Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-map-prompt">Step 1: Define Map Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-define-reduce-prompt">Step 2: Define Reduce Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-create-the-mapreduce-chain">Step 3: Create the MapReduce Chain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-run-the-chain">Step 4: Run the Chain</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#internal-execution-simplified">Internal Execution (Simplified)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapreduce-vs-stuff-chain">MapReduce vs Stuff Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapreduce-vs-refine-chain">MapReduce vs Refine Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-mapreduce-chain">Limitations of MapReduce Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapreduce-chain-vs-lcel-modern-approach">MapReduce Chain vs LCEL (Modern Approach)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#legacy-mapreduce">Legacy MapReduce</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-equivalent-conceptual">LCEL Equivalent (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-mapreduce-chain">When to Use MapReduce Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-it">When NOT to Use It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

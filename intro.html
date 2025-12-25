@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>LangChain Tutorial &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/tabs.js"></script>
+    <script src="_static/js/hoverxref.js"></script>
+    <script src="_static/js/tooltipster.bundle.min.js"></script>
+    <script src="_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="LangChain Core" href="langchain/core/overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/01_llms.html">LLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/02_chat_models.html">Chat Model</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/03_model_providers.html">Model Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/04_prompt_templates.html">Prompt Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/05_output_parsers.html">Output Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/06_runnable_interface.html">Runnable Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/07_lcel.html">LangChain Expression Language (LCEL)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/08_model_parameters.html">Model Parameters</a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/01_prompt_template.html">PromptTemplate (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/02_chat_prompt_template.html">ChatPromptTemplate (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/03_system_human_ai_messages.html">System / Human / AI Messages (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/04_few_shot_prompting.html">Few-shot Prompting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/05_chain_of_thought.html">Chain-of-Thought (CoT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/06_self_consistency.html">Self-Consistency (LangChain Perspective)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/07_instruction_prompting.html">Instruction Tuning (LangChain &amp; LLM Perspective)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/08_structured_output_prompts.html">Structured Output Prompts (LangChain Perspective)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/09_guardrails.html">Guardrails (LangChain Perspective)</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/intro.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/intro.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LangChain Tutorial</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="langchain-tutorial">
+<h1>LangChain Tutorial<a class="headerlink" href="#langchain-tutorial" title="Permalink to this heading">#</a></h1>
+<p>A comprehensive guide to building production-ready AI applications with LangChain.</p>
+<p>This tutorial covers everything from core concepts to advanced patterns, helping you master LangChain for building agents, RAG systems, and intelligent applications.</p>
+<hr class="docutils" />
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-3 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Core Concepts</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/core/01_llms.html"><span class="doc std std-doc">LLMs</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/core/02_chat_models.html"><span class="doc std std-doc">Chat Models</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/core/03_model_providers.html"><span class="doc std std-doc">Model Providers</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/core/04_prompt_templates.html"><span class="doc std std-doc">Prompt Templates</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/core/05_output_parsers.html"><span class="doc std std-doc">Output Parsers</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/core/06_runnable_interface.html"><span class="doc std std-doc">Runnable Interface</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/core/07_lcel.html"><span class="doc std std-doc">LCEL</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/core/08_model_parameters.html"><span class="doc std std-doc">Model Parameters</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Prompt Engineering</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/01_prompt_template.html"><span class="doc std std-doc">Prompt Template</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/02_chat_prompt_template.html"><span class="doc std std-doc">Chat Prompt Template</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/03_system_human_ai_messages.html"><span class="doc std std-doc">System Human AI Messages</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/04_few_shot_prompting.html"><span class="doc std std-doc">Few Shot Prompting</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/05_chain_of_thought.html"><span class="doc std std-doc">Chain of Thought</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/06_self_consistency.html"><span class="doc std std-doc">Self Consistency</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/07_instruction_prompting.html"><span class="doc std std-doc">Instruction Prompting</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/08_structured_output_prompts.html"><span class="doc std std-doc">Structured Output Prompts</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/prompt_engineering/09_guardrails.html"><span class="doc std std-doc">Guardrails</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Chains &amp; LCEL</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/01_llmchain.html"><span class="doc std std-doc">LLMChain</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/02_sequential_chain.html"><span class="doc std std-doc">Sequential Chain</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/03_simple_sequential_chain.html"><span class="doc std std-doc">Simple Sequential Chain</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/04_router_chain.html"><span class="doc std std-doc">Router Chain</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/05_map_reduce_chains.html"><span class="doc std std-doc">Map-Reduce Chains</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/06_refine_chain.html"><span class="doc std std-doc">Refine Chain</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/07_stuff_chain.html"><span class="doc std std-doc">Stuff Chain</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/08_transform_chain.html"><span class="doc std std-doc">Transform Chain</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/09_retrievalqa_chain.html"><span class="doc std std-doc">RetrievalQA Chain</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/chains/10_conversational_retrieval_chain.html"><span class="doc std std-doc">Conversational Retrieval Chain</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">RAG Systems</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/01_document_loaders.html"><span class="doc std std-doc">Document Loaders</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/02_text_splitters.html"><span class="doc std std-doc">Text Splitters</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/03_chunk_overlap.html"><span class="doc std std-doc">Chunk Overlap</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/04_embeddings.html"><span class="doc std std-doc">Embeddings</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/05_vector_stores.html"><span class="doc std std-doc">Vector Stores</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/06_similarity_search.html"><span class="doc std std-doc">Similarity Search</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/07_mmr.html"><span class="doc std std-doc">MMR</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/08_hybrid_search.html"><span class="doc std std-doc">Hybrid Search</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/09_reranking.html"><span class="doc std std-doc">Reranking</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/10_context_window_management.html"><span class="doc std std-doc">Context Window Management</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/11_source_attribution.html"><span class="doc std std-doc">Source Attribution</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/12_hallucination_prevention.html"><span class="doc std std-doc">Hallucination Prevention</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/rag/13_types_of_rag.html"><span class="doc std std-doc">Types of RAG</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Agents &amp; Tools</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/01_tool_calling.html"><span class="doc std std-doc">Tool Calling</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/02_react_agents.html"><span class="doc std std-doc">ReAct Agents</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/03_openai_tools_agent.html"><span class="doc std std-doc">OpenAI Tools Agent</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/04_conversational_agents.html"><span class="doc std std-doc">Conversational Agents</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/05_multi_tool_agents.html"><span class="doc std std-doc">Multi Tool Agents</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/06_function_calling.html"><span class="doc std std-doc">Function Calling</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/07_agent_scratchpad.html"><span class="doc std std-doc">Agent Scratchpad</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/08_agent_executor.html"><span class="doc std std-doc">Agent Executor</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/09_agent_memory.html"><span class="doc std std-doc">Agent Memory</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/agents/10_planning_vs_execution_agents.html"><span class="doc std std-doc">Planning vs Execution Agents</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Tools Development</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/tools/01_custom_tools.html"><span class="doc std std-doc">Custom Tools</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/tools/02_structured_tools.html"><span class="doc std std-doc">Structured Tools</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/tools/03_tool_schemas.html"><span class="doc std std-doc">Tool Schemas</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/tools/04_api_tools.html"><span class="doc std std-doc">API Tools</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/tools/05_database_tools.html"><span class="doc std std-doc">Database Tools</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/tools/06_file_system_tools.html"><span class="doc std std-doc">File System Tools</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/tools/07_web_search_tools.html"><span class="doc std std-doc">Web Search Tools</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/tools/08_mcp_tool_adapters.html"><span class="doc std std-doc">MCP Tool Adapters</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Memory &amp; Caching</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/memory/01_conversation_buffer_memory.html"><span class="doc std std-doc">Conversation Buffer Memory</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/memory/02_conversation_summary_memory.html"><span class="doc std std-doc">Conversation Summary Memory</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/memory/03_conversation_buffer_window_memory.html"><span class="doc std std-doc">Conversation Buffer Window Memory</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/memory/04_vectorstore_backed_memory.html"><span class="doc std std-doc">VectorStore Backed Memory</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/memory/05_entity_memory.html"><span class="doc std std-doc">Entity Memory</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/memory/06_session_based_memory.html"><span class="doc std std-doc">Session Based Memory</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/memory/07_long_term_vs_short_term_memory.html"><span class="doc std std-doc">Long Term vs Short Term Memory</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">LCEL Deep Dive</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/lcel/01_runnable_passthrough.html"><span class="doc std std-doc">Runnable Passthrough</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/lcel/02_runnable_lambda.html"><span class="doc std std-doc">Runnable Lambda</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/lcel/03_runnable_parallel.html"><span class="doc std std-doc">Runnable Parallel</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/lcel/04_runnable_sequence.html"><span class="doc std std-doc">Runnable Sequence</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/lcel/05_streaming_runnables.html"><span class="doc std std-doc">Streaming Runnables</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/lcel/06_batch_execution.html"><span class="doc std std-doc">Batch Execution</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/lcel/07_async_execution.html"><span class="doc std std-doc">Async Execution</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/lcel/08_retry_and_fallbacks.html"><span class="doc std std-doc">Retry and Fallbacks</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Streaming &amp; Callbacks</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/streaming_callbacks/01_token_streaming.html"><span class="doc std std-doc">Token Streaming</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/streaming_callbacks/02_callback_handlers.html"><span class="doc std std-doc">Callback Handlers</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/streaming_callbacks/03_tracing.html"><span class="doc std std-doc">Tracing</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/streaming_callbacks/04_logging.html"><span class="doc std std-doc">Logging</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/streaming_callbacks/05_observability_hooks.html"><span class="doc std std-doc">Observability Hooks</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/streaming_callbacks/06_cost_tracking.html"><span class="doc std std-doc">Cost Tracking</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/streaming_callbacks/07_latency_tracking.html"><span class="doc std std-doc">Latency Tracking</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Evaluation &amp; Metrics</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/evaluation/01_llm_evaluation.html"><span class="doc std std-doc">LLM Evaluation</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/evaluation/02_rag_evaluation.html"><span class="doc std std-doc">RAG Evaluation</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/evaluation/03_faithfulness.html"><span class="doc std std-doc">Faithfulness</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/evaluation/04_relevance.html"><span class="doc std std-doc">Relevance</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/evaluation/05_answer_correctness.html"><span class="doc std std-doc">Answer Correctness</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/evaluation/06_synthetic_data_generation.html"><span class="doc std std-doc">Synthetic Data Generation</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/evaluation/07_regression_testing.html"><span class="doc std std-doc">Regression Testing</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/evaluation/08_prompt_versioning.html"><span class="doc std std-doc">Prompt Versioning</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Data Ingestion</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/data_ingestion/01_pdf_csv_html_loaders.html"><span class="doc std std-doc">PDF CSV HTML Loaders</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/data_ingestion/02_web_scraping.html"><span class="doc std std-doc">Web Scraping</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/data_ingestion/03_api_based_loaders.html"><span class="doc std std-doc">API Based Loaders</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/data_ingestion/04_data_cleaning.html"><span class="doc std std-doc">Data Cleaning</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/data_ingestion/05_metadata_enrichment.html"><span class="doc std std-doc">Metadata Enrichment</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/data_ingestion/06_document_versioning.html"><span class="doc std std-doc">Document Versioning</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/data_ingestion/07_incremental_ingestion.html"><span class="doc std std-doc">Incremental Ingestion</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/data_ingestion/08_cdc_style_updates.html"><span class="doc std std-doc">CDC Style Updates</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Caching Strategies</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/caching/01_prompt_caching.html"><span class="doc std std-doc">Prompt Caching</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/caching/02_llm_response_caching.html"><span class="doc std std-doc">LLM Response Caching</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/caching/03_embedding_caching.html"><span class="doc std std-doc">Embedding Caching</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/caching/04_redis_cache.html"><span class="doc std std-doc">Redis Cache</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/caching/05_in_memory_cache.html"><span class="doc std std-doc">In Memory Cache</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/caching/06_cache_invalidation.html"><span class="doc std std-doc">Cache Invalidation</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/caching/07_rate_limiting.html"><span class="doc std std-doc">Rate Limiting</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Security &amp; Integration</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/security/01_prompt_injection_detection.html"><span class="doc std std-doc">Prompt Injection Detection</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/security/02_input_sanitization.html"><span class="doc std std-doc">Input Sanitization</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/security/03_output_validation.html"><span class="doc std std-doc">Output Validation</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/security/04_content_filtering.html"><span class="doc std std-doc">Content Filtering</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/security/05_secrets_management.html"><span class="doc std std-doc">Secrets Management</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/security/06_role_based_access.html"><span class="doc std std-doc">Role Based Access</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Production &amp; Deployment</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/deployment/01_fastapi_integration.html"><span class="doc std std-doc">FastAPI Integration</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/deployment/02_gradio_streamlit_ui.html"><span class="doc std std-doc">Gradio Streamlit UI</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/deployment/03_background_tasks.html"><span class="doc std std-doc">Background Tasks</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/deployment/04_async_workers.html"><span class="doc std std-doc">Async Workers</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/deployment/05_server_sent_events.html"><span class="doc std std-doc">Server Sent Events</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/deployment/06_websockets.html"><span class="doc std std-doc">WebSockets</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/deployment/07_load_balancing.html"><span class="doc std std-doc">Load Balancing</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/deployment/08_horizontal_scaling.html"><span class="doc std std-doc">Horizontal Scaling</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Interoperability</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/interoperability/01_langgraph_integration.html"><span class="doc std std-doc">LangGraph Integration</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/interoperability/02_llamaindex_integration.html"><span class="doc std std-doc">LlamaIndex Integration</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/interoperability/03_mcp_integration.html"><span class="doc std std-doc">MCP Integration</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/interoperability/04_external_vector_dbs.html"><span class="doc std std-doc">External Vector DBs</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/interoperability/05_cloud_services.html"><span class="doc std std-doc">Cloud Services</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Production Best Practices</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/production/01_config_management.html"><span class="doc std std-doc">Config Management</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/production/02_environment_separation.html"><span class="doc std std-doc">Environment Separation</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/production/03_cicd_for_prompts.html"><span class="doc std std-doc">CI/CD for Prompts</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/production/04_versioned_pipelines.html"><span class="doc std std-doc">Versioned Pipelines</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/production/05_rollbacks.html"><span class="doc std std-doc">Rollbacks</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/production/06_monitoring_and_alerts.html"><span class="doc std std-doc">Monitoring and Alerts</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/production/07_cost_optimization.html"><span class="doc std std-doc">Cost Optimization</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Metrics &amp; Monitoring</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/metrics/01_intrinsic_metrics.html"><span class="doc std std-doc">Intrinsic Metrics</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/metrics/02_task_metrics.html"><span class="doc std std-doc">Task Metrics</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/metrics/03_RAG_metrics.html"><span class="doc std std-doc">RAG Metrics</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/metrics/04_safety_metrics.html"><span class="doc std std-doc">Safety Metrics</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/metrics/05_perf_metrics.html"><span class="doc std std-doc">Performance Metrics</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/metrics/06_cost_effeciency_metrics.html"><span class="doc std std-doc">Cost Efficiency Metrics</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/metrics/07_reliability_stability_metrics.html"><span class="doc std std-doc">Reliability Stability Metrics</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/metrics/08_user_experience_metrics.html"><span class="doc std std-doc">User Experience Metrics</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header bg-grid-header docutils">
+<p class="sd-card-text"><span class="grid-title">Advanced Patterns</span></p>
+</div>
+<div class="sd-card-body grid-center bg-grid-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/advanced/01_agentic_rag.html"><span class="doc std std-doc">Agentic RAG</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/advanced/02_context_aware_rag.html"><span class="doc std std-doc">Context-Aware RAG</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/advanced/03_hierarchical_agents.html"><span class="doc std std-doc">Hierarchical Agents</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/advanced/04_self_reflection.html"><span class="doc std std-doc">Self-Reflection</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/advanced/05_tool_reranking.html"><span class="doc std std-doc">Tool Reranking</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/advanced/06_online_learning_from_feedback.html"><span class="doc std std-doc">Online Learning from Feedback</span></a></p></li>
+<li><p class="sd-card-text"><a class="reference internal" href="langchain/advanced/07_multi_modal_chains.html"><span class="doc std std-doc">Multi-Modal Chains</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="langchain/core/overview.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">LangChain Core</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

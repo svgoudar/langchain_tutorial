@@ -1,0 +1,1275 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Streaming Runnables &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/lcel/05_streaming_runnables';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/lcel/05_streaming_runnables.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/lcel/05_streaming_runnables.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/lcel/05_streaming_runnables.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Streaming Runnables</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-streaming-is-important">Why Streaming Is Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-streaming-works-internally">How Streaming Works Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-a-runnable-directly-llm-only">Streaming a Runnable Directly (LLM Only)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-runnablesequence">Streaming with RunnableSequence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-runnableparallel">Streaming with RunnableParallel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-events-with-astream-events-advanced">Streaming Events with <code class="docutils literal notranslate"><span class="pre">.astream_events()</span></code> (Advanced)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-fastapi-real-world-pattern">Streaming + FastAPI (Real-World Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-can-and-cannot-stream">What Can and Cannot Stream</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-vs-non-streaming-execution">Streaming vs Non-Streaming Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#streaming-runnables" id="id1">Streaming Runnables</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-streaming-is-important" id="id2">Why Streaming Is Important</a></p></li>
+<li><p><a class="reference internal" href="#how-streaming-works-internally" id="id3">How Streaming Works Internally</a></p></li>
+<li><p><a class="reference internal" href="#architecture-view" id="id4">Architecture View</a></p></li>
+<li><p><a class="reference internal" href="#streaming-a-runnable-directly-llm-only" id="id5">Streaming a Runnable Directly (LLM Only)</a></p></li>
+<li><p><a class="reference internal" href="#streaming-with-runnablesequence" id="id6">Streaming with RunnableSequence</a></p></li>
+<li><p><a class="reference internal" href="#streaming-with-runnableparallel" id="id7">Streaming with RunnableParallel</a></p></li>
+<li><p><a class="reference internal" href="#streaming-events-with-astream-events-advanced" id="id8">Streaming Events with <code class="docutils literal notranslate"><span class="pre">.astream_events()</span></code> (Advanced)</a></p></li>
+<li><p><a class="reference internal" href="#streaming-fastapi-real-world-pattern" id="id9">Streaming + FastAPI (Real-World Pattern)</a></p></li>
+<li><p><a class="reference internal" href="#what-can-and-cannot-stream" id="id10">What Can and Cannot Stream</a></p></li>
+<li><p><a class="reference internal" href="#streaming-vs-non-streaming-execution" id="id11">Streaming vs Non-Streaming Execution</a></p></li>
+<li><p><a class="reference internal" href="#common-use-cases" id="id12">Common Use Cases</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id13">Common Mistakes</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id14">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id15">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="streaming-runnables">
+<h1><a class="toc-backref" href="#id1">Streaming Runnables</a><a class="headerlink" href="#streaming-runnables" title="Permalink to this heading">#</a></h1>
+<p><strong>Streaming Runnables</strong> allow a LangChain runnable to <strong>emit partial outputs incrementally</strong> instead of waiting for the full result.
+This is essential for <strong>token-by-token LLM responses</strong>, real-time UIs, and low-latency user experience.</p>
+<p>Supported natively in LangChain via the <strong>Runnable interface</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Input
+  ↓
+Runnable (LLM)
+  ↓
+Token Stream → UI / Client
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="why-streaming-is-important">
+<h2><a class="toc-backref" href="#id2">Why Streaming Is Important</a><a class="headerlink" href="#why-streaming-is-important" title="Permalink to this heading">#</a></h2>
+<p>Without streaming:</p>
+<ul class="simple">
+<li><p>User waits for full response</p></li>
+<li><p>High perceived latency</p></li>
+<li><p>Poor UX for long answers</p></li>
+</ul>
+<p>With streaming:</p>
+<ul class="simple">
+<li><p>Tokens arrive immediately</p></li>
+<li><p>Faster feedback</p></li>
+<li><p>ChatGPT-like experience</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="how-streaming-works-internally">
+<h2><a class="toc-backref" href="#id3">How Streaming Works Internally</a><a class="headerlink" href="#how-streaming-works-internally" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Runnable is invoked in <strong>streaming mode</strong></p></li>
+<li><p>LLM emits tokens/chunks</p></li>
+<li><p>Each chunk is yielded immediately</p></li>
+<li><p>Client consumes the stream</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LLM generates → token → token → token → done
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="architecture-view">
+<h2><a class="toc-backref" href="#id4">Architecture View</a><a class="headerlink" href="#architecture-view" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://dz2cdn1.dzone.com/storage/temp/18047285-screenshot-2024-11-18-at-121208pm.png" /></p>
+<p><img alt="Image" src="https://miro.medium.com/0%2AkNsNAIa_9n4z0qGU" /></p>
+<p><img alt="Image" src="https://langtail-web.vercel.app/images/blog/token-flow.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="streaming-a-runnable-directly-llm-only">
+<h2><a class="toc-backref" href="#id5">Streaming a Runnable Directly (LLM Only)</a><a class="headerlink" href="#streaming-a-runnable-directly-llm-only" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">llm</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="s2">&quot;Explain streaming runnables&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Streaming runnables are a concept in programming where a series of tasks or operations are executed concurrently in a continuous flow, or &quot;stream&quot;. This can be achieved through the use of threads or other parallel processing techniques, allowing multiple runnables to be run simultaneously.
+
+Streaming runnables are often used in applications that require processing large amounts of data or performing complex computations. By breaking down the tasks into smaller, independent runnables that can be executed concurrently, the overall performance and efficiency of the application can be improved.
+
+One common use case for streaming runnables is in streaming applications, such as video or audio streaming services, where data is continuously processed and transmitted in real-time. By using streaming runnables, the application can handle incoming data streams more efficiently and deliver a smoother and more seamless streaming experience for the user.
+
+Overall, streaming runnables are a powerful technique for optimizing performance and efficiency in applications that require concurrent processing of tasks or operations. By leveraging parallel processing capabilities, developers can improve the overall performance and responsiveness of their applications.
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Behavior</strong></p>
+<ul class="simple">
+<li><p>Tokens are printed as they are generated</p></li>
+<li><p>No waiting for full response</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="streaming-with-runnablesequence">
+<h2><a class="toc-backref" href="#id6">Streaming with RunnableSequence</a><a class="headerlink" href="#streaming-with-runnablesequence" title="Permalink to this heading">#</a></h2>
+<p>Streaming works <strong>end-to-end</strong> through a sequence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Explain this concept briefly:</span><span class="se">\n</span><span class="si">{topic}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chain</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="s2">&quot;Runnable streaming&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Runnable streaming refers to the ability to start a process or task that involves continuously receiving and processing data in real time. This typically involves running a program or script that can handle a continuous flow of data without interruption. Examples of such tasks include streaming video, audio, or sensor data, where the program needs to constantly process incoming data without waiting for it to complete before moving on to the next piece of data.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Key point:</p>
+<ul class="simple">
+<li><p>Only the <strong>final runnable</strong> (LLM) needs streaming enabled</p></li>
+<li><p>Earlier steps execute normally</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="streaming-with-runnableparallel">
+<h2><a class="toc-backref" href="#id7">Streaming with RunnableParallel</a><a class="headerlink" href="#streaming-with-runnableparallel" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableParallel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">parallel</span> <span class="o">=</span> <span class="n">RunnableParallel</span><span class="p">(</span>
+    <span class="n">short</span><span class="o">=</span><span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">),</span>
+    <span class="n">detailed</span><span class="o">=</span><span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">parallel</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="s2">&quot;Explain RAG&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;short&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;R&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;AG&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; stands&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; for&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; Red&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; Amber&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; Green&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; a&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; method&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; used&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; visually&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; categor&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;ize&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; items&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; based&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; on&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; their&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; status&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; level&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; of&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; urgency&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; \n\n&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;-&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; Red&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; typically&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; indicates&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; items&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; that&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; are&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; urgent&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; require&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; immediate&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; attention&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; \n&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;-&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; Amber&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; used&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; for&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; items&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; that&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; may&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; need&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; attention&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; soon&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; but&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; are&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; not&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; as&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; critical&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; as&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; red&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; items&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; \n&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;-&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; Green&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; typically&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; used&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; for&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; items&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; that&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; are&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; on&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; track&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; not&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; urgent&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; at&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; the&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; moment&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;.\n\n&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;This&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; system&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; often&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; used&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; in&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; project&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; management&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; risk&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; assessment&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; decision&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;-making&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; processes&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; quickly&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; identify&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; priorities&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; allocate&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; resources&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39; effectively&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;)}
+{&#39;short&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;, usage_metadata={&#39;input_tokens&#39;: 11, &#39;output_tokens&#39;: 107, &#39;total_tokens&#39;: 118, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})}
+{&#39;short&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={}, id=&#39;lc_run--019b4bf2-a952-7823-a5b2-c1c277024024&#39;, chunk_position=&#39;last&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;R&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;AG&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; stands&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; for&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; Remote&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; Access&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; Gateway&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; It&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; a&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; device&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; software&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; which&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; provides&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; a&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; secure&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; efficient&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; method&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; access&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; manage&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; network&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; resources&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; remotely&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; via&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; a&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; network&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; connection&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; This&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; technology&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; commonly&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; used&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; in&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; corporate&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; environments&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; enable&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; employees&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; access&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; company&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; resources&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; securely&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; from&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; other&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; locations&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; such&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; as&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; their&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; homes&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; other&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; offices&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;.\n\n&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;In&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; addition&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; R&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;AG&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; can&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; also&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; refer&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; Ret&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;inal&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; Ang&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;iom&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;at&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;ous&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; P&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;rol&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;ifer&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;ation&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; a&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; severe&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; form&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; of&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; age&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;-related&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; mac&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;ular&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; deg&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;eneration&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; the&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; Registrar&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; Accred&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;itation&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; Agreement&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; a&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; contract&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; between&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; IC&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;ANN&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; domain&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; name&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; registr&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;ars&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; The&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; specific&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; meaning&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; of&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; R&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;AG&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; depends&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; on&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; the&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; context&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; in&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; which&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; it&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39; used&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-4-0613&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;)}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;, usage_metadata={&#39;input_tokens&#39;: 11, &#39;output_tokens&#39;: 127, &#39;total_tokens&#39;: 138, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})}
+{&#39;detailed&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={}, id=&#39;lc_run--019b4bf2-a963-7ea1-b1ab-c321fc1380c0&#39;, chunk_position=&#39;last&#39;)}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each branch:</p>
+<ul class="simple">
+<li><p>Streams independently</p></li>
+<li><p>Output arrives as <strong>partial structured updates</strong></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="streaming-events-with-astream-events-advanced">
+<h2><a class="toc-backref" href="#id8">Streaming Events with <code class="docutils literal notranslate"><span class="pre">.astream_events()</span></code> (Advanced)</a><a class="headerlink" href="#streaming-events-with-astream-events-advanced" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">chain</span><span class="o">.</span><span class="n">astream_events</span><span class="p">(</span>
+    <span class="s2">&quot;Explain streaming&quot;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;v1&quot;</span>
+<span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;event&#39;: &#39;on_chain_start&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;data&#39;: {&#39;input&#39;: &#39;Explain streaming&#39;}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_start&#39;, &#39;name&#39;: &#39;RunnableLambda&#39;, &#39;run_id&#39;: &#39;019b4bf3-79ce-7172-8e18-9d27f71fe613&#39;, &#39;tags&#39;: [&#39;seq:step:1&#39;], &#39;metadata&#39;: {}, &#39;data&#39;: {}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;name&#39;: &#39;RunnableLambda&#39;, &#39;run_id&#39;: &#39;019b4bf3-79ce-7172-8e18-9d27f71fe613&#39;, &#39;tags&#39;: [&#39;seq:step:1&#39;], &#39;metadata&#39;: {}, &#39;data&#39;: {&#39;chunk&#39;: {&#39;topic&#39;: &#39;Explain streaming&#39;}}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_end&#39;, &#39;name&#39;: &#39;RunnableLambda&#39;, &#39;run_id&#39;: &#39;019b4bf3-79ce-7172-8e18-9d27f71fe613&#39;, &#39;tags&#39;: [&#39;seq:step:1&#39;], &#39;metadata&#39;: {}, &#39;data&#39;: {&#39;input&#39;: &#39;Explain streaming&#39;, &#39;output&#39;: {&#39;topic&#39;: &#39;Explain streaming&#39;}}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_prompt_start&#39;, &#39;name&#39;: &#39;ChatPromptTemplate&#39;, &#39;run_id&#39;: &#39;019b4bf3-79d5-76d1-8f1d-722924b65a3f&#39;, &#39;tags&#39;: [&#39;seq:step:2&#39;], &#39;metadata&#39;: {}, &#39;data&#39;: {&#39;input&#39;: {&#39;topic&#39;: &#39;Explain streaming&#39;}}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_prompt_end&#39;, &#39;name&#39;: &#39;ChatPromptTemplate&#39;, &#39;run_id&#39;: &#39;019b4bf3-79d5-76d1-8f1d-722924b65a3f&#39;, &#39;tags&#39;: [&#39;seq:step:2&#39;], &#39;metadata&#39;: {}, &#39;data&#39;: {&#39;input&#39;: {&#39;topic&#39;: &#39;Explain streaming&#39;}, &#39;output&#39;: ChatPromptValue(messages=[HumanMessage(content=&#39;Explain this concept briefly:\nExplain streaming&#39;, additional_kwargs={}, response_metadata={})])}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_start&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;input&#39;: {&#39;messages&#39;: [[HumanMessage(content=&#39;Explain this concept briefly:\nExplain streaming&#39;, additional_kwargs={}, response_metadata={})]]}}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;Streaming&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;Streaming&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; is&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; the&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; the&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; continuous&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; continuous&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; transmission&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; transmission&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; of&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; of&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; audio&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; audio&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; video&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; video&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; content&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; content&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; over&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; over&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; the&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; the&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; internet&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; internet&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; in&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; in&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; real&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; real&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;-time&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;-time&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; This&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; This&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; allows&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; allows&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; users&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; users&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; access&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; access&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; watch&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; watch&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; or&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; listen&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; listen&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; content&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; content&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; without&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; without&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; having&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; having&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; download&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; download&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; it&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; it&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; first&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; first&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; Streaming&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; Streaming&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; services&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; services&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; such&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; such&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; as&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; as&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; Netflix&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; Netflix&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; Spotify&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; Spotify&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;,&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; and&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; YouTube&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; YouTube&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; make&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; make&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; it&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; it&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; possible&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; possible&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; for&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; for&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; users&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; users&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; to&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; access&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; access&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; a&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; a&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; wide&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; wide&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; variety&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; variety&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; of&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; of&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; content&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; content&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; on&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; on&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; demand&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39; demand&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;, usage_metadata={&#39;input_tokens&#39;: 16, &#39;output_tokens&#39;: 60, &#39;total_tokens&#39;: 76, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;, usage_metadata={&#39;input_tokens&#39;: 16, &#39;output_tokens&#39;: 60, &#39;total_tokens&#39;: 76, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_stream&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;, chunk_position=&#39;last&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_stream&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;data&#39;: {&#39;chunk&#39;: AIMessageChunk(content=&#39;&#39;, additional_kwargs={}, response_metadata={}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;, chunk_position=&#39;last&#39;)}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chat_model_end&#39;, &#39;name&#39;: &#39;ChatOpenAI&#39;, &#39;run_id&#39;: &#39;019b4bf3-79db-7800-a701-9431c0b01664&#39;, &#39;tags&#39;: [&#39;seq:step:3&#39;], &#39;metadata&#39;: {&#39;ls_provider&#39;: &#39;openai&#39;, &#39;ls_model_name&#39;: &#39;gpt-3.5-turbo&#39;, &#39;ls_model_type&#39;: &#39;chat&#39;, &#39;ls_temperature&#39;: None}, &#39;data&#39;: {&#39;input&#39;: {&#39;messages&#39;: [[HumanMessage(content=&#39;Explain this concept briefly:\nExplain streaming&#39;, additional_kwargs={}, response_metadata={})]]}, &#39;output&#39;: {&#39;generations&#39;: [[{&#39;text&#39;: &#39;Streaming is the continuous transmission of audio or video content over the internet in real-time. This allows users to access and watch or listen to content without having to download it first. Streaming services such as Netflix, Spotify, and YouTube make it possible for users to access a wide variety of content on demand.&#39;, &#39;generation_info&#39;: {&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;}, &#39;type&#39;: &#39;ChatGenerationChunk&#39;, &#39;message&#39;: AIMessageChunk(content=&#39;Streaming is the continuous transmission of audio or video content over the internet in real-time. This allows users to access and watch or listen to content without having to download it first. Streaming services such as Netflix, Spotify, and YouTube make it possible for users to access a wide variety of content on demand.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;, usage_metadata={&#39;input_tokens&#39;: 16, &#39;output_tokens&#39;: 60, &#39;total_tokens&#39;: 76, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})}]], &#39;llm_output&#39;: None, &#39;run&#39;: None, &#39;type&#39;: &#39;LLMResult&#39;}}, &#39;parent_ids&#39;: []}
+{&#39;event&#39;: &#39;on_chain_end&#39;, &#39;name&#39;: &#39;RunnableSequence&#39;, &#39;run_id&#39;: &#39;019b4bf3-798e-7221-a04c-bffd3c7e4968&#39;, &#39;tags&#39;: [], &#39;metadata&#39;: {}, &#39;data&#39;: {&#39;output&#39;: AIMessageChunk(content=&#39;Streaming is the continuous transmission of audio or video content over the internet in real-time. This allows users to access and watch or listen to content without having to download it first. Streaming services such as Netflix, Spotify, and YouTube make it possible for users to access a wide variety of content on demand.&#39;, additional_kwargs={}, response_metadata={&#39;model_provider&#39;: &#39;openai&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;}, id=&#39;lc_run--019b4bf3-79db-7800-a701-9431c0b01664&#39;, usage_metadata={&#39;input_tokens&#39;: 16, &#39;output_tokens&#39;: 60, &#39;total_tokens&#39;: 76, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}, chunk_position=&#39;last&#39;)}, &#39;parent_ids&#39;: []}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Event types include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">on_chain_start</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">on_llm_stream</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">on_chain_end</span></code></p></li>
+</ul>
+<p>Used for:</p>
+<ul class="simple">
+<li><p>Observability</p></li>
+<li><p>Tracing</p></li>
+<li><p>UI synchronization</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="streaming-fastapi-real-world-pattern">
+<h2><a class="toc-backref" href="#id9">Streaming + FastAPI (Real-World Pattern)</a><a class="headerlink" href="#streaming-fastapi-real-world-pattern" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamingResponse</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/chat&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chat</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">token_stream</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chain</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">chunk</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">return</span> <span class="n">StreamingResponse</span><span class="p">(</span><span class="n">token_stream</span><span class="p">(),</span> <span class="n">media_type</span><span class="o">=</span><span class="s2">&quot;text/plain&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This enables:</p>
+<ul class="simple">
+<li><p>Browser streaming</p></li>
+<li><p>SSE-like behavior</p></li>
+<li><p>Chat UIs</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="what-can-and-cannot-stream">
+<h2><a class="toc-backref" href="#id10">What Can and Cannot Stream</a><a class="headerlink" href="#what-can-and-cannot-stream" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Streaming</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LLMs</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Prompt templates</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>RunnableLambda</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Retriever</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>RunnableSequence</p></td>
+<td><p>✅ (if final step streams)</p></td>
+</tr>
+<tr class="row-odd"><td><p>RunnableParallel</p></td>
+<td><p>✅ (per branch)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Streaming happens at <strong>token-producing nodes</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="streaming-vs-non-streaming-execution">
+<h2><a class="toc-backref" href="#id11">Streaming vs Non-Streaming Execution</a><a class="headerlink" href="#streaming-vs-non-streaming-execution" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Streaming</p></th>
+<th class="head"><p>Non-Streaming</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Latency</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>UX</p></td>
+<td><p>Real-time</p></td>
+<td><p>Delayed</p></td>
+</tr>
+<tr class="row-even"><td><p>Complexity</p></td>
+<td><p>Slightly higher</p></td>
+<td><p>Simple</p></td>
+</tr>
+<tr class="row-odd"><td><p>Use case</p></td>
+<td><p>Chat / UI</p></td>
+<td><p>Batch / backend</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="common-use-cases">
+<h2><a class="toc-backref" href="#id12">Common Use Cases</a><a class="headerlink" href="#common-use-cases" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Chat applications</p></li>
+<li><p>Copilot-style assistants</p></li>
+<li><p>Live dashboards</p></li>
+<li><p>Long-form generation</p></li>
+<li><p>Agent reasoning display</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id13">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Forgetting <code class="docutils literal notranslate"><span class="pre">streaming=True</span></code></p></li>
+<li><p>Expecting non-LLM steps to stream</p></li>
+<li><p>Not handling async streams correctly</p></li>
+<li><p>Printing <code class="docutils literal notranslate"><span class="pre">chunk</span></code> instead of <code class="docutils literal notranslate"><span class="pre">chunk.content</span></code></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id14">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Streaming Runnables turn:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>invoke() → result
+</pre></div>
+</div>
+<p>into:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>stream() → chunk → chunk → chunk
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id15">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Streaming Runnables emit <strong>incremental output</strong></p></li>
+<li><p>Enabled at the <strong>LLM level</strong></p></li>
+<li><p>Works through sequences and parallel graphs</p></li>
+<li><p>Essential for production-grade UX</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\lcel"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-streaming-is-important">Why Streaming Is Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-streaming-works-internally">How Streaming Works Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-a-runnable-directly-llm-only">Streaming a Runnable Directly (LLM Only)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-runnablesequence">Streaming with RunnableSequence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-runnableparallel">Streaming with RunnableParallel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-events-with-astream-events-advanced">Streaming Events with <code class="docutils literal notranslate"><span class="pre">.astream_events()</span></code> (Advanced)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-fastapi-real-world-pattern">Streaming + FastAPI (Real-World Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-can-and-cannot-stream">What Can and Cannot Stream</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-vs-non-streaming-execution">Streaming vs Non-Streaming Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

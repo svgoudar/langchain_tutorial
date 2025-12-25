@@ -1,0 +1,1037 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Structured Output Prompts (LangChain Perspective) &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/prompt_engineering/08_structured_output_prompts';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/prompt_engineering/08_structured_output_prompts.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/prompt_engineering/08_structured_output_prompts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/prompt_engineering/08_structured_output_prompts.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Structured Output Prompts (LangChain Perspective)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-structured-output-prompts-are">What Structured Output Prompts Are</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-structured-output-prompts-are-needed">Why Structured Output Prompts Are Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-prompt-vs-plain-prompt">Structured Output Prompt vs Plain Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components-of-structured-output-in-langchain">Core Components of Structured Output in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt">Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">Schema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parser">Parser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-structured-output-prompt-conceptual">Basic Structured Output Prompt (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-with-pydantic-recommended">Structured Output with Pydantic (Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-a-schema">Step 1: Define a Schema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-bind-schema-to-the-model">Step 2: Bind Schema to the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-prompt-the-model">Step 3: Prompt the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-with-chatprompttemplate">Structured Output with ChatPromptTemplate</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-prompt-schema">Combining Prompt + Schema</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-using-output-parsers-manual-control">Structured Output Using Output Parsers (Manual Control)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pydanticoutputparser">PydanticOutputParser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#json-only-structured-output">JSON-Only Structured Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-in-agents">Structured Output in Agents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-outputs-as-structured-data">Tool Outputs as Structured Data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-in-rag">Structured Output in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation-aware-answers">Citation-Aware Answers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling-auto-fixing">Error Handling &amp; Auto-Fixing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outputfixingparser">OutputFixingParser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relying-only-on-prompt-text">Relying only on prompt text</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exposing-chain-of-thought">Exposing chain-of-thought</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overly-complex-schemas">Overly complex schemas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-retries">Missing retries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-structured-output-prompts">When to Use Structured Output Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#structured-output-prompts-langchain-perspective" id="id1">Structured Output Prompts (LangChain Perspective)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-structured-output-prompts-are" id="id2">What Structured Output Prompts Are</a></p></li>
+<li><p><a class="reference internal" href="#why-structured-output-prompts-are-needed" id="id3">Why Structured Output Prompts Are Needed</a></p></li>
+<li><p><a class="reference internal" href="#structured-output-prompt-vs-plain-prompt" id="id4">Structured Output Prompt vs Plain Prompt</a></p></li>
+<li><p><a class="reference internal" href="#core-components-of-structured-output-in-langchain" id="id5">Core Components of Structured Output in LangChain</a></p></li>
+<li><p><a class="reference internal" href="#prompt" id="id6">Prompt</a></p></li>
+<li><p><a class="reference internal" href="#schema" id="id7">Schema</a></p></li>
+<li><p><a class="reference internal" href="#parser" id="id8">Parser</a></p></li>
+<li><p><a class="reference internal" href="#basic-structured-output-prompt-conceptual" id="id9">Basic Structured Output Prompt (Conceptual)</a></p></li>
+<li><p><a class="reference internal" href="#structured-output-with-pydantic-recommended" id="id10">Structured Output with Pydantic (Recommended)</a></p></li>
+<li><p><a class="reference internal" href="#step-1-define-a-schema" id="id11">Step 1: Define a Schema</a></p></li>
+<li><p><a class="reference internal" href="#step-2-bind-schema-to-the-model" id="id12">Step 2: Bind Schema to the Model</a></p></li>
+<li><p><a class="reference internal" href="#step-3-prompt-the-model" id="id13">Step 3: Prompt the Model</a></p></li>
+<li><p><a class="reference internal" href="#structured-output-with-chatprompttemplate" id="id14">Structured Output with ChatPromptTemplate</a></p>
+<ul>
+<li><p><a class="reference internal" href="#combining-prompt-schema" id="id15">Combining Prompt + Schema</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#structured-output-using-output-parsers-manual-control" id="id16">Structured Output Using Output Parsers (Manual Control)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#pydanticoutputparser" id="id17">PydanticOutputParser</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#json-only-structured-output" id="id18">JSON-Only Structured Output</a></p></li>
+<li><p><a class="reference internal" href="#structured-output-in-agents" id="id19">Structured Output in Agents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#tool-outputs-as-structured-data" id="id20">Tool Outputs as Structured Data</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#structured-output-in-rag" id="id21">Structured Output in RAG</a></p></li>
+<li><p><a class="reference internal" href="#citation-aware-answers" id="id22">Citation-Aware Answers</a></p></li>
+<li><p><a class="reference internal" href="#error-handling-auto-fixing" id="id23">Error Handling &amp; Auto-Fixing</a></p>
+<ul>
+<li><p><a class="reference internal" href="#outputfixingparser" id="id24">OutputFixingParser</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id25">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#relying-only-on-prompt-text" id="id26">Relying only on prompt text</a></p></li>
+<li><p><a class="reference internal" href="#exposing-chain-of-thought" id="id27">Exposing chain-of-thought</a></p></li>
+<li><p><a class="reference internal" href="#overly-complex-schemas" id="id28">Overly complex schemas</a></p></li>
+<li><p><a class="reference internal" href="#missing-retries" id="id29">Missing retries</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id30">Best Practices</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#when-to-use-structured-output-prompts" id="id31">When to Use Structured Output Prompts</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id32">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id33">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="structured-output-prompts-langchain-perspective">
+<h1><a class="toc-backref" href="#id1">Structured Output Prompts (LangChain Perspective)</a><a class="headerlink" href="#structured-output-prompts-langchain-perspective" title="Permalink to this heading">#</a></h1>
+<section id="what-structured-output-prompts-are">
+<h2><a class="toc-backref" href="#id2">What Structured Output Prompts Are</a><a class="headerlink" href="#what-structured-output-prompts-are" title="Permalink to this heading">#</a></h2>
+<p><strong>Structured Output Prompts</strong> are prompts designed so that an LLM returns <strong>data in a fixed, machine-readable structure</strong> (JSON, schema, typed object) instead of free-form text.</p>
+<blockquote>
+<div><p>The goal is <strong>reliability and determinism</strong>, not creativity.</p>
+</div></blockquote>
+<p>In LangChain, structured output is enforced using <strong>output parsers</strong> and <strong>model-level constraints</strong>, not just prompt wording.</p>
+</section>
+<hr class="docutils" />
+<section id="why-structured-output-prompts-are-needed">
+<h2><a class="toc-backref" href="#id3">Why Structured Output Prompts Are Needed</a><a class="headerlink" href="#why-structured-output-prompts-are-needed" title="Permalink to this heading">#</a></h2>
+<p>Free-text responses cause:</p>
+<ul class="simple">
+<li><p>Parsing errors</p></li>
+<li><p>Ambiguous fields</p></li>
+<li><p>Downstream failures</p></li>
+<li><p>Hallucinated keys</p></li>
+</ul>
+<p>Structured outputs enable:</p>
+<ul class="simple">
+<li><p>Typed APIs</p></li>
+<li><p>Safe automation</p></li>
+<li><p>Validation</p></li>
+<li><p>Agent-to-agent communication</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="structured-output-prompt-vs-plain-prompt">
+<h2><a class="toc-backref" href="#id4">Structured Output Prompt vs Plain Prompt</a><a class="headerlink" href="#structured-output-prompt-vs-plain-prompt" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Plain Prompt</p></th>
+<th class="head"><p>Structured Output Prompt</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Format</p></td>
+<td><p>Natural language</p></td>
+<td><p>Schema-constrained</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parsing</p></td>
+<td><p>Manual</p></td>
+<td><p>Automatic</p></td>
+</tr>
+<tr class="row-even"><td><p>Reliability</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>Production use</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="core-components-of-structured-output-in-langchain">
+<h2><a class="toc-backref" href="#id5">Core Components of Structured Output in LangChain</a><a class="headerlink" href="#core-components-of-structured-output-in-langchain" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="prompt">
+<h2><a class="toc-backref" href="#id6">Prompt</a><a class="headerlink" href="#prompt" title="Permalink to this heading">#</a></h2>
+<p>Defines <strong>what</strong> to extract or generate.</p>
+</section>
+<section id="schema">
+<h2><a class="toc-backref" href="#id7">Schema</a><a class="headerlink" href="#schema" title="Permalink to this heading">#</a></h2>
+<p>Defines <strong>how</strong> the output must look.</p>
+</section>
+<section id="parser">
+<h2><a class="toc-backref" href="#id8">Parser</a><a class="headerlink" href="#parser" title="Permalink to this heading">#</a></h2>
+<p>Validates and converts output into Python objects.</p>
+</section>
+<hr class="docutils" />
+<section id="basic-structured-output-prompt-conceptual">
+<h2><a class="toc-backref" href="#id9">Basic Structured Output Prompt (Conceptual)</a><a class="headerlink" href="#basic-structured-output-prompt-conceptual" title="Permalink to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Extract the following fields in JSON:
+- category
+- priority
+- impact
+</pre></div>
+</div>
+<p>This alone is <strong>not sufficient</strong> in production.</p>
+</section>
+<hr class="docutils" />
+<section id="structured-output-with-pydantic-recommended">
+<h2><a class="toc-backref" href="#id10">Structured Output with Pydantic (Recommended)</a><a class="headerlink" href="#structured-output-with-pydantic-recommended" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="step-1-define-a-schema">
+<h2><a class="toc-backref" href="#id11">Step 1: Define a Schema</a><a class="headerlink" href="#step-1-define-a-schema" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Ticket</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Issue category&quot;</span><span class="p">)</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;High, Medium, or Low&quot;</span><span class="p">)</span>
+    <span class="n">impact</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;User or system impact&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-2-bind-schema-to-the-model">
+<h2><a class="toc-backref" href="#id12">Step 2: Bind Schema to the Model</a><a class="headerlink" href="#step-2-bind-schema-to-the-model" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Ticket</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>LangChain:</p>
+<ul class="simple">
+<li><p>Generates JSON schema</p></li>
+<li><p>Enforces output format</p></li>
+<li><p>Retries on invalid output</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="step-3-prompt-the-model">
+<h2><a class="toc-backref" href="#id13">Step 3: Prompt the Model</a><a class="headerlink" href="#step-3-prompt-the-model" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">&quot;Email service is down for finance team&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>category=&#39;Email Service&#39; priority=&#39;High&#39; impact=&#39;Finance team unable to communicate effectively, potentially affecting financial operations and reporting.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Ticket</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;Infrastructure&#39;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="n">impact</span><span class="o">=</span><span class="s1">&#39;Finance team cannot send emails&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="structured-output-with-chatprompttemplate">
+<h2><a class="toc-backref" href="#id14">Structured Output with ChatPromptTemplate</a><a class="headerlink" href="#structured-output-with-chatprompttemplate" title="Permalink to this heading">#</a></h2>
+<section id="combining-prompt-schema">
+<h3><a class="toc-backref" href="#id15">Combining Prompt + Schema</a><a class="headerlink" href="#combining-prompt-schema" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Extract structured ticket details.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">structured_llm</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;VPN access issue for CEO&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ticket(category=&#39;VPN Access&#39;, priority=&#39;High&#39;, impact=&#39;User&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="structured-output-using-output-parsers-manual-control">
+<h2><a class="toc-backref" href="#id16">Structured Output Using Output Parsers (Manual Control)</a><a class="headerlink" href="#structured-output-using-output-parsers-manual-control" title="Permalink to this heading">#</a></h2>
+<section id="pydanticoutputparser">
+<h3><a class="toc-backref" href="#id17">PydanticOutputParser</a><a class="headerlink" href="#pydanticoutputparser" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PydanticOutputParser</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">PydanticOutputParser</span><span class="p">(</span><span class="n">pydantic_object</span><span class="o">=</span><span class="n">Ticket</span><span class="p">)</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Return data in the required format.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="se">\n\n</span><span class="si">{format_instructions}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>LangChain injects formatting instructions explicitly.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="json-only-structured-output">
+<h2><a class="toc-backref" href="#id18">JSON-Only Structured Output</a><a class="headerlink" href="#json-only-structured-output" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonOutputParser</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">JsonOutputParser</span><span class="p">()</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Used when:</p>
+<ul class="simple">
+<li><p>Schema is dynamic</p></li>
+<li><p>Validation is external</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="structured-output-in-agents">
+<h2><a class="toc-backref" href="#id19">Structured Output in Agents</a><a class="headerlink" href="#structured-output-in-agents" title="Permalink to this heading">#</a></h2>
+<section id="tool-outputs-as-structured-data">
+<h3><a class="toc-backref" href="#id20">Tool Outputs as Structured Data</a><a class="headerlink" href="#tool-outputs-as-structured-data" title="Permalink to this heading">#</a></h3>
+<p>Agents rely on structured output for:</p>
+<ul class="simple">
+<li><p>Tool arguments</p></li>
+<li><p>Tool results</p></li>
+<li><p>Planning steps</p></li>
+</ul>
+<p>LangChain enforces:</p>
+<ul class="simple">
+<li><p>JSON schema for tools</p></li>
+<li><p>Typed arguments</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="structured-output-in-rag">
+<h2><a class="toc-backref" href="#id21">Structured Output in RAG</a><a class="headerlink" href="#structured-output-in-rag" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="citation-aware-answers">
+<h2><a class="toc-backref" href="#id22">Citation-Aware Answers</a><a class="headerlink" href="#citation-aware-answers" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Answer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">sources</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Structured output ensures:</p>
+<ul class="simple">
+<li><p>Answers + citations</p></li>
+<li><p>No hallucinated fields</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="error-handling-auto-fixing">
+<h2><a class="toc-backref" href="#id23">Error Handling &amp; Auto-Fixing</a><a class="headerlink" href="#error-handling-auto-fixing" title="Permalink to this heading">#</a></h2>
+<section id="outputfixingparser">
+<h3><a class="toc-backref" href="#id24">OutputFixingParser</a><a class="headerlink" href="#outputfixingparser" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.output_parsers.fix</span><span class="w"> </span><span class="kn">import</span> <span class="n">OutputFixingParser</span>
+
+<span class="n">fixing_parser</span> <span class="o">=</span> <span class="n">OutputFixingParser</span><span class="o">.</span><span class="n">from_llm</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">=</span><span class="n">parser</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>LangChain:</p>
+<ul class="simple">
+<li><p>Detects invalid output</p></li>
+<li><p>Re-prompts model to fix format</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id25">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="relying-only-on-prompt-text">
+<h3><a class="toc-backref" href="#id26">Relying only on prompt text</a><a class="headerlink" href="#relying-only-on-prompt-text" title="Permalink to this heading">#</a></h3>
+<p>❌ Not reliable</p>
+</section>
+<section id="exposing-chain-of-thought">
+<h3><a class="toc-backref" href="#id27">Exposing chain-of-thought</a><a class="headerlink" href="#exposing-chain-of-thought" title="Permalink to this heading">#</a></h3>
+<p>❌ Security risk</p>
+</section>
+<section id="overly-complex-schemas">
+<h3><a class="toc-backref" href="#id28">Overly complex schemas</a><a class="headerlink" href="#overly-complex-schemas" title="Permalink to this heading">#</a></h3>
+<p>❌ Higher failure rate</p>
+</section>
+<section id="missing-retries">
+<h3><a class="toc-backref" href="#id29">Missing retries</a><a class="headerlink" href="#missing-retries" title="Permalink to this heading">#</a></h3>
+<p>❌ Fragile pipelines</p>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h3><a class="toc-backref" href="#id30">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">with_structured_output()</span></code> whenever possible</p></li>
+<li><p>Keep schemas minimal</p></li>
+<li><p>Use enums for classifications</p></li>
+<li><p>Combine with low temperature</p></li>
+<li><p>Validate outputs strictly</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-structured-output-prompts">
+<h2><a class="toc-backref" href="#id31">When to Use Structured Output Prompts</a><a class="headerlink" href="#when-to-use-structured-output-prompts" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Use Case</p></th>
+<th class="head"><p>Recommended</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>APIs</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Agents</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>RAG answers</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Chat UI</p></td>
+<td><p>Optional</p></td>
+</tr>
+<tr class="row-even"><td><p>Creative writing</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id32">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Structured output prompts in LangChain enforce schema-constrained LLM outputs using parsers and model bindings, enabling reliable, validated, production-ready responses instead of free-form text.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id33">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>If a machine reads the output → structure it</strong></p></li>
+<li><p><strong>If a human reads the output → free text is fine</strong></p></li>
+<li><p><strong>Production → always structured</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\prompt_engineering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-structured-output-prompts-are">What Structured Output Prompts Are</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-structured-output-prompts-are-needed">Why Structured Output Prompts Are Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-prompt-vs-plain-prompt">Structured Output Prompt vs Plain Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components-of-structured-output-in-langchain">Core Components of Structured Output in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt">Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">Schema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parser">Parser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-structured-output-prompt-conceptual">Basic Structured Output Prompt (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-with-pydantic-recommended">Structured Output with Pydantic (Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-a-schema">Step 1: Define a Schema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-bind-schema-to-the-model">Step 2: Bind Schema to the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-prompt-the-model">Step 3: Prompt the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-with-chatprompttemplate">Structured Output with ChatPromptTemplate</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-prompt-schema">Combining Prompt + Schema</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-using-output-parsers-manual-control">Structured Output Using Output Parsers (Manual Control)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pydanticoutputparser">PydanticOutputParser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#json-only-structured-output">JSON-Only Structured Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-in-agents">Structured Output in Agents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-outputs-as-structured-data">Tool Outputs as Structured Data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-in-rag">Structured Output in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation-aware-answers">Citation-Aware Answers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling-auto-fixing">Error Handling &amp; Auto-Fixing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outputfixingparser">OutputFixingParser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relying-only-on-prompt-text">Relying only on prompt text</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exposing-chain-of-thought">Exposing chain-of-thought</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overly-complex-schemas">Overly complex schemas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-retries">Missing retries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-structured-output-prompts">When to Use Structured Output Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

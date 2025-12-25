@@ -1,0 +1,1070 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Conversational Agents &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/agents/04_conversational_agents';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/agents/04_conversational_agents.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/agents/04_conversational_agents.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/agents/04_conversational_agents.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Conversational Agents</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-characteristics">Core Characteristics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-vs-chat-completion">Conversational Agent vs Chat Completion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-level-architecture">High-Level Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components-explained">Core Components Explained</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-conversation-state">Memory (Conversation State)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dialogue-management">Dialogue Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-layer">Reasoning Layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-grounding-rag">Knowledge Grounding (RAG)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-usage">Tool Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#safety-guardrails">Safety &amp; Guardrails</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-types">Conversational Agent Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stateless-conversational-agent">Stateless Conversational Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stateful-conversational-agent">Stateful Conversational Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-based-conversational-agent">RAG-Based Conversational Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-augmented-conversational-agent">Tool-Augmented Conversational Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agentic-conversational-agent">Agentic Conversational Agent</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agents-in-langchain">Conversational Agents in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-conversational-agent-conceptual">Minimal Conversational Agent (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-with-memory-conceptual">Conversational Agent with Memory (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-with-rag">Conversational Agent with RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-with-tools">Conversational Agent with Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agents-vs-react-agents">Conversational Agents vs ReAct Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agents-vs-langgraph">Conversational Agents vs LangGraph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-considerations">Production-Grade Considerations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-management">Context Window Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latency">Latency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#observability">Observability</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-failure-modes">Common Failure Modes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#conversational-agents" id="id1">Conversational Agents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#core-characteristics" id="id2">Core Characteristics</a></p></li>
+<li><p><a class="reference internal" href="#conversational-agent-vs-chat-completion" id="id3">Conversational Agent vs Chat Completion</a></p></li>
+<li><p><a class="reference internal" href="#high-level-architecture" id="id4">High-Level Architecture</a></p></li>
+<li><p><a class="reference internal" href="#core-components-explained" id="id5">Core Components Explained</a></p>
+<ul>
+<li><p><a class="reference internal" href="#memory-conversation-state" id="id6">Memory (Conversation State)</a></p></li>
+<li><p><a class="reference internal" href="#dialogue-management" id="id7">Dialogue Management</a></p></li>
+<li><p><a class="reference internal" href="#reasoning-layer" id="id8">Reasoning Layer</a></p></li>
+<li><p><a class="reference internal" href="#knowledge-grounding-rag" id="id9">Knowledge Grounding (RAG)</a></p></li>
+<li><p><a class="reference internal" href="#tool-usage" id="id10">Tool Usage</a></p></li>
+<li><p><a class="reference internal" href="#safety-guardrails" id="id11">Safety &amp; Guardrails</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#conversational-agent-types" id="id12">Conversational Agent Types</a></p>
+<ul>
+<li><p><a class="reference internal" href="#stateless-conversational-agent" id="id13">Stateless Conversational Agent</a></p></li>
+<li><p><a class="reference internal" href="#stateful-conversational-agent" id="id14">Stateful Conversational Agent</a></p></li>
+<li><p><a class="reference internal" href="#rag-based-conversational-agent" id="id15">RAG-Based Conversational Agent</a></p></li>
+<li><p><a class="reference internal" href="#tool-augmented-conversational-agent" id="id16">Tool-Augmented Conversational Agent</a></p></li>
+<li><p><a class="reference internal" href="#agentic-conversational-agent" id="id17">Agentic Conversational Agent</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#conversational-agents-in-langchain" id="id18">Conversational Agents in LangChain</a></p></li>
+<li><p><a class="reference internal" href="#minimal-conversational-agent-conceptual" id="id19">Minimal Conversational Agent (Conceptual)</a></p></li>
+<li><p><a class="reference internal" href="#conversational-agent-with-memory-conceptual" id="id20">Conversational Agent with Memory (Conceptual)</a></p></li>
+<li><p><a class="reference internal" href="#conversational-agent-with-rag" id="id21">Conversational Agent with RAG</a></p></li>
+<li><p><a class="reference internal" href="#conversational-agent-with-tools" id="id22">Conversational Agent with Tools</a></p></li>
+<li><p><a class="reference internal" href="#conversational-agents-vs-react-agents" id="id23">Conversational Agents vs ReAct Agents</a></p></li>
+<li><p><a class="reference internal" href="#conversational-agents-vs-langgraph" id="id24">Conversational Agents vs LangGraph</a></p></li>
+<li><p><a class="reference internal" href="#production-grade-considerations" id="id25">Production-Grade Considerations</a></p>
+<ul>
+<li><p><a class="reference internal" href="#context-window-management" id="id26">Context Window Management</a></p></li>
+<li><p><a class="reference internal" href="#latency" id="id27">Latency</a></p></li>
+<li><p><a class="reference internal" href="#observability" id="id28">Observability</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#common-failure-modes" id="id29">Common Failure Modes</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id30">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id31">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id32">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="conversational-agents">
+<h1><a class="toc-backref" href="#id1">Conversational Agents</a><a class="headerlink" href="#conversational-agents" title="Permalink to this heading">#</a></h1>
+<p><strong>Conversational agents</strong> are AI systems designed to <strong>maintain context across turns</strong>, understand <strong>user intent over time</strong>, and <strong>respond coherently in multi-turn dialogues</strong>.</p>
+<blockquote>
+<div><p>Unlike single-turn chat, conversational agents <strong>remember, reason, retrieve, and act</strong> across a conversation.</p>
+</div></blockquote>
+<p>They power chatbots, assistants, copilots, and support agents.</p>
+<hr class="docutils" />
+<section id="core-characteristics">
+<h2><a class="toc-backref" href="#id2">Core Characteristics</a><a class="headerlink" href="#core-characteristics" title="Permalink to this heading">#</a></h2>
+<p>A conversational agent must handle:</p>
+<ol class="arabic simple">
+<li><p><strong>Context persistence</strong> (memory)</p></li>
+<li><p><strong>Intent understanding</strong></p></li>
+<li><p><strong>Dialogue management</strong></p></li>
+<li><p><strong>Knowledge grounding (RAG)</strong></p></li>
+<li><p><strong>Tool usage (actions)</strong></p></li>
+<li><p><strong>Safety and guardrails</strong></p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="conversational-agent-vs-chat-completion">
+<h2><a class="toc-backref" href="#id3">Conversational Agent vs Chat Completion</a><a class="headerlink" href="#conversational-agent-vs-chat-completion" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Chat Completion</p></th>
+<th class="head"><p>Conversational Agent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Turns</p></td>
+<td><p>Single</p></td>
+<td><p>Multi-turn</p></td>
+</tr>
+<tr class="row-odd"><td><p>Memory</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>State</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tools</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Production readiness</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="high-level-architecture">
+<h2><a class="toc-backref" href="#id4">High-Level Architecture</a><a class="headerlink" href="#high-level-architecture" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Message
+   ↓
+Conversation State (Memory)
+   ↓
+Reasoning / Intent Detection
+   ↓
+(Optional) Retrieval (RAG)
+   ↓
+(Optional) Tool Calls
+   ↓
+Response Generation
+   ↓
+State Update
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="core-components-explained">
+<h2><a class="toc-backref" href="#id5">Core Components Explained</a><a class="headerlink" href="#core-components-explained" title="Permalink to this heading">#</a></h2>
+<section id="memory-conversation-state">
+<h3><a class="toc-backref" href="#id6">Memory (Conversation State)</a><a class="headerlink" href="#memory-conversation-state" title="Permalink to this heading">#</a></h3>
+<p>Memory stores <strong>what has already happened</strong>.</p>
+<p>Types:</p>
+<ul class="simple">
+<li><p><strong>Buffer memory</strong>: last N turns</p></li>
+<li><p><strong>Summary memory</strong>: compressed history</p></li>
+<li><p><strong>Hybrid memory</strong>: recent + summarized past</p></li>
+</ul>
+<p>Purpose:</p>
+<ul class="simple">
+<li><p>Resolve pronouns (“that”, “it”)</p></li>
+<li><p>Handle follow-up questions</p></li>
+<li><p>Maintain continuity</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="dialogue-management">
+<h3><a class="toc-backref" href="#id7">Dialogue Management</a><a class="headerlink" href="#dialogue-management" title="Permalink to this heading">#</a></h3>
+<p>Controls:</p>
+<ul class="simple">
+<li><p>Turn-taking</p></li>
+<li><p>Clarification questions</p></li>
+<li><p>Topic switching</p></li>
+<li><p>Escalation paths</p></li>
+</ul>
+<p>Example:</p>
+<ul class="simple">
+<li><p>User asks vague question → agent asks clarifying question</p></li>
+<li><p>User changes topic → agent resets retrieval context</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="reasoning-layer">
+<h3><a class="toc-backref" href="#id8">Reasoning Layer</a><a class="headerlink" href="#reasoning-layer" title="Permalink to this heading">#</a></h3>
+<p>Determines:</p>
+<ul class="simple">
+<li><p>Is retrieval needed?</p></li>
+<li><p>Is a tool needed?</p></li>
+<li><p>Can the agent answer directly?</p></li>
+</ul>
+<p>This is where <strong>agent logic</strong> lives.</p>
+</section>
+<hr class="docutils" />
+<section id="knowledge-grounding-rag">
+<h3><a class="toc-backref" href="#id9">Knowledge Grounding (RAG)</a><a class="headerlink" href="#knowledge-grounding-rag" title="Permalink to this heading">#</a></h3>
+<p>Conversational agents often integrate <strong>context-aware RAG</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Chat History → Question Rewriting → Retrieval → Answer
+</pre></div>
+</div>
+<p>This prevents ambiguity in follow-up questions.</p>
+</section>
+<hr class="docutils" />
+<section id="tool-usage">
+<h3><a class="toc-backref" href="#id10">Tool Usage</a><a class="headerlink" href="#tool-usage" title="Permalink to this heading">#</a></h3>
+<p>Conversational agents can:</p>
+<ul class="simple">
+<li><p>Fetch live data</p></li>
+<li><p>Update systems</p></li>
+<li><p>Perform calculations</p></li>
+<li><p>Trigger workflows</p></li>
+</ul>
+<p>Tool usage is <strong>state-aware</strong> and <strong>intent-driven</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="safety-guardrails">
+<h3><a class="toc-backref" href="#id11">Safety &amp; Guardrails</a><a class="headerlink" href="#safety-guardrails" title="Permalink to this heading">#</a></h3>
+<p>Conversational agents require stronger controls:</p>
+<ul class="simple">
+<li><p>Prompt injection defense</p></li>
+<li><p>Context filtering</p></li>
+<li><p>Output validation</p></li>
+<li><p>Human-in-the-loop escalation</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="conversational-agent-types">
+<h2><a class="toc-backref" href="#id12">Conversational Agent Types</a><a class="headerlink" href="#conversational-agent-types" title="Permalink to this heading">#</a></h2>
+<section id="stateless-conversational-agent">
+<h3><a class="toc-backref" href="#id13">Stateless Conversational Agent</a><a class="headerlink" href="#stateless-conversational-agent" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>No memory</p></li>
+<li><p>Each turn independent</p></li>
+<li><p>Lowest complexity</p></li>
+</ul>
+<p>Use case:</p>
+<ul class="simple">
+<li><p>FAQ bots</p></li>
+<li><p>Simple Q&amp;A</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="stateful-conversational-agent">
+<h3><a class="toc-backref" href="#id14">Stateful Conversational Agent</a><a class="headerlink" href="#stateful-conversational-agent" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Maintains chat history</p></li>
+<li><p>Context-aware responses</p></li>
+</ul>
+<p>Use case:</p>
+<ul class="simple">
+<li><p>Support bots</p></li>
+<li><p>Knowledge assistants</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="rag-based-conversational-agent">
+<h3><a class="toc-backref" href="#id15">RAG-Based Conversational Agent</a><a class="headerlink" href="#rag-based-conversational-agent" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Uses retrieval per turn</p></li>
+<li><p>Rewrites questions using history</p></li>
+</ul>
+<p>Use case:</p>
+<ul class="simple">
+<li><p>Document chat</p></li>
+<li><p>Enterprise knowledge bases</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="tool-augmented-conversational-agent">
+<h3><a class="toc-backref" href="#id16">Tool-Augmented Conversational Agent</a><a class="headerlink" href="#tool-augmented-conversational-agent" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Calls APIs/tools</p></li>
+<li><p>Performs actions</p></li>
+</ul>
+<p>Use case:</p>
+<ul class="simple">
+<li><p>IT support bots</p></li>
+<li><p>CRM / Jira assistants</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="agentic-conversational-agent">
+<h3><a class="toc-backref" href="#id17">Agentic Conversational Agent</a><a class="headerlink" href="#agentic-conversational-agent" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Multi-step reasoning</p></li>
+<li><p>Iterative tool usage</p></li>
+<li><p>Dynamic planning</p></li>
+</ul>
+<p>Use case:</p>
+<ul class="simple">
+<li><p>Complex workflows</p></li>
+<li><p>Decision support systems</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="conversational-agents-in-langchain">
+<h2><a class="toc-backref" href="#id18">Conversational Agents in LangChain</a><a class="headerlink" href="#conversational-agents-in-langchain" title="Permalink to this heading">#</a></h2>
+<p>LangChain enables conversational agents using:</p>
+<ul class="simple">
+<li><p><strong>Chat models</strong></p></li>
+<li><p><strong>Memory abstractions</strong></p></li>
+<li><p><strong>Retrievers</strong></p></li>
+<li><p><strong>Tools</strong></p></li>
+<li><p><strong>Agents (ReAct / Tools Agent / LangGraph)</strong></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="minimal-conversational-agent-conceptual">
+<h2><a class="toc-backref" href="#id19">Minimal Conversational Agent (Conceptual)</a><a class="headerlink" href="#minimal-conversational-agent-conceptual" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+</pre></div>
+</div>
+<p>This is conversational <strong>without memory</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="conversational-agent-with-memory-conceptual">
+<h2><a class="toc-backref" href="#id20">Conversational Agent with Memory (Conceptual)</a><a class="headerlink" href="#conversational-agent-with-memory-conceptual" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span>
+    <span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Each new turn updates memory automatically.</p>
+</section>
+<hr class="docutils" />
+<section id="conversational-agent-with-rag">
+<h2><a class="toc-backref" href="#id21">Conversational Agent with RAG</a><a class="headerlink" href="#conversational-agent-with-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Chat History
+   ↓
+Question Condenser
+   ↓
+Retriever
+   ↓
+LLM
+</pre></div>
+</div>
+<p>This enables <strong>context-aware document chat</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="conversational-agent-with-tools">
+<h2><a class="toc-backref" href="#id22">Conversational Agent with Tools</a><a class="headerlink" href="#conversational-agent-with-tools" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User → Agent → Tool → Observation → Agent → Answer
+</pre></div>
+</div>
+<p>Allows real-world interaction.</p>
+</section>
+<hr class="docutils" />
+<section id="conversational-agents-vs-react-agents">
+<h2><a class="toc-backref" href="#id23">Conversational Agents vs ReAct Agents</a><a class="headerlink" href="#conversational-agents-vs-react-agents" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Conversational Agent</p></th>
+<th class="head"><p>ReAct Agent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Primary goal</p></td>
+<td><p>Dialogue</p></td>
+<td><p>Problem solving</p></td>
+</tr>
+<tr class="row-odd"><td><p>Memory</p></td>
+<td><p>Core</p></td>
+<td><p>Optional</p></td>
+</tr>
+<tr class="row-even"><td><p>Tool usage</p></td>
+<td><p>Optional</p></td>
+<td><p>Core</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reasoning depth</p></td>
+<td><p>Medium</p></td>
+<td><p>High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Conversational agents may internally use ReAct.</p>
+</section>
+<hr class="docutils" />
+<section id="conversational-agents-vs-langgraph">
+<h2><a class="toc-backref" href="#id24">Conversational Agents vs LangGraph</a><a class="headerlink" href="#conversational-agents-vs-langgraph" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Conversational Agent</p></th>
+<th class="head"><p>LangGraph</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Control flow</p></td>
+<td><p>LLM-driven</p></td>
+<td><p>Explicit</p></td>
+</tr>
+<tr class="row-odd"><td><p>Predictability</p></td>
+<td><p>Medium</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>Production safety</p></td>
+<td><p>Medium</p></td>
+<td><p>Very High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>LangGraph is preferred for <strong>mission-critical conversational agents</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="production-grade-considerations">
+<h2><a class="toc-backref" href="#id25">Production-Grade Considerations</a><a class="headerlink" href="#production-grade-considerations" title="Permalink to this heading">#</a></h2>
+<section id="context-window-management">
+<h3><a class="toc-backref" href="#id26">Context Window Management</a><a class="headerlink" href="#context-window-management" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Prune history</p></li>
+<li><p>Summarize memory</p></li>
+<li><p>Control retrieval size</p></li>
+</ul>
+</section>
+<section id="latency">
+<h3><a class="toc-backref" href="#id27">Latency</a><a class="headerlink" href="#latency" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Cache responses</p></li>
+<li><p>Limit tool calls</p></li>
+<li><p>Optimize retrieval</p></li>
+</ul>
+</section>
+<section id="observability">
+<h3><a class="toc-backref" href="#id28">Observability</a><a class="headerlink" href="#observability" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Log turns</p></li>
+<li><p>Track tool usage</p></li>
+<li><p>Measure confidence</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="common-failure-modes">
+<h2><a class="toc-backref" href="#id29">Common Failure Modes</a><a class="headerlink" href="#common-failure-modes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Context poisoning (too much history)</p></li>
+<li><p>Ambiguous follow-ups</p></li>
+<li><p>Tool overuse</p></li>
+<li><p>Hallucinated answers</p></li>
+<li><p>Infinite clarification loops</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id30">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use hybrid memory (window + summary)</p></li>
+<li><p>Ground answers with RAG</p></li>
+<li><p>Add similarity thresholds</p></li>
+<li><p>Provide source attribution</p></li>
+<li><p>Add fallback and escalation logic</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id31">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Conversational agents are stateful AI systems that manage multi-turn dialogue by combining memory, reasoning, retrieval, and tool usage. They extend chat models into production-ready assistants.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id32">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Chat only → Chat model</strong></p></li>
+<li><p><strong>Context-aware chat → Conversational agent</strong></p></li>
+<li><p><strong>Actions needed → Tool-augmented agent</strong></p></li>
+<li><p><strong>Complex workflows → LangGraph</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\agents"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-characteristics">Core Characteristics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-vs-chat-completion">Conversational Agent vs Chat Completion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-level-architecture">High-Level Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components-explained">Core Components Explained</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-conversation-state">Memory (Conversation State)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dialogue-management">Dialogue Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-layer">Reasoning Layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-grounding-rag">Knowledge Grounding (RAG)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-usage">Tool Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#safety-guardrails">Safety &amp; Guardrails</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-types">Conversational Agent Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stateless-conversational-agent">Stateless Conversational Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stateful-conversational-agent">Stateful Conversational Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-based-conversational-agent">RAG-Based Conversational Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-augmented-conversational-agent">Tool-Augmented Conversational Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agentic-conversational-agent">Agentic Conversational Agent</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agents-in-langchain">Conversational Agents in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-conversational-agent-conceptual">Minimal Conversational Agent (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-with-memory-conceptual">Conversational Agent with Memory (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-with-rag">Conversational Agent with RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agent-with-tools">Conversational Agent with Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agents-vs-react-agents">Conversational Agents vs ReAct Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversational-agents-vs-langgraph">Conversational Agents vs LangGraph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-considerations">Production-Grade Considerations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-management">Context Window Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latency">Latency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#observability">Observability</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-failure-modes">Common Failure Modes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

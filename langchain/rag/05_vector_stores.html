@@ -1,0 +1,1100 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Vector Stores &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/05_vector_stores';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/05_vector_stores.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/05_vector_stores.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/05_vector_stores.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Vector Stores</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-vector-store-is">What a Vector Store Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-vector-stores-are-critical">Why Vector Stores Are Critical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-vector-stores-fit-in-rag">Where Vector Stores Fit in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-responsibilities-of-a-vector-store">Core Responsibilities of a Vector Store</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storage">Storage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing">Indexing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search">Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering">Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-store-vs-traditional-database">Vector Store vs Traditional Database</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-stores-in-langchain">Vector Stores in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-vector-store-demonstration">Basic Vector Store Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-memory-vector-store-faiss">In-Memory Vector Store (FAISS)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-the-vector-store">Querying the Vector Store</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#popular-vector-store-backends">Popular Vector Store Backends</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-in-memory">Local / In-Memory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managed-cloud">Managed / Cloud</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-databases">Hybrid Databases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-vector-store-concepts">Production-Grade Vector Store Concepts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#index-type-ann-algorithms">1. Index Type (ANN Algorithms)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-metrics">2. Distance Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-filtering-critical">3. Metadata Filtering (Critical)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-level-granularity">4. Chunk-Level Granularity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-delete-strategy">5. Update &amp; Delete Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#re-embedding-strategy">6. Re-Embedding Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consistency-versioning">7. Consistency &amp; Versioning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-considerations">8. Scaling Considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-budget">9. Latency Budget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-production-standard">10. Hybrid Search (Production Standard)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-store-retriever-langchain">Vector Store + Retriever (LangChain)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-store-vs-reranker">Vector Store vs Reranker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-production-mistakes">Common Production Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-in-memory-stores-in-prod">Using in-memory stores in prod</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-metadata-filters">No metadata filters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#large-k-values">Large k values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-embedding-ad-hoc">Re-embedding ad-hoc</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-best-practices-checklist">Production Best Practices Checklist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#vector-stores" id="id1">Vector Stores</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-a-vector-store-is" id="id2">What a Vector Store Is</a></p></li>
+<li><p><a class="reference internal" href="#why-vector-stores-are-critical" id="id3">Why Vector Stores Are Critical</a></p></li>
+<li><p><a class="reference internal" href="#where-vector-stores-fit-in-rag" id="id4">Where Vector Stores Fit in RAG</a></p></li>
+<li><p><a class="reference internal" href="#core-responsibilities-of-a-vector-store" id="id5">Core Responsibilities of a Vector Store</a></p></li>
+<li><p><a class="reference internal" href="#storage" id="id6">Storage</a></p></li>
+<li><p><a class="reference internal" href="#indexing" id="id7">Indexing</a></p></li>
+<li><p><a class="reference internal" href="#search" id="id8">Search</a></p></li>
+<li><p><a class="reference internal" href="#filtering" id="id9">Filtering</a></p></li>
+<li><p><a class="reference internal" href="#vector-store-vs-traditional-database" id="id10">Vector Store vs Traditional Database</a></p></li>
+<li><p><a class="reference internal" href="#vector-stores-in-langchain" id="id11">Vector Stores in LangChain</a></p></li>
+<li><p><a class="reference internal" href="#basic-vector-store-demonstration" id="id12">Basic Vector Store Demonstration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#in-memory-vector-store-faiss" id="id13">In-Memory Vector Store (FAISS)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#querying-the-vector-store" id="id14">Querying the Vector Store</a></p></li>
+<li><p><a class="reference internal" href="#popular-vector-store-backends" id="id15">Popular Vector Store Backends</a></p></li>
+<li><p><a class="reference internal" href="#local-in-memory" id="id16">Local / In-Memory</a></p></li>
+<li><p><a class="reference internal" href="#managed-cloud" id="id17">Managed / Cloud</a></p></li>
+<li><p><a class="reference internal" href="#hybrid-databases" id="id18">Hybrid Databases</a></p></li>
+<li><p><a class="reference internal" href="#production-grade-vector-store-concepts" id="id19">Production-Grade Vector Store Concepts</a></p></li>
+<li><p><a class="reference internal" href="#index-type-ann-algorithms" id="id20">1. Index Type (ANN Algorithms)</a></p></li>
+<li><p><a class="reference internal" href="#distance-metrics" id="id21">2. Distance Metrics</a></p></li>
+<li><p><a class="reference internal" href="#metadata-filtering-critical" id="id22">3. Metadata Filtering (Critical)</a></p></li>
+<li><p><a class="reference internal" href="#chunk-level-granularity" id="id23">4. Chunk-Level Granularity</a></p></li>
+<li><p><a class="reference internal" href="#update-delete-strategy" id="id24">5. Update &amp; Delete Strategy</a></p></li>
+<li><p><a class="reference internal" href="#re-embedding-strategy" id="id25">6. Re-Embedding Strategy</a></p></li>
+<li><p><a class="reference internal" href="#consistency-versioning" id="id26">7. Consistency &amp; Versioning</a></p></li>
+<li><p><a class="reference internal" href="#scaling-considerations" id="id27">8. Scaling Considerations</a></p></li>
+<li><p><a class="reference internal" href="#latency-budget" id="id28">9. Latency Budget</a></p></li>
+<li><p><a class="reference internal" href="#hybrid-search-production-standard" id="id29">10. Hybrid Search (Production Standard)</a></p></li>
+<li><p><a class="reference internal" href="#vector-store-retriever-langchain" id="id30">Vector Store + Retriever (LangChain)</a></p></li>
+<li><p><a class="reference internal" href="#vector-store-vs-reranker" id="id31">Vector Store vs Reranker</a></p></li>
+<li><p><a class="reference internal" href="#common-production-mistakes" id="id32">Common Production Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#using-in-memory-stores-in-prod" id="id33">Using in-memory stores in prod</a></p></li>
+<li><p><a class="reference internal" href="#no-metadata-filters" id="id34">No metadata filters</a></p></li>
+<li><p><a class="reference internal" href="#large-k-values" id="id35">Large k values</a></p></li>
+<li><p><a class="reference internal" href="#re-embedding-ad-hoc" id="id36">Re-embedding ad-hoc</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#production-best-practices-checklist" id="id37">Production Best Practices Checklist</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id38">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id39">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="vector-stores">
+<h1><a class="toc-backref" href="#id1">Vector Stores</a><a class="headerlink" href="#vector-stores" title="Permalink to this heading">#</a></h1>
+<section id="what-a-vector-store-is">
+<h2><a class="toc-backref" href="#id2">What a Vector Store Is</a><a class="headerlink" href="#what-a-vector-store-is" title="Permalink to this heading">#</a></h2>
+<p>A <strong>Vector Store</strong> is a specialized database optimized to <strong>store, index, and search embedding vectors</strong> using similarity metrics.</p>
+<blockquote>
+<div><p>It enables <strong>semantic search</strong> by finding vectors that are <em>closest in meaning</em>, not just matching keywords.</p>
+</div></blockquote>
+<p>In LangChain, vector stores sit between <strong>embeddings</strong> and <strong>retrievers</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="why-vector-stores-are-critical">
+<h2><a class="toc-backref" href="#id3">Why Vector Stores Are Critical</a><a class="headerlink" href="#why-vector-stores-are-critical" title="Permalink to this heading">#</a></h2>
+<p>Without vector stores:</p>
+<ul class="simple">
+<li><p>No semantic retrieval</p></li>
+<li><p>No scalable RAG</p></li>
+<li><p>No fast similarity search</p></li>
+</ul>
+<p>Vector stores provide:</p>
+<ul class="simple">
+<li><p>Approximate Nearest Neighbor (ANN) search</p></li>
+<li><p>Low-latency retrieval at scale</p></li>
+<li><p>Metadata filtering</p></li>
+<li><p>Persistence and updates</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="where-vector-stores-fit-in-rag">
+<h2><a class="toc-backref" href="#id4">Where Vector Stores Fit in RAG</a><a class="headerlink" href="#where-vector-stores-fit-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Text → Embeddings → Vector Store → Retriever → LLM
+</pre></div>
+</div>
+<p>They are used at:</p>
+<ul class="simple">
+<li><p><strong>Ingestion time</strong> (store vectors)</p></li>
+<li><p><strong>Query time</strong> (search vectors)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="core-responsibilities-of-a-vector-store">
+<h2><a class="toc-backref" href="#id5">Core Responsibilities of a Vector Store</a><a class="headerlink" href="#core-responsibilities-of-a-vector-store" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="storage">
+<h2><a class="toc-backref" href="#id6">Storage</a><a class="headerlink" href="#storage" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Persist vectors (float arrays)</p></li>
+<li><p>Persist metadata (source, page, tags)</p></li>
+</ul>
+</section>
+<section id="indexing">
+<h2><a class="toc-backref" href="#id7">Indexing</a><a class="headerlink" href="#indexing" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Build ANN indexes for fast search</p></li>
+</ul>
+</section>
+<section id="search">
+<h2><a class="toc-backref" href="#id8">Search</a><a class="headerlink" href="#search" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Similarity (cosine, dot, L2)</p></li>
+<li><p>Top-k nearest neighbors</p></li>
+</ul>
+</section>
+<section id="filtering">
+<h2><a class="toc-backref" href="#id9">Filtering</a><a class="headerlink" href="#filtering" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Metadata-based constraints</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="vector-store-vs-traditional-database">
+<h2><a class="toc-backref" href="#id10">Vector Store vs Traditional Database</a><a class="headerlink" href="#vector-store-vs-traditional-database" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Vector Store</p></th>
+<th class="head"><p>SQL / NoSQL</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Primary data</p></td>
+<td><p>Vectors</p></td>
+<td><p>Rows / documents</p></td>
+</tr>
+<tr class="row-odd"><td><p>Query type</p></td>
+<td><p>Similarity</p></td>
+<td><p>Exact / range</p></td>
+</tr>
+<tr class="row-even"><td><p>ANN search</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Semantic meaning</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="vector-stores-in-langchain">
+<h2><a class="toc-backref" href="#id11">Vector Stores in LangChain</a><a class="headerlink" href="#vector-stores-in-langchain" title="Permalink to this heading">#</a></h2>
+<p>LangChain provides a <strong>uniform interface</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This abstracts the backend.</p>
+</section>
+<hr class="docutils" />
+<section id="basic-vector-store-demonstration">
+<h2><a class="toc-backref" href="#id12">Basic Vector Store Demonstration</a><a class="headerlink" href="#basic-vector-store-demonstration" title="Permalink to this heading">#</a></h2>
+<section id="in-memory-vector-store-faiss">
+<h3><a class="toc-backref" href="#id13">In-Memory Vector Store (FAISS)</a><a class="headerlink" href="#in-memory-vector-store-faiss" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;LangChain is a framework for LLM apps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RAG combines retrieval and generation&quot;</span>
+<span class="p">]</span>
+
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="querying-the-vector-store">
+<h2><a class="toc-backref" href="#id14">Querying the Vector Store</a><a class="headerlink" href="#querying-the-vector-store" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span>
+    <span class="s2">&quot;What is RAG?&quot;</span><span class="p">,</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Returns the most semantically similar documents.</p>
+</section>
+<hr class="docutils" />
+<section id="popular-vector-store-backends">
+<h2><a class="toc-backref" href="#id15">Popular Vector Store Backends</a><a class="headerlink" href="#popular-vector-store-backends" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="local-in-memory">
+<h2><a class="toc-backref" href="#id16">Local / In-Memory</a><a class="headerlink" href="#local-in-memory" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>FAISS</p></li>
+<li><p>Chroma</p></li>
+</ul>
+</section>
+<section id="managed-cloud">
+<h2><a class="toc-backref" href="#id17">Managed / Cloud</a><a class="headerlink" href="#managed-cloud" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Pinecone</p></li>
+<li><p>Weaviate</p></li>
+<li><p>Qdrant</p></li>
+<li><p>Milvus</p></li>
+</ul>
+</section>
+<section id="hybrid-databases">
+<h2><a class="toc-backref" href="#id18">Hybrid Databases</a><a class="headerlink" href="#hybrid-databases" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>PostgreSQL (pgvector)</p></li>
+<li><p>Elasticsearch (dense_vector)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="production-grade-vector-store-concepts">
+<h2><a class="toc-backref" href="#id19">Production-Grade Vector Store Concepts</a><a class="headerlink" href="#production-grade-vector-store-concepts" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="index-type-ann-algorithms">
+<h2><a class="toc-backref" href="#id20">1. Index Type (ANN Algorithms)</a><a class="headerlink" href="#index-type-ann-algorithms" title="Permalink to this heading">#</a></h2>
+<p>Vector stores use ANN to trade <strong>accuracy for speed</strong>.</p>
+<p>Common index types:</p>
+<ul class="simple">
+<li><p>HNSW (graph-based)</p></li>
+<li><p>IVF (inverted file)</p></li>
+<li><p>Flat (exact, slow)</p></li>
+</ul>
+<p><strong>Production rule</strong>:</p>
+<ul class="simple">
+<li><p>Small data → Flat / HNSW</p></li>
+<li><p>Large data → HNSW / IVF</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="distance-metrics">
+<h2><a class="toc-backref" href="#id21">2. Distance Metrics</a><a class="headerlink" href="#distance-metrics" title="Permalink to this heading">#</a></h2>
+<p>Choose one and stay consistent:</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Use Case</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cosine</p></td>
+<td><p>Text embeddings (most common)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dot Product</p></td>
+<td><p>Normalized embeddings</p></td>
+</tr>
+<tr class="row-even"><td><p>L2</p></td>
+<td><p>Image / numeric vectors</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Changing metric ⇒ <strong>re-index required</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="metadata-filtering-critical">
+<h2><a class="toc-backref" href="#id22">3. Metadata Filtering (Critical)</a><a class="headerlink" href="#metadata-filtering-critical" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
+    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;jira&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Used for:</p>
+<ul class="simple">
+<li><p>Tenant isolation</p></li>
+<li><p>Access control</p></li>
+<li><p>Time-based filtering</p></li>
+<li><p>Data partitioning</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="chunk-level-granularity">
+<h2><a class="toc-backref" href="#id23">4. Chunk-Level Granularity</a><a class="headerlink" href="#chunk-level-granularity" title="Permalink to this heading">#</a></h2>
+<p>Production systems store <strong>chunks</strong>, not documents.</p>
+<p>Each vector corresponds to:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;embedding&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">],</span>
+  <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;chunk text&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;doc_id&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chunk_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;pdf&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="update-delete-strategy">
+<h2><a class="toc-backref" href="#id24">5. Update &amp; Delete Strategy</a><a class="headerlink" href="#update-delete-strategy" title="Permalink to this heading">#</a></h2>
+<p>Vector stores are <strong>not append-only</strong> in production.</p>
+<p>You need:</p>
+<ul class="simple">
+<li><p>Delete by ID</p></li>
+<li><p>Upsert</p></li>
+<li><p>Re-embedding strategy</p></li>
+</ul>
+<p>Example:</p>
+<ul class="simple">
+<li><p>Document updated → delete old vectors → insert new ones</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="re-embedding-strategy">
+<h2><a class="toc-backref" href="#id25">6. Re-Embedding Strategy</a><a class="headerlink" href="#re-embedding-strategy" title="Permalink to this heading">#</a></h2>
+<p>You must re-embed when:</p>
+<ul class="simple">
+<li><p>Chunking changes</p></li>
+<li><p>Embedding model changes</p></li>
+<li><p>Language/domain changes</p></li>
+</ul>
+<p><strong>Never mix embedding models in one index.</strong></p>
+</section>
+<hr class="docutils" />
+<section id="consistency-versioning">
+<h2><a class="toc-backref" href="#id26">7. Consistency &amp; Versioning</a><a class="headerlink" href="#consistency-versioning" title="Permalink to this heading">#</a></h2>
+<p>Production best practice:</p>
+<ul class="simple">
+<li><p>Version vector indexes</p></li>
+<li><p>Blue-green reindexing</p></li>
+<li><p>Zero-downtime swaps</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>index_v1 → index_v2 → switch retriever
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="scaling-considerations">
+<h2><a class="toc-backref" href="#id27">8. Scaling Considerations</a><a class="headerlink" href="#scaling-considerations" title="Permalink to this heading">#</a></h2>
+<p>Key scaling dimensions:</p>
+<ul class="simple">
+<li><p>Number of vectors</p></li>
+<li><p>Query QPS</p></li>
+<li><p>Index memory footprint</p></li>
+</ul>
+<p>Strategies:</p>
+<ul class="simple">
+<li><p>Sharding</p></li>
+<li><p>Replication</p></li>
+<li><p>Separate read/write paths</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="latency-budget">
+<h2><a class="toc-backref" href="#id28">9. Latency Budget</a><a class="headerlink" href="#latency-budget" title="Permalink to this heading">#</a></h2>
+<p>Typical production targets:</p>
+<ul class="simple">
+<li><p>Vector search: &lt; 50 ms</p></li>
+<li><p>End-to-end RAG: &lt; 500 ms</p></li>
+</ul>
+<p>Techniques:</p>
+<ul class="simple">
+<li><p>Smaller embedding models</p></li>
+<li><p>Lower k</p></li>
+<li><p>Rerank only top-N</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="hybrid-search-production-standard">
+<h2><a class="toc-backref" href="#id29">10. Hybrid Search (Production Standard)</a><a class="headerlink" href="#hybrid-search-production-standard" title="Permalink to this heading">#</a></h2>
+<p>Combine:</p>
+<ul class="simple">
+<li><p>Vector similarity</p></li>
+<li><p>Keyword/BM25</p></li>
+</ul>
+<p>Benefits:</p>
+<ul class="simple">
+<li><p>Higher recall</p></li>
+<li><p>Better precision</p></li>
+</ul>
+<p>Many systems:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Hybrid Search → Reranker → LLM
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="vector-store-retriever-langchain">
+<h2><a class="toc-backref" href="#id30">Vector Store + Retriever (LangChain)</a><a class="headerlink" href="#vector-store-retriever-langchain" title="Permalink to this heading">#</a></h2>
+<p>Retriever is the <strong>query-time interface</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
+    <span class="n">search_type</span><span class="o">=</span><span class="s2">&quot;similarity&quot;</span><span class="p">,</span>
+    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Production systems often customize retrievers heavily.</p>
+</section>
+<hr class="docutils" />
+<section id="vector-store-vs-reranker">
+<h2><a class="toc-backref" href="#id31">Vector Store vs Reranker</a><a class="headerlink" href="#vector-store-vs-reranker" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Vector Store</p></td>
+<td><p>Fast candidate retrieval</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reranker</p></td>
+<td><p>Precise ordering</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Rerankers are <strong>optional but recommended</strong> at scale.</p>
+</section>
+<hr class="docutils" />
+<section id="common-production-mistakes">
+<h2><a class="toc-backref" href="#id32">Common Production Mistakes</a><a class="headerlink" href="#common-production-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="using-in-memory-stores-in-prod">
+<h3><a class="toc-backref" href="#id33">Using in-memory stores in prod</a><a class="headerlink" href="#using-in-memory-stores-in-prod" title="Permalink to this heading">#</a></h3>
+<p>❌ Data loss on restart</p>
+</section>
+<section id="no-metadata-filters">
+<h3><a class="toc-backref" href="#id34">No metadata filters</a><a class="headerlink" href="#no-metadata-filters" title="Permalink to this heading">#</a></h3>
+<p>❌ Security issues</p>
+</section>
+<section id="large-k-values">
+<h3><a class="toc-backref" href="#id35">Large k values</a><a class="headerlink" href="#large-k-values" title="Permalink to this heading">#</a></h3>
+<p>❌ Latency spikes</p>
+</section>
+<section id="re-embedding-ad-hoc">
+<h3><a class="toc-backref" href="#id36">Re-embedding ad-hoc</a><a class="headerlink" href="#re-embedding-ad-hoc" title="Permalink to this heading">#</a></h3>
+<p>❌ Inconsistent indexes</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="production-best-practices-checklist">
+<h2><a class="toc-backref" href="#id37">Production Best Practices Checklist</a><a class="headerlink" href="#production-best-practices-checklist" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>✅ Stable embedding model</p></li>
+<li><p>✅ Chunk before embedding</p></li>
+<li><p>✅ Metadata-rich vectors</p></li>
+<li><p>✅ Index versioning</p></li>
+<li><p>✅ Filter by tenant/source</p></li>
+<li><p>✅ Monitor recall &amp; latency</p></li>
+<li><p>✅ Rerank when needed</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id38">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“A vector store is a database optimized for storing and searching embedding vectors using similarity metrics. In production RAG systems, vector stores require careful index selection, metadata filtering, versioning, and scaling to ensure low latency, high recall, and data safety.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id39">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Small data → FAISS / Chroma</strong></p></li>
+<li><p><strong>Production → Managed vector DB or pgvector</strong></p></li>
+<li><p><strong>Scale → ANN + filtering + reranking</strong></p></li>
+<li><p><strong>Change embeddings → Re-index everything</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-vector-store-is">What a Vector Store Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-vector-stores-are-critical">Why Vector Stores Are Critical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-vector-stores-fit-in-rag">Where Vector Stores Fit in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-responsibilities-of-a-vector-store">Core Responsibilities of a Vector Store</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storage">Storage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing">Indexing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search">Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering">Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-store-vs-traditional-database">Vector Store vs Traditional Database</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-stores-in-langchain">Vector Stores in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-vector-store-demonstration">Basic Vector Store Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-memory-vector-store-faiss">In-Memory Vector Store (FAISS)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-the-vector-store">Querying the Vector Store</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#popular-vector-store-backends">Popular Vector Store Backends</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-in-memory">Local / In-Memory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managed-cloud">Managed / Cloud</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-databases">Hybrid Databases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-vector-store-concepts">Production-Grade Vector Store Concepts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#index-type-ann-algorithms">1. Index Type (ANN Algorithms)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-metrics">2. Distance Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-filtering-critical">3. Metadata Filtering (Critical)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-level-granularity">4. Chunk-Level Granularity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-delete-strategy">5. Update &amp; Delete Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#re-embedding-strategy">6. Re-Embedding Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consistency-versioning">7. Consistency &amp; Versioning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-considerations">8. Scaling Considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-budget">9. Latency Budget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-search-production-standard">10. Hybrid Search (Production Standard)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-store-retriever-langchain">Vector Store + Retriever (LangChain)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-store-vs-reranker">Vector Store vs Reranker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-production-mistakes">Common Production Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-in-memory-stores-in-prod">Using in-memory stores in prod</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-metadata-filters">No metadata filters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#large-k-values">Large k values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-embedding-ad-hoc">Re-embedding ad-hoc</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-best-practices-checklist">Production Best Practices Checklist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

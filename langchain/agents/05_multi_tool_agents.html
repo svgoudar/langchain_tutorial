@@ -1,0 +1,1049 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Multi-Tool Agents &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/agents/05_multi_tool_agents';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/agents/05_multi_tool_agents.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/agents/05_multi_tool_agents.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/agents/05_multi_tool_agents.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Multi-Tool Agents</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Multi-Tool Agents</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#why-multi-tool-agents-are-needed">Why Multi-Tool Agents Are Needed</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-tool-agent-vs-single-tool-agent">Multi-Tool Agent vs Single-Tool Agent</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#common-tool-types-in-multi-tool-agents">Common Tool Types in Multi-Tool Agents</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-tools">Retrieval Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-tools">Data Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#action-tools">Action Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utility-tools">Utility Tools</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#typical-multi-tool-use-case">Typical Multi-Tool Use Case</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-tool-agents-in-langchain">Multi-Tool Agents in LangChain</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-demonstration-langchain-conceptual">Minimal Demonstration (LangChain – Conceptual)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-multiple-tools">Step 1: Define Multiple Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-create-the-chat-model">Step 2: Create the Chat Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-create-the-agent">Step 3: Create the Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-execute-the-agent">Step 4: Execute the Agent</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#how-tool-selection-works">How Tool Selection Works</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-tool-agents-vs-sequential-chains">Multi-Tool Agents vs Sequential Chains</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-tool-agents-vs-langgraph">Multi-Tool Agents vs LangGraph</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-for-multi-tool-agents-critical">Guardrails for Multi-Tool Agents (Critical)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#common-failure-modes">Common Failure Modes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-confusion">Tool confusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#infinite-loops">Infinite loops</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-overuse">Tool overuse</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#production-use-cases">Production Use Cases</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#multi-tool-agents" id="id1">Multi-Tool Agents</a></p></li>
+<li><p><a class="reference internal" href="#why-multi-tool-agents-are-needed" id="id2">Why Multi-Tool Agents Are Needed</a></p></li>
+<li><p><a class="reference internal" href="#conceptual-flow" id="id3">Conceptual Flow</a></p></li>
+<li><p><a class="reference internal" href="#multi-tool-agent-vs-single-tool-agent" id="id4">Multi-Tool Agent vs Single-Tool Agent</a></p></li>
+<li><p><a class="reference internal" href="#common-tool-types-in-multi-tool-agents" id="id5">Common Tool Types in Multi-Tool Agents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retrieval-tools" id="id6">Retrieval Tools</a></p></li>
+<li><p><a class="reference internal" href="#data-tools" id="id7">Data Tools</a></p></li>
+<li><p><a class="reference internal" href="#action-tools" id="id8">Action Tools</a></p></li>
+<li><p><a class="reference internal" href="#utility-tools" id="id9">Utility Tools</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#typical-multi-tool-use-case" id="id10">Typical Multi-Tool Use Case</a></p></li>
+<li><p><a class="reference internal" href="#multi-tool-agents-in-langchain" id="id11">Multi-Tool Agents in LangChain</a></p></li>
+<li><p><a class="reference internal" href="#minimal-demonstration-langchain-conceptual" id="id12">Minimal Demonstration (LangChain – Conceptual)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-define-multiple-tools" id="id13">Step 1: Define Multiple Tools</a></p></li>
+<li><p><a class="reference internal" href="#step-2-create-the-chat-model" id="id14">Step 2: Create the Chat Model</a></p></li>
+<li><p><a class="reference internal" href="#step-3-create-the-agent" id="id15">Step 3: Create the Agent</a></p></li>
+<li><p><a class="reference internal" href="#step-4-execute-the-agent" id="id16">Step 4: Execute the Agent</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#how-tool-selection-works" id="id17">How Tool Selection Works</a></p></li>
+<li><p><a class="reference internal" href="#multi-tool-agents-vs-sequential-chains" id="id18">Multi-Tool Agents vs Sequential Chains</a></p></li>
+<li><p><a class="reference internal" href="#multi-tool-agents-vs-langgraph" id="id19">Multi-Tool Agents vs LangGraph</a></p></li>
+<li><p><a class="reference internal" href="#guardrails-for-multi-tool-agents-critical" id="id20">Guardrails for Multi-Tool Agents (Critical)</a></p></li>
+<li><p><a class="reference internal" href="#common-failure-modes" id="id21">Common Failure Modes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#tool-confusion" id="id22">Tool confusion</a></p></li>
+<li><p><a class="reference internal" href="#infinite-loops" id="id23">Infinite loops</a></p></li>
+<li><p><a class="reference internal" href="#tool-overuse" id="id24">Tool overuse</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices" id="id25">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#production-use-cases" id="id26">Production Use Cases</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id27">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id28">Rule of Thumb</a></p></li>
+</ul>
+</div>
+<section id="multi-tool-agents">
+<h1><a class="toc-backref" href="#id1">Multi-Tool Agents</a><a class="headerlink" href="#multi-tool-agents" title="Permalink to this heading">#</a></h1>
+<p>A <strong>multi-tool agent</strong> is an agentic LLM system that can <strong>choose among multiple tools</strong>, <strong>call them in sequence or combination</strong>, and <strong>use their outputs together</strong> to produce a final answer.</p>
+<blockquote>
+<div><p>Instead of a single function call, the agent dynamically orchestrates <strong>several tools</strong> to solve a task.</p>
+</div></blockquote>
+<hr class="docutils" />
+</section>
+<section id="why-multi-tool-agents-are-needed">
+<h1><a class="toc-backref" href="#id2">Why Multi-Tool Agents Are Needed</a><a class="headerlink" href="#why-multi-tool-agents-are-needed" title="Permalink to this heading">#</a></h1>
+<p>Single-tool usage fails when:</p>
+<ul class="simple">
+<li><p>Information is spread across systems</p></li>
+<li><p>Tasks require multiple steps</p></li>
+<li><p>Decisions depend on intermediate results</p></li>
+</ul>
+<p>Multi-tool agents enable:</p>
+<ul class="simple">
+<li><p>End-to-end workflows</p></li>
+<li><p>Cross-system reasoning</p></li>
+<li><p>Higher accuracy for complex queries</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="conceptual-flow">
+<h1><a class="toc-backref" href="#id3">Conceptual Flow</a><a class="headerlink" href="#conceptual-flow" title="Permalink to this heading">#</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Query
+   ↓
+LLM Reasoning
+   ↓
+Tool Selection (Tool A)
+   ↓
+Observation
+   ↓
+LLM Reasoning
+   ↓
+Tool Selection (Tool B)
+   ↓
+Observation
+   ↓
+Final Answer
+</pre></div>
+</div>
+<p>This loop may run <strong>multiple times</strong>.</p>
+<hr class="docutils" />
+</section>
+<section id="multi-tool-agent-vs-single-tool-agent">
+<h1><a class="toc-backref" href="#id4">Multi-Tool Agent vs Single-Tool Agent</a><a class="headerlink" href="#multi-tool-agent-vs-single-tool-agent" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Single-Tool</p></th>
+<th class="head"><p>Multi-Tool</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Tools available</p></td>
+<td><p>1</p></td>
+<td><p>Many</p></td>
+</tr>
+<tr class="row-odd"><td><p>Decision logic</p></td>
+<td><p>Simple</p></td>
+<td><p>Dynamic</p></td>
+</tr>
+<tr class="row-even"><td><p>Steps</p></td>
+<td><p>One</p></td>
+<td><p>Many</p></td>
+</tr>
+<tr class="row-odd"><td><p>Complex workflows</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="common-tool-types-in-multi-tool-agents">
+<h1><a class="toc-backref" href="#id5">Common Tool Types in Multi-Tool Agents</a><a class="headerlink" href="#common-tool-types-in-multi-tool-agents" title="Permalink to this heading">#</a></h1>
+<section id="retrieval-tools">
+<h2><a class="toc-backref" href="#id6">Retrieval Tools</a><a class="headerlink" href="#retrieval-tools" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Vector search</p></li>
+<li><p>Hybrid search</p></li>
+<li><p>Knowledge base lookup</p></li>
+</ul>
+</section>
+<section id="data-tools">
+<h2><a class="toc-backref" href="#id7">Data Tools</a><a class="headerlink" href="#data-tools" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Database queries</p></li>
+<li><p>CSV / log readers</p></li>
+</ul>
+</section>
+<section id="action-tools">
+<h2><a class="toc-backref" href="#id8">Action Tools</a><a class="headerlink" href="#action-tools" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Create/update tickets</p></li>
+<li><p>Trigger workflows</p></li>
+</ul>
+</section>
+<section id="utility-tools">
+<h2><a class="toc-backref" href="#id9">Utility Tools</a><a class="headerlink" href="#utility-tools" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Calculator</p></li>
+<li><p>Date/time logic</p></li>
+<li><p>Validators</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="typical-multi-tool-use-case">
+<h1><a class="toc-backref" href="#id10">Typical Multi-Tool Use Case</a><a class="headerlink" href="#typical-multi-tool-use-case" title="Permalink to this heading">#</a></h1>
+<p><strong>User:</strong>
+“Are Jira tickets exceeding SLA today, and notify the on-call engineer if yes.”</p>
+<p><strong>Agent reasoning (simplified):</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Thought: Need ticket count → use ticket_count tool
+Observation: 128
+
+Thought: Need SLA threshold → use sla_lookup tool
+Observation: 100
+
+Thought: 128 &gt; 100 → notify engineer
+Action: send_notification
+Observation: success
+
+Final Answer: Yes, tickets exceed SLA. Notification sent.
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="multi-tool-agents-in-langchain">
+<h1><a class="toc-backref" href="#id11">Multi-Tool Agents in LangChain</a><a class="headerlink" href="#multi-tool-agents-in-langchain" title="Permalink to this heading">#</a></h1>
+<p>LangChain supports multi-tool agents via:</p>
+<ul class="simple">
+<li><p><strong>ReAct agents</strong></p></li>
+<li><p><strong>OpenAI Tools agents</strong></p></li>
+<li><p><strong>LangGraph (recommended for production)</strong></p></li>
+</ul>
+<p>All tools are registered upfront.</p>
+<hr class="docutils" />
+</section>
+<section id="minimal-demonstration-langchain-conceptual">
+<h1><a class="toc-backref" href="#id12">Minimal Demonstration (LangChain – Conceptual)</a><a class="headerlink" href="#minimal-demonstration-langchain-conceptual" title="Permalink to this heading">#</a></h1>
+<section id="step-1-define-multiple-tools">
+<h2><a class="toc-backref" href="#id13">Step 1: Define Multiple Tools</a><a class="headerlink" href="#step-1-define-multiple-tools" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
+
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ticket_count</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return number of tickets&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">128</span>
+
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sla_threshold</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return SLA ticket threshold&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-2-create-the-chat-model">
+<h2><a class="toc-backref" href="#id14">Step 2: Create the Chat Model</a><a class="headerlink" href="#step-2-create-the-chat-model" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-3-create-the-agent">
+<h2><a class="toc-backref" href="#id15">Step 3: Create the Agent</a><a class="headerlink" href="#step-3-create-the-agent" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_react_agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic</span><span class="w"> </span><span class="kn">import</span> <span class="n">hub</span>
+
+<span class="c1"># Pull the ReAct prompt template from LangChain Hub</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">hub</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="s2">&quot;hwchase17/react&quot;</span><span class="p">)</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_react_agent</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">ticket_count</span><span class="p">,</span> <span class="n">sla_threshold</span><span class="p">],</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-4-execute-the-agent">
+<h2><a class="toc-backref" href="#id16">Step 4: Execute the Agent</a><a class="headerlink" href="#step-4-execute-the-agent" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">AgentExecutor</span>
+
+<span class="n">executor</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+    <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">ticket_count</span><span class="p">,</span> <span class="n">sla_threshold</span><span class="p">],</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">executor</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Are Jira tickets exceeding SLA?&quot;</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">&gt; Entering new AgentExecutor chain...</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">To determine if Jira tickets are exceeding the SLA, I need to compare the number of tickets with the SLA threshold. First, I will retrieve the number of tickets. </span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action: ticket_count  </span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action Input: &quot;Jira&quot;  </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">128</span><span class=" -Color -Color-Bold -Color-Bold-Green">I have the number of Jira tickets, which is 128. Now, I need to retrieve the SLA threshold to compare it with the number of tickets.</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action: sla_threshold  </span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action Input: None  </span><span class=" -Color -Color-Bold -Color-Bold-Yellow">100</span><span class=" -Color -Color-Bold -Color-Bold-Green">I now have both the number of Jira tickets (128) and the SLA threshold (100). Now I can compare them to determine if the tickets are exceeding the SLA.</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Final Answer: Yes, Jira tickets are exceeding SLA since 128 &gt; 100.</span>
+
+<span class=" -Color -Color-Bold">&gt; Finished chain.</span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;input&#39;: &#39;Are Jira tickets exceeding SLA?&#39;,
+ &#39;output&#39;: &#39;Yes, Jira tickets are exceeding SLA since 128 &gt; 100.&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The agent decides:</p>
+<ul class="simple">
+<li><p>Which tool to call</p></li>
+<li><p>In what order</p></li>
+<li><p>How to combine results</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="how-tool-selection-works">
+<h1><a class="toc-backref" href="#id17">How Tool Selection Works</a><a class="headerlink" href="#how-tool-selection-works" title="Permalink to this heading">#</a></h1>
+<p>The LLM chooses tools based on:</p>
+<ul class="simple">
+<li><p>Tool <strong>name</strong></p></li>
+<li><p>Tool <strong>description</strong></p></li>
+<li><p>Tool <strong>input schema</strong></p></li>
+<li><p>Current reasoning state</p></li>
+</ul>
+<p>Clear tool descriptions are critical.</p>
+<hr class="docutils" />
+</section>
+<section id="multi-tool-agents-vs-sequential-chains">
+<h1><a class="toc-backref" href="#id18">Multi-Tool Agents vs Sequential Chains</a><a class="headerlink" href="#multi-tool-agents-vs-sequential-chains" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Sequential Chain</p></th>
+<th class="head"><p>Multi-Tool Agent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Flow</p></td>
+<td><p>Fixed</p></td>
+<td><p>Dynamic</p></td>
+</tr>
+<tr class="row-odd"><td><p>Branches</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Tool choice</p></td>
+<td><p>Predefined</p></td>
+<td><p>LLM-decided</p></td>
+</tr>
+<tr class="row-odd"><td><p>Adaptability</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+<section id="multi-tool-agents-vs-langgraph">
+<h1><a class="toc-backref" href="#id19">Multi-Tool Agents vs LangGraph</a><a class="headerlink" href="#multi-tool-agents-vs-langgraph" title="Permalink to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Multi-Tool Agent</p></th>
+<th class="head"><p>LangGraph</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Control</p></td>
+<td><p>LLM-driven</p></td>
+<td><p>Explicit state machine</p></td>
+</tr>
+<tr class="row-odd"><td><p>Predictability</p></td>
+<td><p>Medium</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>Production safety</p></td>
+<td><p>Medium</p></td>
+<td><p>Very High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Rule:</strong></p>
+<ul class="simple">
+<li><p>Use agents for flexibility</p></li>
+<li><p>Use LangGraph for mission-critical workflows</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="guardrails-for-multi-tool-agents-critical">
+<h1><a class="toc-backref" href="#id20">Guardrails for Multi-Tool Agents (Critical)</a><a class="headerlink" href="#guardrails-for-multi-tool-agents-critical" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Tool allowlist</p></li>
+<li><p>Read vs write tool separation</p></li>
+<li><p>Input validation</p></li>
+<li><p>Max iteration limits</p></li>
+<li><p>Low temperature</p></li>
+<li><p>Human approval for destructive actions</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="common-failure-modes">
+<h1><a class="toc-backref" href="#id21">Common Failure Modes</a><a class="headerlink" href="#common-failure-modes" title="Permalink to this heading">#</a></h1>
+<section id="tool-confusion">
+<h2><a class="toc-backref" href="#id22">Tool confusion</a><a class="headerlink" href="#tool-confusion" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Poor descriptions</p></li>
+<li><p>Overlapping tool purposes</p></li>
+</ul>
+</section>
+<section id="infinite-loops">
+<h2><a class="toc-backref" href="#id23">Infinite loops</a><a class="headerlink" href="#infinite-loops" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>No stop condition</p></li>
+</ul>
+</section>
+<section id="tool-overuse">
+<h2><a class="toc-backref" href="#id24">Tool overuse</a><a class="headerlink" href="#tool-overuse" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Calling tools unnecessarily</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="best-practices">
+<h1><a class="toc-backref" href="#id25">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Keep tools small and single-purpose</p></li>
+<li><p>Write precise tool descriptions</p></li>
+<li><p>Limit number of exposed tools</p></li>
+<li><p>Log every tool call</p></li>
+<li><p>Add fallback logic</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="production-use-cases">
+<h1><a class="toc-backref" href="#id26">Production Use Cases</a><a class="headerlink" href="#production-use-cases" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>IT support automation</p></li>
+<li><p>Incident management</p></li>
+<li><p>Customer support bots</p></li>
+<li><p>DevOps copilots</p></li>
+<li><p>Data analysis assistants</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="interview-ready-summary">
+<h1><a class="toc-backref" href="#id27">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h1>
+<blockquote>
+<div><p>“Multi-tool agents allow an LLM to dynamically choose and orchestrate multiple tools in a reasoning loop. They enable complex, multi-step workflows but require strong guardrails for production use.”</p>
+</div></blockquote>
+<hr class="docutils" />
+</section>
+<section id="rule-of-thumb">
+<h1><a class="toc-backref" href="#id28">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p><strong>One deterministic action → Tool calling</strong></p></li>
+<li><p><strong>Multiple actions → Multi-tool agent</strong></p></li>
+<li><p><strong>High safety required → LangGraph</strong></p></li>
+<li><p><strong>Enterprise automation → Multi-tool + guardrails</strong></p></li>
+</ul>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\agents"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Multi-Tool Agents</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#why-multi-tool-agents-are-needed">Why Multi-Tool Agents Are Needed</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-tool-agent-vs-single-tool-agent">Multi-Tool Agent vs Single-Tool Agent</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#common-tool-types-in-multi-tool-agents">Common Tool Types in Multi-Tool Agents</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-tools">Retrieval Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-tools">Data Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#action-tools">Action Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utility-tools">Utility Tools</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#typical-multi-tool-use-case">Typical Multi-Tool Use Case</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-tool-agents-in-langchain">Multi-Tool Agents in LangChain</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-demonstration-langchain-conceptual">Minimal Demonstration (LangChain – Conceptual)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-multiple-tools">Step 1: Define Multiple Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-create-the-chat-model">Step 2: Create the Chat Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-create-the-agent">Step 3: Create the Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-execute-the-agent">Step 4: Execute the Agent</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#how-tool-selection-works">How Tool Selection Works</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-tool-agents-vs-sequential-chains">Multi-Tool Agents vs Sequential Chains</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-tool-agents-vs-langgraph">Multi-Tool Agents vs LangGraph</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-for-multi-tool-agents-critical">Guardrails for Multi-Tool Agents (Critical)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#common-failure-modes">Common Failure Modes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-confusion">Tool confusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#infinite-loops">Infinite loops</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-overuse">Tool overuse</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#production-use-cases">Production Use Cases</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1008 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Context Window Management &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/10_context_window_management';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/10_context_window_management.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/10_context_window_management.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/10_context_window_management.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Context Window Management</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-context-window-is">What a Context Window Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-context-window-management-is-critical">Why Context Window Management Is Critical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-context-window-pressure-comes-from">Where Context Window Pressure Comes From</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-contributors">Main Contributors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-in-a-rag-pipeline">Context Window in a RAG Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-context-window-management-techniques">Core Context Window Management Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunking-foundation">Chunking (Foundation)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-control-hard-limit">Top-K Control (Hard Limit)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reranking-precision-control">Reranking (Precision Control)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-compression">Contextual Compression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stuff-vs-mapreduce-vs-refine">Stuff vs MapReduce vs Refine</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-chat-history-memory-control">Managing Chat History (Memory Control)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem">Problem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solutions">Solutions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#windowed-memory">Windowed Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-memory">Summary Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-memory">Hybrid Memory</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-budgeting-production-practice">Token Budgeting (Production Practice)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-budget">Define a Budget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-context-selection">Dynamic Context Selection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-aware-context">Query-Aware Context</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-vs-hallucination">Context Window vs Hallucination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-management-in-langchain-lcel-pattern">Context Window Management in LangChain (LCEL Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-production-mistakes">Common Production Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-all-retrieved-chunks">Sending all retrieved chunks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-reranking">No reranking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unlimited-chat-history">Unlimited chat history</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ignoring-output-tokens">Ignoring output tokens</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-production-grade">Best Practices (Production-Grade)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-vs-long-context-models">Context Window vs Long-Context Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#context-window-management" id="id1">Context Window Management</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-a-context-window-is" id="id2">What a Context Window Is</a></p></li>
+<li><p><a class="reference internal" href="#why-context-window-management-is-critical" id="id3">Why Context Window Management Is Critical</a></p></li>
+<li><p><a class="reference internal" href="#where-context-window-pressure-comes-from" id="id4">Where Context Window Pressure Comes From</a></p></li>
+<li><p><a class="reference internal" href="#main-contributors" id="id5">Main Contributors</a></p></li>
+<li><p><a class="reference internal" href="#context-window-in-a-rag-pipeline" id="id6">Context Window in a RAG Pipeline</a></p></li>
+<li><p><a class="reference internal" href="#core-context-window-management-techniques" id="id7">Core Context Window Management Techniques</a></p>
+<ul>
+<li><p><a class="reference internal" href="#chunking-foundation" id="id8">Chunking (Foundation)</a></p></li>
+<li><p><a class="reference internal" href="#top-k-control-hard-limit" id="id9">Top-K Control (Hard Limit)</a></p></li>
+<li><p><a class="reference internal" href="#reranking-precision-control" id="id10">Reranking (Precision Control)</a></p></li>
+<li><p><a class="reference internal" href="#contextual-compression" id="id11">Contextual Compression</a></p></li>
+<li><p><a class="reference internal" href="#stuff-vs-mapreduce-vs-refine" id="id12">Stuff vs MapReduce vs Refine</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#managing-chat-history-memory-control" id="id13">Managing Chat History (Memory Control)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#problem" id="id14">Problem</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#solutions" id="id15">Solutions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#windowed-memory" id="id16">Windowed Memory</a></p></li>
+<li><p><a class="reference internal" href="#summary-memory" id="id17">Summary Memory</a></p></li>
+<li><p><a class="reference internal" href="#hybrid-memory" id="id18">Hybrid Memory</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#token-budgeting-production-practice" id="id19">Token Budgeting (Production Practice)</a></p></li>
+<li><p><a class="reference internal" href="#define-a-budget" id="id20">Define a Budget</a></p></li>
+<li><p><a class="reference internal" href="#dynamic-context-selection" id="id21">Dynamic Context Selection</a></p>
+<ul>
+<li><p><a class="reference internal" href="#query-aware-context" id="id22">Query-Aware Context</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#context-window-vs-hallucination" id="id23">Context Window vs Hallucination</a></p></li>
+<li><p><a class="reference internal" href="#context-window-management-in-langchain-lcel-pattern" id="id24">Context Window Management in LangChain (LCEL Pattern)</a></p></li>
+<li><p><a class="reference internal" href="#common-production-mistakes" id="id25">Common Production Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#sending-all-retrieved-chunks" id="id26">Sending all retrieved chunks</a></p></li>
+<li><p><a class="reference internal" href="#no-reranking" id="id27">No reranking</a></p></li>
+<li><p><a class="reference internal" href="#unlimited-chat-history" id="id28">Unlimited chat history</a></p></li>
+<li><p><a class="reference internal" href="#ignoring-output-tokens" id="id29">Ignoring output tokens</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices-production-grade" id="id30">Best Practices (Production-Grade)</a></p></li>
+<li><p><a class="reference internal" href="#context-window-vs-long-context-models" id="id31">Context Window vs Long-Context Models</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id32">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id33">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="context-window-management">
+<h1><a class="toc-backref" href="#id1">Context Window Management</a><a class="headerlink" href="#context-window-management" title="Permalink to this heading">#</a></h1>
+<p><strong>Context window management</strong> is the practice of <strong>controlling how much information is sent to an LLM per request</strong> so that:</p>
+<ul class="simple">
+<li><p>The input fits within the model’s token limit</p></li>
+<li><p>The most relevant information is preserved</p></li>
+<li><p>Cost, latency, and hallucinations are minimized</p></li>
+</ul>
+<blockquote>
+<div><p>An LLM can only “see” what fits inside its context window.</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="what-a-context-window-is">
+<h2><a class="toc-backref" href="#id2">What a Context Window Is</a><a class="headerlink" href="#what-a-context-window-is" title="Permalink to this heading">#</a></h2>
+<p>A <strong>context window</strong> is the <strong>maximum number of tokens</strong> (input + output) an LLM can process in one call.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Total</span> <span class="n">Tokens</span> <span class="o">=</span> <span class="n">System</span> <span class="o">+</span> <span class="n">User</span> <span class="o">+</span> <span class="n">Context</span> <span class="o">+</span> <span class="n">History</span> <span class="o">+</span> <span class="n">Output</span>
+</pre></div>
+</div>
+<p>If this limit is exceeded:</p>
+<ul class="simple">
+<li><p>Requests fail, or</p></li>
+<li><p>Older context is silently dropped (dangerous)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="why-context-window-management-is-critical">
+<h2><a class="toc-backref" href="#id3">Why Context Window Management Is Critical</a><a class="headerlink" href="#why-context-window-management-is-critical" title="Permalink to this heading">#</a></h2>
+<p>Without management:</p>
+<ul class="simple">
+<li><p>Token overflow errors</p></li>
+<li><p>Missing important context</p></li>
+<li><p>Increased hallucinations</p></li>
+<li><p>High latency and cost</p></li>
+<li><p>Unstable multi-turn conversations</p></li>
+</ul>
+<p>Context window management is <strong>mandatory in production systems</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="where-context-window-pressure-comes-from">
+<h2><a class="toc-backref" href="#id4">Where Context Window Pressure Comes From</a><a class="headerlink" href="#where-context-window-pressure-comes-from" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="main-contributors">
+<h2><a class="toc-backref" href="#id5">Main Contributors</a><a class="headerlink" href="#main-contributors" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>System instructions</p></li>
+<li><p>User query</p></li>
+<li><p>Retrieved documents (RAG)</p></li>
+<li><p>Chat history (memory)</p></li>
+<li><p>Tool outputs</p></li>
+<li><p>Expected model response</p></li>
+</ol>
+<p>All compete for the same token budget.</p>
+</section>
+<hr class="docutils" />
+<section id="context-window-in-a-rag-pipeline">
+<h2><a class="toc-backref" href="#id6">Context Window in a RAG Pipeline</a><a class="headerlink" href="#context-window-in-a-rag-pipeline" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Query
+   ↓
+Retriever (Top-K chunks)
+   ↓
+Context Assembly  ← (critical step)
+   ↓
+Prompt
+   ↓
+LLM
+</pre></div>
+</div>
+<p>Context assembly decides <strong>what goes in</strong> and <strong>what stays out</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="core-context-window-management-techniques">
+<h2><a class="toc-backref" href="#id7">Core Context Window Management Techniques</a><a class="headerlink" href="#core-context-window-management-techniques" title="Permalink to this heading">#</a></h2>
+<section id="chunking-foundation">
+<h3><a class="toc-backref" href="#id8">Chunking (Foundation)</a><a class="headerlink" href="#chunking-foundation" title="Permalink to this heading">#</a></h3>
+<p>Documents are split into chunks before embedding.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">chunk_overlap</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></div>
+</div>
+<p>Prevents sending entire documents to the LLM.</p>
+</section>
+<hr class="docutils" />
+<section id="top-k-control-hard-limit">
+<h3><a class="toc-backref" href="#id9">Top-K Control (Hard Limit)</a><a class="headerlink" href="#top-k-control-hard-limit" title="Permalink to this heading">#</a></h3>
+<p>Limit the number of retrieved chunks.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
+    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Tradeoff:</p>
+<ul class="simple">
+<li><p>Small k → risk missing context</p></li>
+<li><p>Large k → token explosion</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="reranking-precision-control">
+<h3><a class="toc-backref" href="#id10">Reranking (Precision Control)</a><a class="headerlink" href="#reranking-precision-control" title="Permalink to this heading">#</a></h3>
+<p>Retrieve many, send few.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Retrieve 20 → Rerank → Send top 3
+</pre></div>
+</div>
+<p>Reduces noise and token usage.</p>
+</section>
+<hr class="docutils" />
+<section id="contextual-compression">
+<h3><a class="toc-backref" href="#id11">Contextual Compression</a><a class="headerlink" href="#contextual-compression" title="Permalink to this heading">#</a></h3>
+<p>Reduce chunk size <strong>after retrieval</strong>.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>Extract only relevant sentences</p></li>
+<li><p>Summarize chunks</p></li>
+<li><p>Remove boilerplate</p></li>
+</ul>
+<p>LangChain pattern:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Retriever → Compressor → LLM
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="stuff-vs-mapreduce-vs-refine">
+<h3><a class="toc-backref" href="#id12">Stuff vs MapReduce vs Refine</a><a class="headerlink" href="#stuff-vs-mapreduce-vs-refine" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Strategy</p></th>
+<th class="head"><p>Context Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Stuff</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>MapReduce</p></td>
+<td><p>Controlled</p></td>
+</tr>
+<tr class="row-even"><td><p>Refine</p></td>
+<td><p>Incremental</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For large inputs, avoid <code class="docutils literal notranslate"><span class="pre">stuff</span></code>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="managing-chat-history-memory-control">
+<h2><a class="toc-backref" href="#id13">Managing Chat History (Memory Control)</a><a class="headerlink" href="#managing-chat-history-memory-control" title="Permalink to this heading">#</a></h2>
+<section id="problem">
+<h3><a class="toc-backref" href="#id14">Problem</a><a class="headerlink" href="#problem" title="Permalink to this heading">#</a></h3>
+<p>Unbounded chat history quickly fills the context window.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="solutions">
+<h2><a class="toc-backref" href="#id15">Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this heading">#</a></h2>
+<section id="windowed-memory">
+<h3><a class="toc-backref" href="#id16">Windowed Memory</a><a class="headerlink" href="#windowed-memory" title="Permalink to this heading">#</a></h3>
+<p>Keep only last N turns.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ConversationBufferWindowMemory</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="summary-memory">
+<h3><a class="toc-backref" href="#id17">Summary Memory</a><a class="headerlink" href="#summary-memory" title="Permalink to this heading">#</a></h3>
+<p>Summarize old messages.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Old turns → Summary → Single memory entry
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="hybrid-memory">
+<h3><a class="toc-backref" href="#id18">Hybrid Memory</a><a class="headerlink" href="#hybrid-memory" title="Permalink to this heading">#</a></h3>
+<p>Recent turns + long-term summary.</p>
+<p>Production standard.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="token-budgeting-production-practice">
+<h2><a class="toc-backref" href="#id19">Token Budgeting (Production Practice)</a><a class="headerlink" href="#token-budgeting-production-practice" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="define-a-budget">
+<h2><a class="toc-backref" href="#id20">Define a Budget</a><a class="headerlink" href="#define-a-budget" title="Permalink to this heading">#</a></h2>
+<p>Example (8k model):</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Tokens</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>System</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-odd"><td><p>User</p></td>
+<td><p>200</p></td>
+</tr>
+<tr class="row-even"><td><p>Retrieved context</p></td>
+<td><p>4,000</p></td>
+</tr>
+<tr class="row-odd"><td><p>History</p></td>
+<td><p>2,000</p></td>
+</tr>
+<tr class="row-even"><td><p>Response</p></td>
+<td><p>1,300</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Never “fill to the brim”.</p>
+</section>
+<hr class="docutils" />
+<section id="dynamic-context-selection">
+<h2><a class="toc-backref" href="#id21">Dynamic Context Selection</a><a class="headerlink" href="#dynamic-context-selection" title="Permalink to this heading">#</a></h2>
+<section id="query-aware-context">
+<h3><a class="toc-backref" href="#id22">Query-Aware Context</a><a class="headerlink" href="#query-aware-context" title="Permalink to this heading">#</a></h3>
+<p>Not all queries need the same context size.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>Fact lookup → small context</p></li>
+<li><p>Reasoning → larger context</p></li>
+</ul>
+<p>Production systems dynamically adjust:</p>
+<ul class="simple">
+<li><p>k</p></li>
+<li><p>chunk size</p></li>
+<li><p>reranking depth</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="context-window-vs-hallucination">
+<h2><a class="toc-backref" href="#id23">Context Window vs Hallucination</a><a class="headerlink" href="#context-window-vs-hallucination" title="Permalink to this heading">#</a></h2>
+<p>Too much context:</p>
+<ul class="simple">
+<li><p>Model gets confused</p></li>
+<li><p>Contradictions increase</p></li>
+</ul>
+<p>Too little context:</p>
+<ul class="simple">
+<li><p>Model guesses</p></li>
+<li><p>Hallucinations increase</p></li>
+</ul>
+<p><strong>Optimal context beats maximum context.</strong></p>
+</section>
+<hr class="docutils" />
+<section id="context-window-management-in-langchain-lcel-pattern">
+<h2><a class="toc-backref" href="#id24">Context Window Management in LangChain (LCEL Pattern)</a><a class="headerlink" href="#context-window-management-in-langchain-lcel-pattern" title="Permalink to this heading">#</a></h2>
+<p>Conceptual flow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Retriever
+   ↓
+Reranker
+   ↓
+Compressor
+   ↓
+Prompt
+   ↓
+LLM
+</pre></div>
+</div>
+<p>Each stage reduces context entropy.</p>
+</section>
+<hr class="docutils" />
+<section id="common-production-mistakes">
+<h2><a class="toc-backref" href="#id25">Common Production Mistakes</a><a class="headerlink" href="#common-production-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="sending-all-retrieved-chunks">
+<h3><a class="toc-backref" href="#id26">Sending all retrieved chunks</a><a class="headerlink" href="#sending-all-retrieved-chunks" title="Permalink to this heading">#</a></h3>
+<p>❌ Token overflow</p>
+</section>
+<section id="no-reranking">
+<h3><a class="toc-backref" href="#id27">No reranking</a><a class="headerlink" href="#no-reranking" title="Permalink to this heading">#</a></h3>
+<p>❌ Noisy context</p>
+</section>
+<section id="unlimited-chat-history">
+<h3><a class="toc-backref" href="#id28">Unlimited chat history</a><a class="headerlink" href="#unlimited-chat-history" title="Permalink to this heading">#</a></h3>
+<p>❌ Context poisoning</p>
+</section>
+<section id="ignoring-output-tokens">
+<h3><a class="toc-backref" href="#id29">Ignoring output tokens</a><a class="headerlink" href="#ignoring-output-tokens" title="Permalink to this heading">#</a></h3>
+<p>❌ Runtime failures</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="best-practices-production-grade">
+<h2><a class="toc-backref" href="#id30">Best Practices (Production-Grade)</a><a class="headerlink" href="#best-practices-production-grade" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Chunk aggressively at ingestion</p></li>
+<li><p>Use hybrid search + reranking</p></li>
+<li><p>Enforce top-k limits</p></li>
+<li><p>Compress context before LLM</p></li>
+<li><p>Summarize long histories</p></li>
+<li><p>Monitor token usage per request</p></li>
+<li><p>Fail fast if context exceeds budget</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="context-window-vs-long-context-models">
+<h2><a class="toc-backref" href="#id31">Context Window vs Long-Context Models</a><a class="headerlink" href="#context-window-vs-long-context-models" title="Permalink to this heading">#</a></h2>
+<p>Long-context models:</p>
+<ul class="simple">
+<li><p>Reduce pressure</p></li>
+<li><p>Do NOT eliminate the need for management</p></li>
+</ul>
+<p>Even with large windows:</p>
+<ul class="simple">
+<li><p>Cost scales linearly</p></li>
+<li><p>Noise still harms quality</p></li>
+</ul>
+<p>Context management is still required.</p>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id32">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Context window management is the discipline of selecting, compressing, and prioritizing information sent to an LLM so that it fits within token limits while preserving relevance, accuracy, and performance. It is a core concern in production RAG and conversational systems.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id33">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>More context ≠ better answers</strong></p></li>
+<li><p><strong>Relevant context &gt; all context</strong></p></li>
+<li><p><strong>Rerank, then compress</strong></p></li>
+<li><p><strong>Budget tokens like memory</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-context-window-is">What a Context Window Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-context-window-management-is-critical">Why Context Window Management Is Critical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-context-window-pressure-comes-from">Where Context Window Pressure Comes From</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-contributors">Main Contributors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-in-a-rag-pipeline">Context Window in a RAG Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-context-window-management-techniques">Core Context Window Management Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunking-foundation">Chunking (Foundation)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-control-hard-limit">Top-K Control (Hard Limit)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reranking-precision-control">Reranking (Precision Control)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-compression">Contextual Compression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stuff-vs-mapreduce-vs-refine">Stuff vs MapReduce vs Refine</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-chat-history-memory-control">Managing Chat History (Memory Control)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem">Problem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solutions">Solutions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#windowed-memory">Windowed Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-memory">Summary Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-memory">Hybrid Memory</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-budgeting-production-practice">Token Budgeting (Production Practice)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-budget">Define a Budget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-context-selection">Dynamic Context Selection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-aware-context">Query-Aware Context</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-vs-hallucination">Context Window vs Hallucination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-management-in-langchain-lcel-pattern">Context Window Management in LangChain (LCEL Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-production-mistakes">Common Production Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-all-retrieved-chunks">Sending all retrieved chunks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-reranking">No reranking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unlimited-chat-history">Unlimited chat history</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ignoring-output-tokens">Ignoring output tokens</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-production-grade">Best Practices (Production-Grade)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-window-vs-long-context-models">Context Window vs Long-Context Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,927 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>OpenAI Tools Agent &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/agents/03_openai_tools_agent';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/agents/03_openai_tools_agent.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/agents/03_openai_tools_agent.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/agents/03_openai_tools_agent.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>OpenAI Tools Agent</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-openai-tools-agent-exists">Why OpenAI Tools Agent Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-capabilities">Core Capabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-tools-agent-vs-react-agent">OpenAI Tools Agent vs ReAct Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-openai-tools-agent">When to Use OpenAI Tools Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-it">When NOT to Use It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-demonstration-end-to-end">Minimal Demonstration (End-to-End)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-tool">1) Define a Tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-chat-model">2) Create a Chat Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-prompt">3) Create the Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-openai-tools-agent">4) Create the OpenAI Tools Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#execute-with-agentexecutor">5) Execute with AgentExecutor</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-internally">What Happens Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-is-safer-than-prompt-based-tools">Why This Is Safer Than Prompt-Based Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-best-practices">Guardrails &amp; Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-failure-modes-and-fixes">Common Failure Modes (and Fixes)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-tools-agent-vs-mcp">OpenAI Tools Agent vs MCP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#openai-tools-agent" id="id1">OpenAI Tools Agent</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-openai-tools-agent-exists" id="id2">Why OpenAI Tools Agent Exists</a></p></li>
+<li><p><a class="reference internal" href="#core-capabilities" id="id3">Core Capabilities</a></p></li>
+<li><p><a class="reference internal" href="#conceptual-flow" id="id4">Conceptual Flow</a></p></li>
+<li><p><a class="reference internal" href="#openai-tools-agent-vs-react-agent" id="id5">OpenAI Tools Agent vs ReAct Agent</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-openai-tools-agent" id="id6">When to Use OpenAI Tools Agent</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-it" id="id7">When NOT to Use It</a></p></li>
+<li><p><a class="reference internal" href="#minimal-demonstration-end-to-end" id="id8">Minimal Demonstration (End-to-End)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#define-a-tool" id="id9">1) Define a Tool</a></p></li>
+<li><p><a class="reference internal" href="#create-a-chat-model" id="id10">2) Create a Chat Model</a></p></li>
+<li><p><a class="reference internal" href="#create-the-prompt" id="id11">3) Create the Prompt</a></p></li>
+<li><p><a class="reference internal" href="#create-the-openai-tools-agent" id="id12">4) Create the OpenAI Tools Agent</a></p></li>
+<li><p><a class="reference internal" href="#execute-with-agentexecutor" id="id13">5) Execute with AgentExecutor</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#what-happens-internally" id="id14">What Happens Internally</a></p></li>
+<li><p><a class="reference internal" href="#why-this-is-safer-than-prompt-based-tools" id="id15">Why This Is Safer Than Prompt-Based Tools</a></p></li>
+<li><p><a class="reference internal" href="#guardrails-best-practices" id="id16">Guardrails &amp; Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#common-failure-modes-and-fixes" id="id17">Common Failure Modes (and Fixes)</a></p></li>
+<li><p><a class="reference internal" href="#openai-tools-agent-vs-mcp" id="id18">OpenAI Tools Agent vs MCP</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id19">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id20">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="openai-tools-agent">
+<h1><a class="toc-backref" href="#id1">OpenAI Tools Agent</a><a class="headerlink" href="#openai-tools-agent" title="Permalink to this heading">#</a></h1>
+<p>An <strong>OpenAI Tools Agent</strong> is a LangChain agent that uses <strong>OpenAI chat models’ native tool-calling (function calling)</strong> capability to <strong>decide when and how to invoke tools</strong> during a conversation.</p>
+<blockquote>
+<div><p>It lets the model produce <strong>structured tool calls</strong> (JSON) instead of free-text guesses, then uses the tool results to generate the final answer.</p>
+</div></blockquote>
+<p>This agent is purpose-built for <strong>deterministic, production-grade tool use</strong> with OpenAI-compatible chat models from OpenAI.</p>
+<hr class="docutils" />
+<section id="why-openai-tools-agent-exists">
+<h2><a class="toc-backref" href="#id2">Why OpenAI Tools Agent Exists</a><a class="headerlink" href="#why-openai-tools-agent-exists" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Native tool calling is <strong>more reliable</strong> than prompt-only tool instructions</p></li>
+<li><p>Tools have <strong>strict schemas</strong>, reducing malformed calls</p></li>
+<li><p>Better <strong>safety and predictability</strong> than generic agents</p></li>
+<li><p>Ideal for <strong>single- or few-step tool usage</strong> (APIs, DB reads, calculations)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="core-capabilities">
+<h2><a class="toc-backref" href="#id3">Core Capabilities</a><a class="headerlink" href="#core-capabilities" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Native <strong>JSON tool calls</strong> (no regex parsing)</p></li>
+<li><p>Automatic <strong>tool selection</strong></p></li>
+<li><p>Deterministic <strong>argument validation</strong></p></li>
+<li><p>Clean separation of <strong>reasoning → action → result</strong></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="conceptual-flow">
+<h2><a class="toc-backref" href="#id4">Conceptual Flow</a><a class="headerlink" href="#conceptual-flow" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Input
+   ↓
+OpenAI Chat Model (with tools bound)
+   ↓
+Tool Call (JSON schema)
+   ↓
+Tool Execution
+   ↓
+Tool Result
+   ↓
+Final Answer
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="openai-tools-agent-vs-react-agent">
+<h2><a class="toc-backref" href="#id5">OpenAI Tools Agent vs ReAct Agent</a><a class="headerlink" href="#openai-tools-agent-vs-react-agent" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>OpenAI Tools Agent</p></th>
+<th class="head"><p>ReAct Agent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reasoning loop</p></td>
+<td><p>Implicit</p></td>
+<td><p>Explicit (Thought/Act/Observe)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tool calls</p></td>
+<td><p>Native JSON</p></td>
+<td><p>Prompt-driven</p></td>
+</tr>
+<tr class="row-even"><td><p>Steps</p></td>
+<td><p>Few</p></td>
+<td><p>Many</p></td>
+</tr>
+<tr class="row-odd"><td><p>Predictability</p></td>
+<td><p>High</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-even"><td><p>Production safety</p></td>
+<td><p>High</p></td>
+<td><p>Medium</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Rule:</strong> If you need <strong>reliable tool calls</strong>, prefer OpenAI Tools Agent.</p>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-openai-tools-agent">
+<h2><a class="toc-backref" href="#id6">When to Use OpenAI Tools Agent</a><a class="headerlink" href="#when-to-use-openai-tools-agent" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Calling APIs (read-heavy)</p></li>
+<li><p>Fetching live data</p></li>
+<li><p>Deterministic computations</p></li>
+<li><p>Enterprise automation with guardrails</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-not-to-use-it">
+<h2><a class="toc-backref" href="#id7">When NOT to Use It</a><a class="headerlink" href="#when-not-to-use-it" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Complex multi-hop reasoning</p></li>
+<li><p>Conditional branching workflows</p></li>
+<li><p>Long-running agent loops
+Use <strong>LangGraph</strong> or <strong>ReAct</strong> instead.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="minimal-demonstration-end-to-end">
+<h2><a class="toc-backref" href="#id8">Minimal Demonstration (End-to-End)</a><a class="headerlink" href="#minimal-demonstration-end-to-end" title="Permalink to this heading">#</a></h2>
+<section id="define-a-tool">
+<h3><a class="toc-backref" href="#id9">1) Define a Tool</a><a class="headerlink" href="#define-a-tool" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
+
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ticket_count</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return total number of tickets for a given source.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">128</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The decorator:</p>
+<ul class="simple">
+<li><p>Infers name and description</p></li>
+<li><p>Builds a strict JSON schema for inputs</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="create-a-chat-model">
+<h3><a class="toc-backref" href="#id10">2) Create a Chat Model</a><a class="headerlink" href="#create-a-chat-model" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">chat</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Low temperature improves tool-call stability.</p>
+</section>
+<hr class="docutils" />
+<section id="create-the-prompt">
+<h3><a class="toc-backref" href="#id11">3) Create the Prompt</a><a class="headerlink" href="#create-the-prompt" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Use tools when necessary to answer accurately.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2"> </span><span class="si">{agent_scratchpad}</span><span class="s2">&quot;</span><span class="p">),</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>No manual tool syntax needed.</p>
+</section>
+<hr class="docutils" />
+<section id="create-the-openai-tools-agent">
+<h3><a class="toc-backref" href="#id12">4) Create the OpenAI Tools Agent</a><a class="headerlink" href="#create-the-openai-tools-agent" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_openai_tools_agent</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_openai_tools_agent</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">chat</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">ticket_count</span><span class="p">],</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>LangChain:</p>
+<ul class="simple">
+<li><p>Binds tools to the model</p></li>
+<li><p>Enables native tool calling</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="execute-with-agentexecutor">
+<h3><a class="toc-backref" href="#id13">5) Execute with AgentExecutor</a><a class="headerlink" href="#execute-with-agentexecutor" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">AgentExecutor</span>
+
+<span class="n">executor</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+    <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">ticket_count</span><span class="p">],</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;How many tickets are there in Jira?&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">&gt; Entering new AgentExecutor chain...</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Invoking: `ticket_count` with `{&#39;source&#39;: &#39;Jira&#39;}`</span>
+
+
+<span class=" -Color -Color-Bold -Color-Bold-Cyan">128</span><span class=" -Color -Color-Bold -Color-Bold-Green">There are 128 tickets in Jira.</span>
+
+<span class=" -Color -Color-Bold">&gt; Finished chain.</span>
+There are 128 tickets in Jira.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="what-happens-internally">
+<h2><a class="toc-backref" href="#id14">What Happens Internally</a><a class="headerlink" href="#what-happens-internally" title="Permalink to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Model decides a tool is needed</p></li>
+<li><p>Emits a <strong>structured tool call</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ticket_count&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jira&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>LangChain executes the tool</p></li>
+<li><p>Tool result is fed back</p></li>
+<li><p>Model produces the final answer</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="why-this-is-safer-than-prompt-based-tools">
+<h2><a class="toc-backref" href="#id15">Why This Is Safer Than Prompt-Based Tools</a><a class="headerlink" href="#why-this-is-safer-than-prompt-based-tools" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>No hallucinated arguments</p></li>
+<li><p>No malformed JSON</p></li>
+<li><p>Tool calls are <strong>validated</strong></p></li>
+<li><p>Clear audit trail of actions</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="guardrails-best-practices">
+<h2><a class="toc-backref" href="#id16">Guardrails &amp; Best Practices</a><a class="headerlink" href="#guardrails-best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Allowlist tools</strong> (only expose what’s safe)</p></li>
+<li><p><strong>Separate read vs write tools</strong></p></li>
+<li><p><strong>Low temperature</strong></p></li>
+<li><p><strong>Max iterations</strong> (prevent loops)</p></li>
+<li><p><strong>Log tool calls</strong></p></li>
+<li><p><strong>Human approval</strong> for destructive actions</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-failure-modes-and-fixes">
+<h2><a class="toc-backref" href="#id17">Common Failure Modes (and Fixes)</a><a class="headerlink" href="#common-failure-modes-and-fixes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Wrong tool chosen</strong> → improve tool descriptions</p></li>
+<li><p><strong>Too many tool calls</strong> → cap iterations</p></li>
+<li><p><strong>Overuse of tools</strong> → refine system prompt</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="openai-tools-agent-vs-mcp">
+<h2><a class="toc-backref" href="#id18">OpenAI Tools Agent vs MCP</a><a class="headerlink" href="#openai-tools-agent-vs-mcp" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>OpenAI Tools Agent</p></th>
+<th class="head"><p>MCP</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Scope</p></td>
+<td><p>In-app</p></td>
+<td><p>Cross-app</p></td>
+</tr>
+<tr class="row-odd"><td><p>Transport</p></td>
+<td><p>In-process</p></td>
+<td><p>Client–server</p></td>
+</tr>
+<tr class="row-even"><td><p>Isolation</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>Enterprise</p></td>
+<td><p>Medium</p></td>
+<td><p>High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Use MCP when tools must be <strong>remote, shared, or sandboxed</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id19">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“An OpenAI Tools Agent uses OpenAI chat models’ native tool-calling to invoke external functions via strict schemas. It provides reliable, deterministic tool usage and is well-suited for production integrations.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id20">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Single/few deterministic tool calls → OpenAI Tools Agent</strong></p></li>
+<li><p><strong>Multi-step reasoning → ReAct</strong></p></li>
+<li><p><strong>Complex workflows → LangGraph</strong></p></li>
+<li><p><strong>Cross-service tools → MCP</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\agents"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-openai-tools-agent-exists">Why OpenAI Tools Agent Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-capabilities">Core Capabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-flow">Conceptual Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-tools-agent-vs-react-agent">OpenAI Tools Agent vs ReAct Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-openai-tools-agent">When to Use OpenAI Tools Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-it">When NOT to Use It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-demonstration-end-to-end">Minimal Demonstration (End-to-End)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-tool">1) Define a Tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-chat-model">2) Create a Chat Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-prompt">3) Create the Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-openai-tools-agent">4) Create the OpenAI Tools Agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#execute-with-agentexecutor">5) Execute with AgentExecutor</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-internally">What Happens Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-is-safer-than-prompt-based-tools">Why This Is Safer Than Prompt-Based Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-best-practices">Guardrails &amp; Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-failure-modes-and-fixes">Common Failure Modes (and Fixes)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-tools-agent-vs-mcp">OpenAI Tools Agent vs MCP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

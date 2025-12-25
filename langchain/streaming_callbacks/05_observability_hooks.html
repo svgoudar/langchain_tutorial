@@ -1,0 +1,1010 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Observability Hooks &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/streaming_callbacks/05_observability_hooks';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/streaming_callbacks/05_observability_hooks.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/streaming_callbacks/05_observability_hooks.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/streaming_callbacks/05_observability_hooks.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Observability Hooks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Observability Hooks</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-observability-hooks-matter">Why Observability Hooks Matter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-observability-hooks-capture">What Observability Hooks Capture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-hook-simple-observability">Logging Hook (Simple Observability)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-hook-via-runnablelambda">Logging Hook via RunnableLambda</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callback-handler-hook-most-common">Callback Handler Hook (Most Common)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-observability-callback">Custom Observability Callback</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attach-hook-to-a-chain">Attach Hook to a Chain</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-token-streaming-hook-real-time-observability">C. Token Streaming Hook (Real-Time Observability)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-token-hook">Streaming Token Hook</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#d-tracing-hook-automatic-observability">D. Tracing Hook (Automatic Observability)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-tracing-hooks">Enable Tracing Hooks</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#e-metrics-hook-latency-counters">E. Metrics Hook (Latency / Counters)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics-hook-example">Metrics Hook Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-observability-hooks-attach">Where Observability Hooks Attach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observability-hooks-vs-callbacks-vs-tracing">Observability Hooks vs Callbacks vs Tracing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-world-example-production-agent">Real-World Example (Production Agent)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#observability-hooks" id="id1">Observability Hooks</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-observability-hooks-matter" id="id2">Why Observability Hooks Matter</a></p></li>
+<li><p><a class="reference internal" href="#what-observability-hooks-capture" id="id3">What Observability Hooks Capture</a></p></li>
+<li><p><a class="reference internal" href="#architecture-view" id="id4">Architecture View</a></p></li>
+<li><p><a class="reference internal" href="#logging-hook-simple-observability" id="id5">Logging Hook (Simple Observability)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#logging-hook-via-runnablelambda" id="id6">Logging Hook via RunnableLambda</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#callback-handler-hook-most-common" id="id7">Callback Handler Hook (Most Common)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#custom-observability-callback" id="id8">Custom Observability Callback</a></p></li>
+<li><p><a class="reference internal" href="#attach-hook-to-a-chain" id="id9">Attach Hook to a Chain</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#c-token-streaming-hook-real-time-observability" id="id10">C. Token Streaming Hook (Real-Time Observability)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#streaming-token-hook" id="id11">Streaming Token Hook</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#d-tracing-hook-automatic-observability" id="id12">D. Tracing Hook (Automatic Observability)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#enable-tracing-hooks" id="id13">Enable Tracing Hooks</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#e-metrics-hook-latency-counters" id="id14">E. Metrics Hook (Latency / Counters)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#metrics-hook-example" id="id15">Metrics Hook Example</a></p></li>
+<li><p><a class="reference internal" href="#where-observability-hooks-attach" id="id16">Where Observability Hooks Attach</a></p></li>
+<li><p><a class="reference internal" href="#observability-hooks-vs-callbacks-vs-tracing" id="id17">Observability Hooks vs Callbacks vs Tracing</a></p></li>
+<li><p><a class="reference internal" href="#real-world-example-production-agent" id="id18">Real-World Example (Production Agent)</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id19">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id20">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id21">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="observability-hooks">
+<h1><a class="toc-backref" href="#id1">Observability Hooks</a><a class="headerlink" href="#observability-hooks" title="Permalink to this heading">#</a></h1>
+<p><strong>Observability hooks</strong> are <strong>integration points</strong> that let you <strong>capture signals</strong> (logs, metrics, traces, events) from inside an LLM pipeline <strong>at runtime</strong>.
+They allow you to <em>see what the system is doing while it’s doing it</em>.</p>
+<p>In LangChain-based systems, observability hooks are implemented using:</p>
+<ul class="simple">
+<li><p>Callback handlers</p></li>
+<li><p>Tracing hooks</p></li>
+<li><p>Metrics hooks</p></li>
+<li><p>Streaming hooks</p></li>
+</ul>
+<p>They are foundational to <strong>production-grade AI systems</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Runnable Execution
+   ├── Observability Hooks
+   │     ├── Logs
+   │     ├── Metrics
+   │     └── Traces
+   ↓
+Monitoring / Debugging / Alerting
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="why-observability-hooks-matter">
+<h2><a class="toc-backref" href="#id2">Why Observability Hooks Matter</a><a class="headerlink" href="#why-observability-hooks-matter" title="Permalink to this heading">#</a></h2>
+<p>Without hooks:</p>
+<ul class="simple">
+<li><p>You don’t know why answers are wrong</p></li>
+<li><p>You can’t debug latency</p></li>
+<li><p>Failures are invisible</p></li>
+<li><p>Costs are opaque</p></li>
+</ul>
+<p>With hooks:</p>
+<ul class="simple">
+<li><p>Full execution visibility</p></li>
+<li><p>Root-cause analysis</p></li>
+<li><p>SLA monitoring</p></li>
+<li><p>Safe production rollout</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="what-observability-hooks-capture">
+<h2><a class="toc-backref" href="#id3">What Observability Hooks Capture</a><a class="headerlink" href="#what-observability-hooks-capture" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Signal</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Logs</p></td>
+<td><p>What happened</p></td>
+</tr>
+<tr class="row-odd"><td><p>Metrics</p></td>
+<td><p>How often / how long</p></td>
+</tr>
+<tr class="row-even"><td><p>Traces</p></td>
+<td><p>Where time was spent</p></td>
+</tr>
+<tr class="row-odd"><td><p>Events</p></td>
+<td><p>Lifecycle changes</p></td>
+</tr>
+<tr class="row-even"><td><p>Streams</p></td>
+<td><p>Partial outputs</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="architecture-view">
+<h2><a class="toc-backref" href="#id4">Architecture View</a><a class="headerlink" href="#architecture-view" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://last9.ghost.io/content/images/2024/12/monitoring_stack.webp" /></p>
+<p><img alt="Image" src="https://canada1.discourse-cdn.com/flex007/uploads/langchain/optimized/2X/8/8107939d30e448eea2471b6d89f60f681dc20a86_2_1024x434.png" /></p>
+<p><img alt="Image" src="https://framerusercontent.com/images/H9paF4dK6nmB3pyEm9263g8KY.png?height=702&amp;width=1200" /></p>
+</section>
+<hr class="docutils" />
+<section id="logging-hook-simple-observability">
+<h2><a class="toc-backref" href="#id5">Logging Hook (Simple Observability)</a><a class="headerlink" href="#logging-hook-simple-observability" title="Permalink to this heading">#</a></h2>
+<section id="logging-hook-via-runnablelambda">
+<h3><a class="toc-backref" href="#id6">Logging Hook via RunnableLambda</a><a class="headerlink" href="#logging-hook-via-runnablelambda" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">log_input</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Input received: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnableLambda</span><span class="p">(</span><span class="n">log_input</span><span class="p">)</span>
+    <span class="o">|</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+<span class="p">)</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;observability&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:Input received: observability
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;OBSERVABILITY&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observed</strong></p>
+<ul class="simple">
+<li><p>Input logged</p></li>
+<li><p>Output produced normally</p></li>
+</ul>
+<p>This is a <strong>manual observability hook</strong>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="callback-handler-hook-most-common">
+<h2><a class="toc-backref" href="#id7">Callback Handler Hook (Most Common)</a><a class="headerlink" href="#callback-handler-hook-most-common" title="Permalink to this heading">#</a></h2>
+<section id="custom-observability-callback">
+<h3><a class="toc-backref" href="#id8">Custom Observability Callback</a><a class="headerlink" href="#custom-observability-callback" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.callbacks.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCallbackHandler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ObservabilityHook</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serialized</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Chain started&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LLM finished&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chain completed in </span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="attach-hook-to-a-chain">
+<h3><a class="toc-backref" href="#id9">Attach Hook to a Chain</a><a class="headerlink" href="#attach-hook-to-a-chain" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Explain </span><span class="si">{topic}</span><span class="s2"> briefly&quot;</span>
+<span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">ObservabilityHook</span><span class="p">()])</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="s2">&quot;observability hooks&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">from</span><span class="w"> </span><span class="nn">langchain.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="s2">&quot;Explain </span><span class="si">{topic}</span><span class="s2"> briefly&quot;</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">ObservabilityHook</span><span class="p">()])</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;langchain.prompts&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Observed</strong></p>
+<ul class="simple">
+<li><p>Chain start</p></li>
+<li><p>LLM completion</p></li>
+<li><p>Total execution time</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+<section id="c-token-streaming-hook-real-time-observability">
+<h1><a class="toc-backref" href="#id10">C. Token Streaming Hook (Real-Time Observability)</a><a class="headerlink" href="#c-token-streaming-hook-real-time-observability" title="Permalink to this heading">#</a></h1>
+<section id="streaming-token-hook">
+<h2><a class="toc-backref" href="#id11">Streaming Token Hook</a><a class="headerlink" href="#streaming-token-hook" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">TokenStreamHook</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_new_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">TokenStreamHook</span><span class="p">()]</span>
+<span class="p">)</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain observability hooks&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Observed</strong></p>
+<ul class="simple">
+<li><p>Tokens emitted live</p></li>
+<li><p>Real-time UX + observability</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="d-tracing-hook-automatic-observability">
+<h1><a class="toc-backref" href="#id12">D. Tracing Hook (Automatic Observability)</a><a class="headerlink" href="#d-tracing-hook-automatic-observability" title="Permalink to this heading">#</a></h1>
+<section id="enable-tracing-hooks">
+<h2><a class="toc-backref" href="#id13">Enable Tracing Hooks</a><a class="headerlink" href="#enable-tracing-hooks" title="Permalink to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_TRACING_V2</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_API_KEY</span><span class="o">=</span>your_key
+<span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_PROJECT</span><span class="o">=</span>observability-demo
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="s2">&quot;hooks&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p><strong>Observed</strong></p>
+<ul class="simple">
+<li><p>Full execution trace</p></li>
+<li><p>Step-by-step timing</p></li>
+<li><p>Token usage</p></li>
+<li><p>Retry/fallback visibility</p></li>
+</ul>
+<p>This is <strong>automatic observability</strong>.</p>
+<hr class="docutils" />
+</section>
+</section>
+<section id="e-metrics-hook-latency-counters">
+<h1><a class="toc-backref" href="#id14">E. Metrics Hook (Latency / Counters)</a><a class="headerlink" href="#e-metrics-hook-latency-counters" title="Permalink to this heading">#</a></h1>
+<section id="metrics-hook-example">
+<h2><a class="toc-backref" href="#id15">Metrics Hook Example</a><a class="headerlink" href="#metrics-hook-example" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MetricsHook</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Metric: chain.success = 1&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Metric: chain.failure = 1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Used to export metrics to:</p>
+<ul class="simple">
+<li><p>Prometheus</p></li>
+<li><p>CloudWatch</p></li>
+<li><p>Datadog</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="where-observability-hooks-attach">
+<h2><a class="toc-backref" href="#id16">Where Observability Hooks Attach</a><a class="headerlink" href="#where-observability-hooks-attach" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Layer</p></th>
+<th class="head"><p>Hook Point</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Runnable</p></td>
+<td><p>Input/output</p></td>
+</tr>
+<tr class="row-odd"><td><p>Chain</p></td>
+<td><p>Start/end</p></td>
+</tr>
+<tr class="row-even"><td><p>LLM</p></td>
+<td><p>Tokens / latency</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tool</p></td>
+<td><p>Invocation</p></td>
+</tr>
+<tr class="row-even"><td><p>Retriever</p></td>
+<td><p>Query time</p></td>
+</tr>
+<tr class="row-odd"><td><p>Agent</p></td>
+<td><p>Decisions</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="observability-hooks-vs-callbacks-vs-tracing">
+<h2><a class="toc-backref" href="#id17">Observability Hooks vs Callbacks vs Tracing</a><a class="headerlink" href="#observability-hooks-vs-callbacks-vs-tracing" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Concept</p></th>
+<th class="head"><p>Role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Callback Handler</p></td>
+<td><p>Mechanism</p></td>
+</tr>
+<tr class="row-odd"><td><p>Observability Hook</p></td>
+<td><p>Purpose</p></td>
+</tr>
+<tr class="row-even"><td><p>Tracing</p></td>
+<td><p>Visualization</p></td>
+</tr>
+<tr class="row-odd"><td><p>Logging</p></td>
+<td><p>Human-readable</p></td>
+</tr>
+<tr class="row-even"><td><p>Metrics</p></td>
+<td><p>Machine-readable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Hooks are the <strong>bridge</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="real-world-example-production-agent">
+<h2><a class="toc-backref" href="#id18">Real-World Example (Production Agent)</a><a class="headerlink" href="#real-world-example-production-agent" title="Permalink to this heading">#</a></h2>
+<p><strong>IT Support Assistant</strong></p>
+<ul class="simple">
+<li><p>Hook logs every ticket query</p></li>
+<li><p>Hook traces RAG latency</p></li>
+<li><p>Hook streams tokens to UI</p></li>
+<li><p>Hook counts fallback usage</p></li>
+<li><p>Hook alerts on error spikes</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id19">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Keep hooks lightweight</p></li>
+<li><p>Never block execution</p></li>
+<li><p>Redact sensitive data</p></li>
+<li><p>Separate logs vs metrics</p></li>
+<li><p>Enable tracing selectively in prod</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id20">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Observability hooks are <strong>sensors</strong> inside your LLM system.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>System runs → hooks observe → signals emitted → insight gained
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id21">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Observability hooks expose internal behavior</p></li>
+<li><p>Implemented via callbacks, tracing, streaming</p></li>
+<li><p>Essential for debugging, performance, reliability</p></li>
+<li><p>Mandatory for production LLM systems</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\streaming_callbacks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Observability Hooks</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-observability-hooks-matter">Why Observability Hooks Matter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-observability-hooks-capture">What Observability Hooks Capture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-hook-simple-observability">Logging Hook (Simple Observability)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-hook-via-runnablelambda">Logging Hook via RunnableLambda</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callback-handler-hook-most-common">Callback Handler Hook (Most Common)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-observability-callback">Custom Observability Callback</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attach-hook-to-a-chain">Attach Hook to a Chain</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-token-streaming-hook-real-time-observability">C. Token Streaming Hook (Real-Time Observability)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-token-hook">Streaming Token Hook</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#d-tracing-hook-automatic-observability">D. Tracing Hook (Automatic Observability)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-tracing-hooks">Enable Tracing Hooks</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#e-metrics-hook-latency-counters">E. Metrics Hook (Latency / Counters)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics-hook-example">Metrics Hook Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-observability-hooks-attach">Where Observability Hooks Attach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observability-hooks-vs-callbacks-vs-tracing">Observability Hooks vs Callbacks vs Tracing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-world-example-production-agent">Real-World Example (Production Agent)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

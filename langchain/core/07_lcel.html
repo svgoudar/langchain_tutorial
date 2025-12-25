@@ -1,0 +1,1057 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>LangChain Expression Language (LCEL) &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/core/07_lcel';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/core/07_lcel.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/core/07_lcel.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/core/07_lcel.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LangChain Expression Language (LCEL)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">LangChain Expression Language (LCEL)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-lcel-exists">Why LCEL Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnable-as-the-building-block">Runnable as the Building Block</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-operator-sequential-composition">The <code class="docutils literal notranslate"><span class="pre">|</span></code> Operator (Sequential Composition)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-prompt-llm">Simple Prompt → LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-with-output-parsing">LCEL with Output Parsing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-llm-parser">Prompt → LLM → Parser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-with-custom-logic">LCEL with Custom Logic</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runnablelambda">RunnableLambda</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-parallel-execution">LCEL Parallel Execution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runnableparallel">RunnableParallel</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-with-input-mapping">LCEL with Input Mapping</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runnablepassthrough">RunnablePassthrough</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-in-retrieval-augmented-generation-rag">LCEL in Retrieval-Augmented Generation (RAG)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retriever-as-a-runnable">Retriever as a Runnable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-streaming">LCEL Streaming</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-streaming">Token Streaming</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-async-execution">LCEL Async Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-batch-execution">LCEL Batch Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling-in-lcel">Error Handling in LCEL</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retry">Retry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback">Fallback</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-vs-chains">LCEL vs Chains</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-vs-agents">LCEL vs Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-lcel">When to Use LCEL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-lcel-alone">When Not to Use LCEL Alone</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#langchain-expression-language-lcel" id="id1">LangChain Expression Language (LCEL)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-lcel-exists" id="id2">Why LCEL Exists</a></p></li>
+<li><p><a class="reference internal" href="#runnable-as-the-building-block" id="id3">Runnable as the Building Block</a></p></li>
+<li><p><a class="reference internal" href="#the-operator-sequential-composition" id="id4">The <code class="docutils literal notranslate"><span class="pre">|</span></code> Operator (Sequential Composition)</a></p></li>
+<li><p><a class="reference internal" href="#simple-prompt-llm" id="id5">Simple Prompt → LLM</a></p></li>
+<li><p><a class="reference internal" href="#lcel-with-output-parsing" id="id6">LCEL with Output Parsing</a></p>
+<ul>
+<li><p><a class="reference internal" href="#prompt-llm-parser" id="id7">Prompt → LLM → Parser</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#lcel-with-custom-logic" id="id8">LCEL with Custom Logic</a></p>
+<ul>
+<li><p><a class="reference internal" href="#runnablelambda" id="id9">RunnableLambda</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#lcel-parallel-execution" id="id10">LCEL Parallel Execution</a></p>
+<ul>
+<li><p><a class="reference internal" href="#runnableparallel" id="id11">RunnableParallel</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#lcel-with-input-mapping" id="id12">LCEL with Input Mapping</a></p>
+<ul>
+<li><p><a class="reference internal" href="#runnablepassthrough" id="id13">RunnablePassthrough</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#lcel-in-retrieval-augmented-generation-rag" id="id14">LCEL in Retrieval-Augmented Generation (RAG)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retriever-as-a-runnable" id="id15">Retriever as a Runnable</a></p></li>
+<li><p><a class="reference internal" href="#lcel-streaming" id="id16">LCEL Streaming</a></p>
+<ul>
+<li><p><a class="reference internal" href="#token-streaming" id="id17">Token Streaming</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#lcel-async-execution" id="id18">LCEL Async Execution</a></p></li>
+<li><p><a class="reference internal" href="#lcel-batch-execution" id="id19">LCEL Batch Execution</a></p></li>
+<li><p><a class="reference internal" href="#error-handling-in-lcel" id="id20">Error Handling in LCEL</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retry" id="id21">Retry</a></p></li>
+<li><p><a class="reference internal" href="#fallback" id="id22">Fallback</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#lcel-vs-chains" id="id23">LCEL vs Chains</a></p></li>
+<li><p><a class="reference internal" href="#lcel-vs-agents" id="id24">LCEL vs Agents</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-lcel" id="id25">When to Use LCEL</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-lcel-alone" id="id26">When Not to Use LCEL Alone</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id27">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id28">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="langchain-expression-language-lcel">
+<h1><a class="toc-backref" href="#id1">LangChain Expression Language (LCEL)</a><a class="headerlink" href="#langchain-expression-language-lcel" title="Permalink to this heading">#</a></h1>
+<p>LCEL (LangChain Expression Language) is <strong>LangChain’s declarative syntax</strong> for composing <strong>Runnable components</strong> into execution pipelines.</p>
+<blockquote>
+<div><p>LCEL lets you describe <em>what</em> should happen, not <em>how</em> to wire it.</p>
+</div></blockquote>
+<p>It replaces rigid “chains” with <strong>composable, inspectable graphs</strong>.</p>
+<hr class="docutils" />
+<section id="why-lcel-exists">
+<h2><a class="toc-backref" href="#id2">Why LCEL Exists</a><a class="headerlink" href="#why-lcel-exists" title="Permalink to this heading">#</a></h2>
+<p>Before LCEL:</p>
+<ul class="simple">
+<li><p>Chains were fixed</p></li>
+<li><p>Hard to branch or parallelize</p></li>
+<li><p>Limited streaming &amp; async support</p></li>
+</ul>
+<p>With LCEL:</p>
+<ul class="simple">
+<li><p>Everything is a Runnable</p></li>
+<li><p>Pipelines are composable</p></li>
+<li><p>Built-in streaming, async, retries</p></li>
+<li><p>Same code works for LLMs, RAG, agents</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="runnable-as-the-building-block">
+<h2><a class="toc-backref" href="#id3">Runnable as the Building Block</a><a class="headerlink" href="#runnable-as-the-building-block" title="Permalink to this heading">#</a></h2>
+<p>Every LCEL expression is built from <strong>Runnables</strong>:</p>
+<ul class="simple">
+<li><p>Prompt templates</p></li>
+<li><p>Chat models</p></li>
+<li><p>Retrievers</p></li>
+<li><p>Output parsers</p></li>
+<li><p>Custom logic</p></li>
+</ul>
+<p>LCEL does <strong>not</strong> introduce new execution logic.
+It <strong>orchestrates existing Runnables</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="the-operator-sequential-composition">
+<h2><a class="toc-backref" href="#id4">The <code class="docutils literal notranslate"><span class="pre">|</span></code> Operator (Sequential Composition)</a><a class="headerlink" href="#the-operator-sequential-composition" title="Permalink to this heading">#</a></h2>
+<p>The pipe operator creates a <strong>RunnableSequence</strong>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+</pre></div>
+</div>
+<p>Execution flow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Input → prompt → llm → Output
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="simple-prompt-llm">
+<h2><a class="toc-backref" href="#id5">Simple Prompt → LLM</a><a class="headerlink" href="#simple-prompt-llm" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">)</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;You are a helpful assistant&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;What is LCEL?&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LCEL can refer to different things depending on the context. Here are a few possibilities:
+
+1. **Low-Cost Enhanced Learning (LCEL)** - This might refer to educational initiatives or technologies aimed at providing affordable learning opportunities.
+
+2. **Liquid Crystal Energy Luminescence (LCEL)** - This could refer to specific applications of liquid crystal technology in energy harvesting or display technologies.
+
+3. **Language and Cultural Education in Language (LCEL)** - This may pertain to programs or studies focused on integrating cultural education with language learning.
+
+If you can provide more context or specify the field or topic you are interested in, I could give a more targeted explanation!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="lcel-with-output-parsing">
+<h2><a class="toc-backref" href="#id6">LCEL with Output Parsing</a><a class="headerlink" href="#lcel-with-output-parsing" title="Permalink to this heading">#</a></h2>
+<section id="prompt-llm-parser">
+<h3><a class="toc-backref" href="#id7">Prompt → LLM → Parser</a><a class="headerlink" href="#prompt-llm-parser" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain LCEL&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LCEL can refer to different concepts or organizations depending on the context, but it&#39;s not a widely recognized acronym in common literature or frameworks. However, if you meant &quot;LCL,&quot; it typically refers to &quot;Less than Container Load&quot; in shipping and logistics, which is a shipment that doesn&#39;t occupy a full shipping container.
+
+If you were referring to a specific organization, concept, or technology with &quot;LCEL,&quot; please provide additional details or context so I can assist you more accurately.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each stage is a Runnable.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lcel-with-custom-logic">
+<h2><a class="toc-backref" href="#id8">LCEL with Custom Logic</a><a class="headerlink" href="#lcel-with-custom-logic" title="Permalink to this heading">#</a></h2>
+<section id="runnablelambda">
+<h3><a class="toc-backref" href="#id9">RunnableLambda</a><a class="headerlink" href="#runnablelambda" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+<span class="n">uppercase</span> <span class="o">=</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">uppercase</span> <span class="o">|</span> <span class="n">llm</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain LCEL&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;LCEL can refer to various concepts depending on the context, but there may not be a widely recognized term or acronym that specifically denotes &quot;LCEL&quot; without further information. Here are a few possibilities:\n\n1. **Local Cell**: In telecommunications, LCEL could refer to a specific type of local cell or small cell within a larger network infrastructure, used to improve coverage and capacity in a particular geographical area. \n\n2. **Learning and Community Engagement Lab**: In the context of education or community services, LCEL could represent a laboratory or initiative focused on blending learning with community engagement activities.\n\n3. **Legal, Compliance, and Ethics**: It could also represent a department or function within organizations that focus on upholding legal standards, ensuring compliance, and maintaining ethical practices.\n\nIf you have a specific context in mind (such as technology, education, or another field), please provide more details so I can offer a more precise explanation!&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 188, &#39;prompt_tokens&#39;: 12, &#39;total_tokens&#39;: 200, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-4o-mini-2024-07-18&#39;, &#39;system_fingerprint&#39;: &#39;fp_644f11dd4d&#39;, &#39;id&#39;: &#39;chatcmpl-Cp51BvL7EoQlTidI3fFuSQQwHuD1J&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b3f17-590f-7310-b6ab-cc85d385e7f6-0&#39;, usage_metadata={&#39;input_tokens&#39;: 12, &#39;output_tokens&#39;: 188, &#39;total_tokens&#39;: 200, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>Used for:</p>
+<ul class="simple">
+<li><p>Pre-processing</p></li>
+<li><p>Post-processing</p></li>
+<li><p>Glue logic</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lcel-parallel-execution">
+<h2><a class="toc-backref" href="#id10">LCEL Parallel Execution</a><a class="headerlink" href="#lcel-parallel-execution" title="Permalink to this heading">#</a></h2>
+<section id="runnableparallel">
+<h3><a class="toc-backref" href="#id11">RunnableParallel</a><a class="headerlink" href="#runnableparallel" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableParallel</span>
+
+<span class="n">parallel</span> <span class="o">=</span> <span class="n">RunnableParallel</span><span class="p">(</span>
+    <span class="n">answer</span><span class="o">=</span><span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span><span class="p">,</span>
+    <span class="n">length</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+
+<span class="n">parallel</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain LCEL&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;answer&#39;: AIMessage(content=&#39;LCEL could refer to various things depending on the context, but it is not a widely recognized acronym or term in common usage. It could stand for a specific organization, concept, or technology that may not be well-known or may have developed recently. \n\nTo provide a more accurate and helpful explanation, could you please specify the context in which you encountered &quot;LCEL&quot;? For example, are you referring to a specific field such as education, technology, science, or something else? Any additional details would be beneficial in providing a more targeted response.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 109, &#39;prompt_tokens&#39;: 19, &#39;total_tokens&#39;: 128, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-4o-mini-2024-07-18&#39;, &#39;system_fingerprint&#39;: &#39;fp_644f11dd4d&#39;, &#39;id&#39;: &#39;chatcmpl-Cp51WNU4IpYyvS3w7c56cw5pWI2S2&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b3f17-a804-7c40-bde1-12a295faf9ee-0&#39;, usage_metadata={&#39;input_tokens&#39;: 19, &#39;output_tokens&#39;: 109, &#39;total_tokens&#39;: 128, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}),
+ &#39;length&#39;: 12}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="n">AIMessage</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+  <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="mi">12</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lcel-with-input-mapping">
+<h2><a class="toc-backref" href="#id12">LCEL with Input Mapping</a><a class="headerlink" href="#lcel-with-input-mapping" title="Permalink to this heading">#</a></h2>
+<section id="runnablepassthrough">
+<h3><a class="toc-backref" href="#id13">RunnablePassthrough</a><a class="headerlink" href="#runnablepassthrough" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnablePassthrough</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnablePassthrough</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+        <span class="n">context</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;LangChain context&quot;</span>
+    <span class="p">)</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">llm</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Used heavily in:</p>
+<ul class="simple">
+<li><p>Agents</p></li>
+<li><p>RAG pipelines</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+<section id="lcel-in-retrieval-augmented-generation-rag">
+<h1><a class="toc-backref" href="#id14">LCEL in Retrieval-Augmented Generation (RAG)</a><a class="headerlink" href="#lcel-in-retrieval-augmented-generation-rag" title="Permalink to this heading">#</a></h1>
+<section id="retriever-as-a-runnable">
+<h2><a class="toc-backref" href="#id15">Retriever as a Runnable</a><a class="headerlink" href="#retriever-as-a-runnable" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rag_chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span><span class="p">,</span>
+        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">RunnablePassthrough</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="o">|</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+        <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Answer using the context only&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;Context:</span><span class="se">\n</span><span class="si">{context}</span><span class="se">\n\n</span><span class="s2">Question:</span><span class="se">\n</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="o">|</span> <span class="n">llm</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Retriever, prompt, and LLM are composed uniformly.</p>
+</section>
+<hr class="docutils" />
+<section id="lcel-streaming">
+<h2><a class="toc-backref" href="#id16">LCEL Streaming</a><a class="headerlink" href="#lcel-streaming" title="Permalink to this heading">#</a></h2>
+<section id="token-streaming">
+<h3><a class="toc-backref" href="#id17">Token Streaming</a><a class="headerlink" href="#token-streaming" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chain</span><span class="o">.</span><span class="n">stream</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain LCEL&quot;</span><span class="p">}):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Works automatically if the model supports streaming.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lcel-async-execution">
+<h2><a class="toc-backref" href="#id18">LCEL Async Execution</a><a class="headerlink" href="#lcel-async-execution" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">chain</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain LCEL&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>All LCEL pipelines support async execution.</p>
+</section>
+<hr class="docutils" />
+<section id="lcel-batch-execution">
+<h2><a class="toc-backref" href="#id19">LCEL Batch Execution</a><a class="headerlink" href="#lcel-batch-execution" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">batch</span><span class="p">([</span>
+    <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;What is LCEL?&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;What is LangChain?&quot;</span><span class="p">}</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>Efficient for bulk inference.</p>
+</section>
+<hr class="docutils" />
+<section id="error-handling-in-lcel">
+<h2><a class="toc-backref" href="#id20">Error Handling in LCEL</a><a class="headerlink" href="#error-handling-in-lcel" title="Permalink to this heading">#</a></h2>
+<section id="retry">
+<h3><a class="toc-backref" href="#id21">Retry</a><a class="headerlink" href="#retry" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">safe_chain</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fallback">
+<h3><a class="toc-backref" href="#id22">Fallback</a><a class="headerlink" href="#fallback" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fallback_chain</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">([</span><span class="n">backup_chain</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lcel-vs-chains">
+<h2><a class="toc-backref" href="#id23">LCEL vs Chains</a><a class="headerlink" href="#lcel-vs-chains" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Chains</p></th>
+<th class="head"><p>LCEL</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Flexibility</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>Composable</p></td>
+<td><p>Limited</p></td>
+<td><p>Full</p></td>
+</tr>
+<tr class="row-even"><td><p>Streaming</p></td>
+<td><p>Partial</p></td>
+<td><p>Native</p></td>
+</tr>
+<tr class="row-odd"><td><p>Async</p></td>
+<td><p>Limited</p></td>
+<td><p>Native</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="lcel-vs-agents">
+<h2><a class="toc-backref" href="#id24">LCEL vs Agents</a><a class="headerlink" href="#lcel-vs-agents" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>LCEL</p></th>
+<th class="head"><p>Agents</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Control Flow</p></td>
+<td><p>Static</p></td>
+<td><p>Dynamic</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tool Choice</p></td>
+<td><p>Explicit</p></td>
+<td><p>LLM-driven</p></td>
+</tr>
+<tr class="row-even"><td><p>Determinism</p></td>
+<td><p>High</p></td>
+<td><p>Lower</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-lcel">
+<h2><a class="toc-backref" href="#id25">When to Use LCEL</a><a class="headerlink" href="#when-to-use-lcel" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Deterministic pipelines</p></li>
+<li><p>RAG systems</p></li>
+<li><p>Data extraction</p></li>
+<li><p>Pre/post-processing</p></li>
+<li><p>High-performance inference</p></li>
+</ul>
+</section>
+<section id="when-not-to-use-lcel-alone">
+<h2><a class="toc-backref" href="#id26">When Not to Use LCEL Alone</a><a class="headerlink" href="#when-not-to-use-lcel-alone" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Multi-step reasoning</p></li>
+<li><p>Tool decision-making</p></li>
+<li><p>Human-in-the-loop logic</p></li>
+</ul>
+<p>Use <strong>Agents or LangGraph</strong> in those cases.</p>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id27">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“LCEL is LangChain’s declarative language for composing Runnables into execution pipelines. It enables streaming, async, retries, parallelism, and deterministic orchestration using a concise pipe syntax.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id28">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<p>If the flow is <strong>known ahead of time</strong>, use <strong>LCEL</strong>.
+If the flow must be <strong>decided by the model</strong>, use <strong>Agents or LangGraph</strong>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\core"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">LangChain Expression Language (LCEL)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-lcel-exists">Why LCEL Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runnable-as-the-building-block">Runnable as the Building Block</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-operator-sequential-composition">The <code class="docutils literal notranslate"><span class="pre">|</span></code> Operator (Sequential Composition)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-prompt-llm">Simple Prompt → LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-with-output-parsing">LCEL with Output Parsing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-llm-parser">Prompt → LLM → Parser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-with-custom-logic">LCEL with Custom Logic</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runnablelambda">RunnableLambda</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-parallel-execution">LCEL Parallel Execution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runnableparallel">RunnableParallel</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-with-input-mapping">LCEL with Input Mapping</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runnablepassthrough">RunnablePassthrough</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-in-retrieval-augmented-generation-rag">LCEL in Retrieval-Augmented Generation (RAG)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retriever-as-a-runnable">Retriever as a Runnable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-streaming">LCEL Streaming</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-streaming">Token Streaming</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-async-execution">LCEL Async Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-batch-execution">LCEL Batch Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling-in-lcel">Error Handling in LCEL</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retry">Retry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback">Fallback</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-vs-chains">LCEL vs Chains</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-vs-agents">LCEL vs Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-lcel">When to Use LCEL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-lcel-alone">When Not to Use LCEL Alone</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

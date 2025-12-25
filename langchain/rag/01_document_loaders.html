@@ -1,0 +1,1106 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Document Loader &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/01_document_loaders';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/01_document_loaders.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/01_document_loaders.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/01_document_loaders.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Document Loader</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-document-loader-is">What a Document Loader Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-document-loaders-exist">Why Document Loaders Exist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-document-object-is">What a Document Object Is</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-structure">Document Structure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-document-loaders-fit-in-rag">Where Document Loaders Fit in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-types-of-document-loaders">Common Types of Document Loaders</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-based-loaders">File-Based Loaders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#web-loaders">Web Loaders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-repo-loaders">Code &amp; Repo Loaders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#database-loaders">Database Loaders</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-document-loader-demonstration">Basic Document Loader Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-a-text-file">Loading a Text File</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-multiple-files-directoryloader">Loading Multiple Files (DirectoryLoader)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pdf-document-loader">PDF Document Loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#csv-loader">CSV Loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-page-loader">Web Page Loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loader-text-splitter-typical-pattern">Loader + Text Splitter (Typical Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-handling-critical">Metadata Handling (Critical)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-document-loader">Custom Document Loader</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-built-in-loaders-are-not-enough">When Built-in Loaders Are Not Enough</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-loader-vs-text-splitter">Document Loader vs Text Splitter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-loader-vs-retriever">Document Loader vs Retriever</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expecting-loader-to-chunk-text">Expecting loader to chunk text</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-metadata">Dropping metadata</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-entire-huge-files-blindly">Loading entire huge files blindly</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-loaders-at-query-time">Using loaders at query time</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-which-loader">When to Use Which Loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#document-loader" id="id1">Document Loader</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-a-document-loader-is" id="id2">What a Document Loader Is</a></p></li>
+<li><p><a class="reference internal" href="#why-document-loaders-exist" id="id3">Why Document Loaders Exist</a></p></li>
+<li><p><a class="reference internal" href="#what-a-document-object-is" id="id4">What a Document Object Is</a></p>
+<ul>
+<li><p><a class="reference internal" href="#document-structure" id="id5">Document Structure</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#where-document-loaders-fit-in-rag" id="id6">Where Document Loaders Fit in RAG</a></p></li>
+<li><p><a class="reference internal" href="#common-types-of-document-loaders" id="id7">Common Types of Document Loaders</a></p>
+<ul>
+<li><p><a class="reference internal" href="#file-based-loaders" id="id8">File-Based Loaders</a></p></li>
+<li><p><a class="reference internal" href="#web-loaders" id="id9">Web Loaders</a></p></li>
+<li><p><a class="reference internal" href="#code-repo-loaders" id="id10">Code &amp; Repo Loaders</a></p></li>
+<li><p><a class="reference internal" href="#database-loaders" id="id11">Database Loaders</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#basic-document-loader-demonstration" id="id12">Basic Document Loader Demonstration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#loading-a-text-file" id="id13">Loading a Text File</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#loading-multiple-files-directoryloader" id="id14">Loading Multiple Files (DirectoryLoader)</a></p></li>
+<li><p><a class="reference internal" href="#pdf-document-loader" id="id15">PDF Document Loader</a></p></li>
+<li><p><a class="reference internal" href="#csv-loader" id="id16">CSV Loader</a></p></li>
+<li><p><a class="reference internal" href="#web-page-loader" id="id17">Web Page Loader</a></p></li>
+<li><p><a class="reference internal" href="#loader-text-splitter-typical-pattern" id="id18">Loader + Text Splitter (Typical Pattern)</a></p></li>
+<li><p><a class="reference internal" href="#metadata-handling-critical" id="id19">Metadata Handling (Critical)</a></p></li>
+<li><p><a class="reference internal" href="#custom-document-loader" id="id20">Custom Document Loader</a></p>
+<ul>
+<li><p><a class="reference internal" href="#when-built-in-loaders-are-not-enough" id="id21">When Built-in Loaders Are Not Enough</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#document-loader-vs-text-splitter" id="id22">Document Loader vs Text Splitter</a></p></li>
+<li><p><a class="reference internal" href="#document-loader-vs-retriever" id="id23">Document Loader vs Retriever</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id24">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#expecting-loader-to-chunk-text" id="id25">Expecting loader to chunk text</a></p></li>
+<li><p><a class="reference internal" href="#dropping-metadata" id="id26">Dropping metadata</a></p></li>
+<li><p><a class="reference internal" href="#loading-entire-huge-files-blindly" id="id27">Loading entire huge files blindly</a></p></li>
+<li><p><a class="reference internal" href="#using-loaders-at-query-time" id="id28">Using loaders at query time</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices" id="id29">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-which-loader" id="id30">When to Use Which Loader</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id31">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id32">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="document-loader">
+<h1><a class="toc-backref" href="#id1">Document Loader</a><a class="headerlink" href="#document-loader" title="Permalink to this heading">#</a></h1>
+<section id="what-a-document-loader-is">
+<h2><a class="toc-backref" href="#id2">What a Document Loader Is</a><a class="headerlink" href="#what-a-document-loader-is" title="Permalink to this heading">#</a></h2>
+<p>A <strong>Document Loader</strong> in LangChain is a component that <strong>loads raw data from a source and converts it into standardized <code class="docutils literal notranslate"><span class="pre">Document</span></code> objects</strong>.</p>
+<blockquote>
+<div><p>It is the <strong>entry point of any RAG pipeline</strong>.</p>
+</div></blockquote>
+<p>Document loaders do <strong>not embed, chunk, or retrieve</strong> data.
+They only <strong>read and normalize data</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="why-document-loaders-exist">
+<h2><a class="toc-backref" href="#id3">Why Document Loaders Exist</a><a class="headerlink" href="#why-document-loaders-exist" title="Permalink to this heading">#</a></h2>
+<p>Data comes in many formats:</p>
+<ul class="simple">
+<li><p>PDFs</p></li>
+<li><p>Text files</p></li>
+<li><p>HTML pages</p></li>
+<li><p>CSVs</p></li>
+<li><p>Databases</p></li>
+<li><p>APIs</p></li>
+</ul>
+<p>LLMs cannot consume these formats directly.</p>
+<p>Document loaders:</p>
+<ul class="simple">
+<li><p>Read source data</p></li>
+<li><p>Normalize content</p></li>
+<li><p>Attach metadata</p></li>
+<li><p>Output LangChain <code class="docutils literal notranslate"><span class="pre">Document</span></code> objects</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="what-a-document-object-is">
+<h2><a class="toc-backref" href="#id4">What a Document Object Is</a><a class="headerlink" href="#what-a-document-object-is" title="Permalink to this heading">#</a></h2>
+<section id="document-structure">
+<h3><a class="toc-backref" href="#id5">Document Structure</a><a class="headerlink" href="#document-structure" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.documents</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="n">Document</span><span class="p">(</span>
+    <span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;Actual text content&quot;</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;file.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Document(metadata={&#39;source&#39;: &#39;file.pdf&#39;, &#39;page&#39;: 1}, page_content=&#39;Actual text content&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Every loader outputs a <strong>list of <code class="docutils literal notranslate"><span class="pre">Document</span></code> objects</strong>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="where-document-loaders-fit-in-rag">
+<h2><a class="toc-backref" href="#id6">Where Document Loaders Fit in RAG</a><a class="headerlink" href="#where-document-loaders-fit-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Raw Data Source
+   ↓
+Document Loader
+   ↓
+Documents
+   ↓
+Text Splitter
+   ↓
+Chunks
+   ↓
+Embeddings
+   ↓
+Vector Store
+   ↓
+Retriever
+</pre></div>
+</div>
+<p>Document loaders are <strong>always the first step</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="common-types-of-document-loaders">
+<h2><a class="toc-backref" href="#id7">Common Types of Document Loaders</a><a class="headerlink" href="#common-types-of-document-loaders" title="Permalink to this heading">#</a></h2>
+<section id="file-based-loaders">
+<h3><a class="toc-backref" href="#id8">File-Based Loaders</a><a class="headerlink" href="#file-based-loaders" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TextLoader</p></li>
+<li><p>PDFLoader</p></li>
+<li><p>CSVLoader</p></li>
+<li><p>JSONLoader</p></li>
+</ul>
+</section>
+<section id="web-loaders">
+<h3><a class="toc-backref" href="#id9">Web Loaders</a><a class="headerlink" href="#web-loaders" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>WebBaseLoader</p></li>
+<li><p>SitemapLoader</p></li>
+<li><p>UnstructuredURLLoader</p></li>
+</ul>
+</section>
+<section id="code-repo-loaders">
+<h3><a class="toc-backref" href="#id10">Code &amp; Repo Loaders</a><a class="headerlink" href="#code-repo-loaders" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>GitLoader</p></li>
+<li><p>DirectoryLoader</p></li>
+</ul>
+</section>
+<section id="database-loaders">
+<h3><a class="toc-backref" href="#id11">Database Loaders</a><a class="headerlink" href="#database-loaders" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>SQLDatabaseLoader</p></li>
+<li><p>Custom DB loaders</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="basic-document-loader-demonstration">
+<h2><a class="toc-backref" href="#id12">Basic Document Loader Demonstration</a><a class="headerlink" href="#basic-document-loader-demonstration" title="Permalink to this heading">#</a></h2>
+<section id="loading-a-text-file">
+<h3><a class="toc-backref" href="#id13">Loading a Text File</a><a class="headerlink" href="#loading-a-text-file" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.document_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextLoader</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">TextLoader</span><span class="p">(</span><span class="s2">&quot;data/sample.txt&quot;</span><span class="p">)</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;sample.txt&quot;</span><span class="p">})]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="loading-multiple-files-directoryloader">
+<h2><a class="toc-backref" href="#id14">Loading Multiple Files (DirectoryLoader)</a><a class="headerlink" href="#loading-multiple-files-directoryloader" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.document_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">DirectoryLoader</span><span class="p">,</span> <span class="n">TextLoader</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">DirectoryLoader</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s2">&quot;data/&quot;</span><span class="p">,</span>
+    <span class="n">glob</span><span class="o">=</span><span class="s2">&quot;**/*.txt&quot;</span><span class="p">,</span>
+    <span class="n">loader_cls</span><span class="o">=</span><span class="n">TextLoader</span>
+<span class="p">)</span>
+
+<span class="n">documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Loads <strong>all matching files recursively</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="pdf-document-loader">
+<h2><a class="toc-backref" href="#id15">PDF Document Loader</a><a class="headerlink" href="#pdf-document-loader" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.document_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyPDFLoader</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">PyPDFLoader</span><span class="p">(</span><span class="s2">&quot;data/report.pdf&quot;</span><span class="p">)</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each page becomes a separate <code class="docutils literal notranslate"><span class="pre">Document</span></code>.</p>
+<p>Metadata includes:</p>
+<ul class="simple">
+<li><p>page number</p></li>
+<li><p>source file</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="csv-loader">
+<h2><a class="toc-backref" href="#id16">CSV Loader</a><a class="headerlink" href="#csv-loader" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.document_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVLoader</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">CSVLoader</span><span class="p">(</span>
+    <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;tickets.csv&quot;</span><span class="p">,</span>
+    <span class="n">source_column</span><span class="o">=</span><span class="s2">&quot;ticket_id&quot;</span>
+<span class="p">)</span>
+
+<span class="n">documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each row becomes a <code class="docutils literal notranslate"><span class="pre">Document</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="web-page-loader">
+<h2><a class="toc-backref" href="#id17">Web Page Loader</a><a class="headerlink" href="#web-page-loader" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.document_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebBaseLoader</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">WebBaseLoader</span><span class="p">(</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">)</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>USER_AGENT environment variable not set, consider setting it to identify your requests.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Metadata includes:</p>
+<ul class="simple">
+<li><p>URL</p></li>
+<li><p>title (if available)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="loader-text-splitter-typical-pattern">
+<h2><a class="toc-backref" href="#id18">Loader + Text Splitter (Typical Pattern)</a><a class="headerlink" href="#loader-text-splitter-typical-pattern" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_text_splitters</span><span class="w"> </span><span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+
+<span class="n">splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">50</span>
+<span class="p">)</span>
+
+<span class="n">chunks</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">split_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Loaders never split text — <strong>splitters do</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="metadata-handling-critical">
+<h2><a class="toc-backref" href="#id19">Metadata Handling (Critical)</a><a class="headerlink" href="#metadata-handling-critical" title="Permalink to this heading">#</a></h2>
+<p>Metadata travels through the entire pipeline:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Document</span><span class="p">(</span>
+    <span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;report.pdf&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;finance&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Used later for:</p>
+<ul class="simple">
+<li><p>Filtering</p></li>
+<li><p>Citations</p></li>
+<li><p>Debugging</p></li>
+<li><p>Access control</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="custom-document-loader">
+<h2><a class="toc-backref" href="#id20">Custom Document Loader</a><a class="headerlink" href="#custom-document-loader" title="Permalink to this heading">#</a></h2>
+<section id="when-built-in-loaders-are-not-enough">
+<h3><a class="toc-backref" href="#id21">When Built-in Loaders Are Not Enough</a><a class="headerlink" href="#when-built-in-loaders-are-not-enough" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.document_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLoader</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_from_api</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Placeholder function to fetch data from an API&quot;&quot;&quot;</span>
+    <span class="c1"># Replace this with actual API call logic</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample document 1&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample document 2&quot;</span><span class="p">}</span>
+    <span class="p">]</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyAPILoader</span><span class="p">(</span><span class="n">BaseLoader</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">fetch_from_api</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">Document</span><span class="p">(</span>
+                <span class="n">page_content</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]}</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="document-loader-vs-text-splitter">
+<h2><a class="toc-backref" href="#id22">Document Loader vs Text Splitter</a><a class="headerlink" href="#document-loader-vs-text-splitter" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Document Loader</p></th>
+<th class="head"><p>Text Splitter</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Read data</p></td>
+<td><p>Chunk data</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input</p></td>
+<td><p>Raw source</p></td>
+<td><p>Documents</p></td>
+</tr>
+<tr class="row-even"><td><p>Output</p></td>
+<td><p>Documents</p></td>
+<td><p>Smaller Documents</p></td>
+</tr>
+<tr class="row-odd"><td><p>LLM usage</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="document-loader-vs-retriever">
+<h2><a class="toc-backref" href="#id23">Document Loader vs Retriever</a><a class="headerlink" href="#document-loader-vs-retriever" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Loader</p></th>
+<th class="head"><p>Retriever</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Timing</p></td>
+<td><p>Ingestion time</p></td>
+<td><p>Query time</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reads data</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>Search</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id24">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="expecting-loader-to-chunk-text">
+<h3><a class="toc-backref" href="#id25">Expecting loader to chunk text</a><a class="headerlink" href="#expecting-loader-to-chunk-text" title="Permalink to this heading">#</a></h3>
+<p>❌ Loaders only read data</p>
+</section>
+<section id="dropping-metadata">
+<h3><a class="toc-backref" href="#id26">Dropping metadata</a><a class="headerlink" href="#dropping-metadata" title="Permalink to this heading">#</a></h3>
+<p>❌ Breaks traceability</p>
+</section>
+<section id="loading-entire-huge-files-blindly">
+<h3><a class="toc-backref" href="#id27">Loading entire huge files blindly</a><a class="headerlink" href="#loading-entire-huge-files-blindly" title="Permalink to this heading">#</a></h3>
+<p>❌ Memory issues</p>
+</section>
+<section id="using-loaders-at-query-time">
+<h3><a class="toc-backref" href="#id28">Using loaders at query time</a><a class="headerlink" href="#using-loaders-at-query-time" title="Permalink to this heading">#</a></h3>
+<p>❌ Should be ingestion-only</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id29">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use loaders only during ingestion</p></li>
+<li><p>Preserve meaningful metadata</p></li>
+<li><p>Choose loader based on data format</p></li>
+<li><p>Combine with appropriate text splitters</p></li>
+<li><p>Validate encoding and cleanup</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-which-loader">
+<h2><a class="toc-backref" href="#id30">When to Use Which Loader</a><a class="headerlink" href="#when-to-use-which-loader" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Data Source</p></th>
+<th class="head"><p>Loader</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Plain text</p></td>
+<td><p>TextLoader</p></td>
+</tr>
+<tr class="row-odd"><td><p>PDF</p></td>
+<td><p>PyPDFLoader</p></td>
+</tr>
+<tr class="row-even"><td><p>CSV</p></td>
+<td><p>CSVLoader</p></td>
+</tr>
+<tr class="row-odd"><td><p>Website</p></td>
+<td><p>WebBaseLoader</p></td>
+</tr>
+<tr class="row-even"><td><p>Repository</p></td>
+<td><p>GitLoader</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multiple files</p></td>
+<td><p>DirectoryLoader</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id31">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“A Document Loader in LangChain reads raw data from various sources and converts it into standardized <code class="docutils literal notranslate"><span class="pre">Document</span></code> objects with content and metadata. It is the first step in any RAG ingestion pipeline.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id32">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Ingestion time → Document Loader</strong></p></li>
+<li><p><strong>Chunking → Text Splitter</strong></p></li>
+<li><p><strong>Search → Retriever</strong></p></li>
+<li><p><strong>Answering → LLM</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-document-loader-is">What a Document Loader Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-document-loaders-exist">Why Document Loaders Exist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-document-object-is">What a Document Object Is</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-structure">Document Structure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-document-loaders-fit-in-rag">Where Document Loaders Fit in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-types-of-document-loaders">Common Types of Document Loaders</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-based-loaders">File-Based Loaders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#web-loaders">Web Loaders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-repo-loaders">Code &amp; Repo Loaders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#database-loaders">Database Loaders</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-document-loader-demonstration">Basic Document Loader Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-a-text-file">Loading a Text File</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-multiple-files-directoryloader">Loading Multiple Files (DirectoryLoader)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pdf-document-loader">PDF Document Loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#csv-loader">CSV Loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-page-loader">Web Page Loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loader-text-splitter-typical-pattern">Loader + Text Splitter (Typical Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-handling-critical">Metadata Handling (Critical)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-document-loader">Custom Document Loader</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-built-in-loaders-are-not-enough">When Built-in Loaders Are Not Enough</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-loader-vs-text-splitter">Document Loader vs Text Splitter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-loader-vs-retriever">Document Loader vs Retriever</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expecting-loader-to-chunk-text">Expecting loader to chunk text</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-metadata">Dropping metadata</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-entire-huge-files-blindly">Loading entire huge files blindly</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-loaders-at-query-time">Using loaders at query time</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-which-loader">When to Use Which Loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

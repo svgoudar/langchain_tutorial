@@ -1,0 +1,1008 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Regression Testing &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/evaluation/08_prompt_versioning';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/evaluation/08_prompt_versioning.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/evaluation/08_prompt_versioning.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/evaluation/08_prompt_versioning.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Regression Testing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-regression-testing-is-critical-for-llms">Why Regression Testing Is Critical for LLMs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-can-regress-in-llm-systems">What Can Regress in LLM Systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-testing-architecture">Regression Testing Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-fixed-regression-dataset">Create a Fixed Regression Dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-dataset-golden-set">Regression Dataset (Golden Set)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-baseline-and-new-chains">Define Baseline and New Chains</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline-chain-v1">Baseline Chain (v1)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-chain-v2-after-change">New Chain (v2 – After Change)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-both-versions-on-the-same-dataset">Run Both Versions on the Same Dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-outputs">Collect Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-and-compare-correctness-example">Evaluate and Compare (Correctness Example)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correctness-evaluation">Correctness Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-decision">Regression Decision</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-testing-for-rag-faithfulness">Regression Testing for RAG (Faithfulness)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-regression-check">Faithfulness Regression Check</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-cost-regression">Latency &amp; Cost Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-regression-check">Performance Regression Check</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-cd-integration-real-world">CI/CD Integration (Real-World)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-regression-failure-patterns">Common Regression Failure Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practice-regression-strategy">Best-Practice Regression Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#regression-testing" id="id1">Regression Testing</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-regression-testing-is-critical-for-llms" id="id2">Why Regression Testing Is Critical for LLMs</a></p></li>
+<li><p><a class="reference internal" href="#what-can-regress-in-llm-systems" id="id3">What Can Regress in LLM Systems</a></p></li>
+<li><p><a class="reference internal" href="#regression-testing-architecture" id="id4">Regression Testing Architecture</a></p></li>
+<li><p><a class="reference internal" href="#create-a-fixed-regression-dataset" id="id5">Create a Fixed Regression Dataset</a></p>
+<ul>
+<li><p><a class="reference internal" href="#regression-dataset-golden-set" id="id6">Regression Dataset (Golden Set)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#define-baseline-and-new-chains" id="id7">Define Baseline and New Chains</a></p>
+<ul>
+<li><p><a class="reference internal" href="#baseline-chain-v1" id="id8">Baseline Chain (v1)</a></p></li>
+<li><p><a class="reference internal" href="#new-chain-v2-after-change" id="id9">New Chain (v2 – After Change)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#run-both-versions-on-the-same-dataset" id="id10">Run Both Versions on the Same Dataset</a></p>
+<ul>
+<li><p><a class="reference internal" href="#collect-outputs" id="id11">Collect Outputs</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#evaluate-and-compare-correctness-example" id="id12">Evaluate and Compare (Correctness Example)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#correctness-evaluation" id="id13">Correctness Evaluation</a></p></li>
+<li><p><a class="reference internal" href="#regression-decision" id="id14">Regression Decision</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#regression-testing-for-rag-faithfulness" id="id15">Regression Testing for RAG (Faithfulness)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#faithfulness-regression-check" id="id16">Faithfulness Regression Check</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#latency-cost-regression" id="id17">Latency &amp; Cost Regression</a></p>
+<ul>
+<li><p><a class="reference internal" href="#performance-regression-check" id="id18">Performance Regression Check</a></p></li>
+<li><p><a class="reference internal" href="#ci-cd-integration-real-world" id="id19">CI/CD Integration (Real-World)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#common-regression-failure-patterns" id="id20">Common Regression Failure Patterns</a></p></li>
+<li><p><a class="reference internal" href="#best-practice-regression-strategy" id="id21">Best-Practice Regression Strategy</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id22">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id23">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="regression-testing">
+<h1><a class="toc-backref" href="#id1">Regression Testing</a><a class="headerlink" href="#regression-testing" title="Permalink to this heading">#</a></h1>
+<p><strong>Regression testing</strong> ensures that <strong>existing behavior does not degrade</strong> when you change something in your system—such as:</p>
+<ul class="simple">
+<li><p>Prompt updates</p></li>
+<li><p>Model upgrades</p></li>
+<li><p>Retriever / chunking changes</p></li>
+<li><p>Tool or agent logic changes</p></li>
+</ul>
+<p>In LLM systems, regression testing answers:</p>
+<blockquote>
+<div><p><strong>Did this change make answers worse than before?</strong></p>
+</div></blockquote>
+<p>It is a <strong>mandatory practice</strong> for production LLM, RAG, and agent systems.</p>
+<p>Implemented commonly using LangChain and tracked via LangSmith.</p>
+<hr class="docutils" />
+<section id="why-regression-testing-is-critical-for-llms">
+<h2><a class="toc-backref" href="#id2">Why Regression Testing Is Critical for LLMs</a><a class="headerlink" href="#why-regression-testing-is-critical-for-llms" title="Permalink to this heading">#</a></h2>
+<p>Unlike traditional software:</p>
+<ul class="simple">
+<li><p>LLM outputs are <strong>non-deterministic</strong></p></li>
+<li><p>Small prompt changes can cause <strong>large behavior shifts</strong></p></li>
+<li><p>Model upgrades can silently break quality</p></li>
+</ul>
+<p>Without regression testing:</p>
+<ul class="simple">
+<li><p>Hallucinations slip into prod</p></li>
+<li><p>Answer quality degrades unnoticed</p></li>
+<li><p>Trust is lost</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="what-can-regress-in-llm-systems">
+<h2><a class="toc-backref" href="#id3">What Can Regress in LLM Systems</a><a class="headerlink" href="#what-can-regress-in-llm-systems" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Area</p></th>
+<th class="head"><p>Example Regression</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Prompt</p></td>
+<td><p>More verbose, less precise</p></td>
+</tr>
+<tr class="row-odd"><td><p>RAG</p></td>
+<td><p>Wrong documents retrieved</p></td>
+</tr>
+<tr class="row-even"><td><p>Faithfulness</p></td>
+<td><p>New hallucinations</p></td>
+</tr>
+<tr class="row-odd"><td><p>Relevance</p></td>
+<td><p>Topic drift</p></td>
+</tr>
+<tr class="row-even"><td><p>Correctness</p></td>
+<td><p>Factually wrong answers</p></td>
+</tr>
+<tr class="row-odd"><td><p>Latency</p></td>
+<td><p>Slower responses</p></td>
+</tr>
+<tr class="row-even"><td><p>Cost</p></td>
+<td><p>Token explosion</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="regression-testing-architecture">
+<h2><a class="toc-backref" href="#id4">Regression Testing Architecture</a><a class="headerlink" href="#regression-testing-architecture" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://cdn.prod.website-files.com/660ef16a9e0687d9cc27474a/66d91e930996182ebc2b81f4_668296a3c80f1adbb05ede7c_01_llm_regression_testing_process-min.png" /></p>
+<p><img alt="Image" src="https://exactpro.com/sites/default/files/inline-images/4%20SOR%20RAG.png" /></p>
+<p><img alt="Image" src="https://arize.com/wp-content/uploads/2024/12/image1-1024x256.png" /></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Baseline Version (v1)
+        ↓
+ Evaluation Dataset
+        ↓
+ Metrics (saved)
+        ↓
+ New Version (v2)
+        ↓
+ Same Dataset
+        ↓
+ Compare Metrics → Pass / Fail
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="create-a-fixed-regression-dataset">
+<h2><a class="toc-backref" href="#id5">Create a Fixed Regression Dataset</a><a class="headerlink" href="#create-a-fixed-regression-dataset" title="Permalink to this heading">#</a></h2>
+<section id="regression-dataset-golden-set">
+<h3><a class="toc-backref" href="#id6">Regression Dataset (Golden Set)</a><a class="headerlink" href="#regression-dataset-golden-set" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">regression_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What is RAG?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected&quot;</span><span class="p">:</span> <span class="s2">&quot;RAG combines document retrieval with language model generation.&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What is token streaming?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected&quot;</span><span class="p">:</span> <span class="s2">&quot;Token streaming sends output incrementally as it is generated.&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>This dataset must:</p>
+<ul class="simple">
+<li><p>Stay <strong>stable</strong></p></li>
+<li><p>Represent <strong>real user queries</strong></p></li>
+<li><p>Cover <strong>edge cases</strong></p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="define-baseline-and-new-chains">
+<h2><a class="toc-backref" href="#id7">Define Baseline and New Chains</a><a class="headerlink" href="#define-baseline-and-new-chains" title="Permalink to this heading">#</a></h2>
+<section id="baseline-chain-v1">
+<h3><a class="toc-backref" href="#id8">Baseline Chain (v1)</a><a class="headerlink" href="#baseline-chain-v1" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">llm_v1</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">)</span>
+
+<span class="n">prompt_v1</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Answer clearly:</span><span class="se">\n</span><span class="si">{question}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">chain_v1</span> <span class="o">=</span> <span class="n">prompt_v1</span> <span class="o">|</span> <span class="n">llm_v1</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="new-chain-v2-after-change">
+<h3><a class="toc-backref" href="#id9">New Chain (v2 – After Change)</a><a class="headerlink" href="#new-chain-v2-after-change" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm_v2</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">)</span>
+
+<span class="n">prompt_v2</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Answer the question concisely and accurately:</span><span class="se">\n</span><span class="si">{question}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">chain_v2</span> <span class="o">=</span> <span class="n">prompt_v2</span> <span class="o">|</span> <span class="n">llm_v2</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="run-both-versions-on-the-same-dataset">
+<h2><a class="toc-backref" href="#id10">Run Both Versions on the Same Dataset</a><a class="headerlink" href="#run-both-versions-on-the-same-dataset" title="Permalink to this heading">#</a></h2>
+<section id="collect-outputs">
+<h3><a class="toc-backref" href="#id11">Collect Outputs</a><a class="headerlink" href="#collect-outputs" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_chain</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]})</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="n">out</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+            <span class="s2">&quot;expected&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;expected&quot;</span><span class="p">]</span>
+        <span class="p">})</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+<span class="n">baseline_results</span> <span class="o">=</span> <span class="n">run_chain</span><span class="p">(</span><span class="n">chain_v1</span><span class="p">,</span> <span class="n">regression_data</span><span class="p">)</span>
+<span class="n">new_results</span> <span class="o">=</span> <span class="n">run_chain</span><span class="p">(</span><span class="n">chain_v2</span><span class="p">,</span> <span class="n">regression_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="evaluate-and-compare-correctness-example">
+<h2><a class="toc-backref" href="#id12">Evaluate and Compare (Correctness Example)</a><a class="headerlink" href="#evaluate-and-compare-correctness-example" title="Permalink to this heading">#</a></h2>
+<section id="correctness-evaluation">
+<h3><a class="toc-backref" href="#id13">Correctness Evaluation</a><a class="headerlink" href="#correctness-evaluation" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_evaluator</span>
+
+<span class="n">correctness_eval</span> <span class="o">=</span> <span class="n">load_evaluator</span><span class="p">(</span>
+    <span class="s2">&quot;labeled_criteria&quot;</span><span class="p">,</span>
+    <span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;correctness&quot;</span>
+<span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">correctness_eval</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+            <span class="nb">input</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span>
+            <span class="n">prediction</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">],</span>
+            <span class="n">reference</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;expected&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+
+<span class="n">baseline_score</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">baseline_results</span><span class="p">)</span>
+<span class="n">new_score</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">new_results</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Baseline score:&quot;</span><span class="p">,</span> <span class="n">baseline_score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New score:&quot;</span><span class="p">,</span> <span class="n">new_score</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="regression-decision">
+<h3><a class="toc-backref" href="#id14">Regression Decision</a><a class="headerlink" href="#regression-decision" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">new_score</span> <span class="o">&lt;</span> <span class="n">baseline_score</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;❌ Regression detected&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ No regression&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This introduces a <strong>tolerance band</strong> (industry standard).</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="regression-testing-for-rag-faithfulness">
+<h2><a class="toc-backref" href="#id15">Regression Testing for RAG (Faithfulness)</a><a class="headerlink" href="#regression-testing-for-rag-faithfulness" title="Permalink to this heading">#</a></h2>
+<section id="faithfulness-regression-check">
+<h3><a class="toc-backref" href="#id16">Faithfulness Regression Check</a><a class="headerlink" href="#faithfulness-regression-check" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">faithfulness_eval</span> <span class="o">=</span> <span class="n">load_evaluator</span><span class="p">(</span><span class="s2">&quot;faithfulness&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">faithfulness_score</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">docs</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">page_content</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">faithfulness_eval</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+        <span class="nb">input</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+        <span class="n">prediction</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span>
+        <span class="n">reference</span><span class="o">=</span><span class="n">context</span>
+    <span class="p">)[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Fail if:</p>
+<ul class="simple">
+<li><p>Faithfulness score drops</p></li>
+<li><p>New hallucinations appear</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="latency-cost-regression">
+<h2><a class="toc-backref" href="#id17">Latency &amp; Cost Regression</a><a class="headerlink" href="#latency-cost-regression" title="Permalink to this heading">#</a></h2>
+<section id="performance-regression-check">
+<h3><a class="toc-backref" href="#id18">Performance Regression Check</a><a class="headerlink" href="#performance-regression-check" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_openai_callback</span>
+
+<span class="k">with</span> <span class="n">get_openai_callback</span><span class="p">()</span> <span class="k">as</span> <span class="n">cb</span><span class="p">:</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">chain_v2</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain RAG&quot;</span><span class="p">})</span>
+    <span class="n">latency</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Latency:&quot;</span><span class="p">,</span> <span class="n">latency</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cost:&quot;</span><span class="p">,</span> <span class="n">cb</span><span class="o">.</span><span class="n">total_cost</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Fail if:</p>
+<ul class="simple">
+<li><p>Latency ↑ beyond SLA</p></li>
+<li><p>Cost ↑ beyond budget</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="ci-cd-integration-real-world">
+<h3><a class="toc-backref" href="#id19">CI/CD Integration (Real-World)</a><a class="headerlink" href="#ci-cd-integration-real-world" title="Permalink to this heading">#</a></h3>
+<p>Typical pipeline:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PR opened
+  ↓
+Run regression dataset
+  ↓
+Evaluate metrics
+  ↓
+Compare with baseline
+  ↓
+Fail build if regression
+</pre></div>
+</div>
+<p>LangSmith can:</p>
+<ul class="simple">
+<li><p>Store baselines</p></li>
+<li><p>Compare versions visually</p></li>
+<li><p>Track regressions over time</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="common-regression-failure-patterns">
+<h2><a class="toc-backref" href="#id20">Common Regression Failure Patterns</a><a class="headerlink" href="#common-regression-failure-patterns" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pattern</p></th>
+<th class="head"><p>Cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Lower correctness</p></td>
+<td><p>Prompt drift</p></td>
+</tr>
+<tr class="row-odd"><td><p>New hallucinations</p></td>
+<td><p>Retrieval changes</p></td>
+</tr>
+<tr class="row-even"><td><p>Lower relevance</p></td>
+<td><p>Over-verbose prompts</p></td>
+</tr>
+<tr class="row-odd"><td><p>Latency spike</p></td>
+<td><p>Larger context</p></td>
+</tr>
+<tr class="row-even"><td><p>Cost spike</p></td>
+<td><p>More tokens</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="best-practice-regression-strategy">
+<h2><a class="toc-backref" href="#id21">Best-Practice Regression Strategy</a><a class="headerlink" href="#best-practice-regression-strategy" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Stage</p></th>
+<th class="head"><p>What to Regress</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Prompt changes</p></td>
+<td><p>Relevance, correctness</p></td>
+</tr>
+<tr class="row-odd"><td><p>RAG changes</p></td>
+<td><p>Faithfulness, retrieval</p></td>
+</tr>
+<tr class="row-even"><td><p>Model upgrade</p></td>
+<td><p>All metrics</p></td>
+</tr>
+<tr class="row-odd"><td><p>Prod</p></td>
+<td><p>Sampled regression</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id22">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Regression testing is <strong>unit testing for LLM behavior</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Known good behavior → lock it → compare every change
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id23">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Regression testing prevents silent quality loss</p></li>
+<li><p>Always compare against a baseline</p></li>
+<li><p>Use fixed datasets</p></li>
+<li><p>Evaluate correctness, relevance, faithfulness, latency, cost</p></li>
+<li><p>Mandatory for production LLM and RAG systems</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\evaluation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-regression-testing-is-critical-for-llms">Why Regression Testing Is Critical for LLMs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-can-regress-in-llm-systems">What Can Regress in LLM Systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-testing-architecture">Regression Testing Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-fixed-regression-dataset">Create a Fixed Regression Dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-dataset-golden-set">Regression Dataset (Golden Set)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-baseline-and-new-chains">Define Baseline and New Chains</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline-chain-v1">Baseline Chain (v1)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-chain-v2-after-change">New Chain (v2 – After Change)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-both-versions-on-the-same-dataset">Run Both Versions on the Same Dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-outputs">Collect Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-and-compare-correctness-example">Evaluate and Compare (Correctness Example)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correctness-evaluation">Correctness Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-decision">Regression Decision</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-testing-for-rag-faithfulness">Regression Testing for RAG (Faithfulness)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-regression-check">Faithfulness Regression Check</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-cost-regression">Latency &amp; Cost Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-regression-check">Performance Regression Check</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-cd-integration-real-world">CI/CD Integration (Real-World)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-regression-failure-patterns">Common Regression Failure Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practice-regression-strategy">Best-Practice Regression Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

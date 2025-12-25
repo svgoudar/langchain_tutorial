@@ -1,0 +1,952 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Retry and Fallback &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/lcel/08_retry_and_fallbacks';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/lcel/08_retry_and_fallbacks.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/lcel/08_retry_and_fallbacks.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/lcel/08_retry_and_fallbacks.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Retry and Fallback</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-vs-fallback-conceptual-difference">Retry vs Fallback (Conceptual Difference)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry">Retry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-demonstration-runnable">Retry Demonstration (Runnable)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-in-a-runnablesequence">Retry in a RunnableSequence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-retry-use-cases">Common Retry Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback">Fallback</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback-demonstration-two-models">Fallback Demonstration (Two Models)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-fallbacks-priority-order">Multiple Fallbacks (Priority Order)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-fallback">Retry + Fallback</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-demonstration">Combined Demonstration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-fallback-in-rag-pipelines">Retry + Fallback in RAG Pipelines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-scoping-important">Failure Scoping (Important)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-retry-fallback-applies">Where Retry/Fallback Applies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-retry">When to Use Retry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-fallback">When to Use Fallback</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#retry-and-fallback" id="id1">Retry and Fallback</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retry-vs-fallback-conceptual-difference" id="id2">Retry vs Fallback (Conceptual Difference)</a></p></li>
+<li><p><a class="reference internal" href="#retry" id="id3">Retry</a></p></li>
+<li><p><a class="reference internal" href="#retry-demonstration-runnable" id="id4">Retry Demonstration (Runnable)</a></p></li>
+<li><p><a class="reference internal" href="#retry-in-a-runnablesequence" id="id5">Retry in a RunnableSequence</a></p></li>
+<li><p><a class="reference internal" href="#common-retry-use-cases" id="id6">Common Retry Use Cases</a></p></li>
+<li><p><a class="reference internal" href="#fallback" id="id7">Fallback</a></p></li>
+<li><p><a class="reference internal" href="#fallback-demonstration-two-models" id="id8">Fallback Demonstration (Two Models)</a></p></li>
+<li><p><a class="reference internal" href="#multiple-fallbacks-priority-order" id="id9">Multiple Fallbacks (Priority Order)</a></p></li>
+<li><p><a class="reference internal" href="#retry-fallback" id="id10">Retry + Fallback</a></p>
+<ul>
+<li><p><a class="reference internal" href="#combined-demonstration" id="id11">Combined Demonstration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#retry-fallback-in-rag-pipelines" id="id12">Retry + Fallback in RAG Pipelines</a></p></li>
+<li><p><a class="reference internal" href="#failure-scoping-important" id="id13">Failure Scoping (Important)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#where-retry-fallback-applies" id="id14">Where Retry/Fallback Applies</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices" id="id15">Best Practices</a></p>
+<ul>
+<li><p><a class="reference internal" href="#when-to-use-retry" id="id16">When to Use Retry</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-fallback" id="id17">When to Use Fallback</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id18">Common Mistakes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#mental-model" id="id19">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id20">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="retry-and-fallback">
+<h1><a class="toc-backref" href="#id1">Retry and Fallback</a><a class="headerlink" href="#retry-and-fallback" title="Permalink to this heading">#</a></h1>
+<p>In LLM pipelines, <strong>retry</strong> and <strong>fallback</strong> are <strong>resilience mechanisms</strong> used to handle failures such as:</p>
+<ul class="simple">
+<li><p>Transient network errors</p></li>
+<li><p>Rate limits</p></li>
+<li><p>Timeouts</p></li>
+<li><p>Model unavailability</p></li>
+</ul>
+<p>Both are first-class concepts in LangChain runnables.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Request
+  ↓
+Primary Runnable
+  ├─ success → return result
+  └─ failure
+        ├─ Retry (same runnable)
+        └─ Fallback (alternative runnable)
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="retry-vs-fallback-conceptual-difference">
+<h2><a class="toc-backref" href="#id2">Retry vs Fallback (Conceptual Difference)</a><a class="headerlink" href="#retry-vs-fallback-conceptual-difference" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mechanism</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Strategy</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Retry</strong></p></td>
+<td><p>Handle transient failures</p></td>
+<td><p>Try again (same runnable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Fallback</strong></p></td>
+<td><p>Handle persistent failures</p></td>
+<td><p>Switch to backup runnable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>They are often <strong>used together</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="retry">
+<h2><a class="toc-backref" href="#id3">Retry</a><a class="headerlink" href="#retry" title="Permalink to this heading">#</a></h2>
+<p><strong>Retry</strong> automatically re-executes a runnable when it fails, based on:</p>
+<ul class="simple">
+<li><p>Max attempts</p></li>
+<li><p>Backoff strategy</p></li>
+<li><p>Exception type</p></li>
+</ul>
+<p>Retry is ideal for <strong>temporary issues</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="retry-demonstration-runnable">
+<h2><a class="toc-backref" href="#id4">Retry Demonstration (Runnable)</a><a class="headerlink" href="#retry-demonstration-runnable" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">()</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span>
+    <span class="n">stop_after_attempt</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>   <span class="c1"># max retries</span>
+    <span class="n">wait_exponential_jitter</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain retry in LLMs&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Retry in LLMs (Large Language Models) refers to the process of re-running a failed inference or generation task multiple times in order to improve the model&#39;s output quality and accuracy. 
+
+When an LLM encounters an error or produces a low-quality output during inference, the retry mechanism allows the model to try again with slightly different input data or parameters. This can help the model overcome obstacles such as sampling bias, noise in the data, or misinterpretation of context.
+
+Retry in LLMs can be implemented in various ways, such as by adjusting the randomness in sampling, changing the temperature hyperparameter, or fine-tuning the model based on feedback from previous attempts. By incorporating retry mechanisms, LLMs can improve their performance and generate more accurate and reliable outputs.
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>What happens</strong></p>
+<ul class="simple">
+<li><p>If the first call fails → retry</p></li>
+<li><p>Up to 3 attempts</p></li>
+<li><p>Exponential backoff with jitter</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="retry-in-a-runnablesequence">
+<h2><a class="toc-backref" href="#id5">Retry in a RunnableSequence</a><a class="headerlink" href="#retry-in-a-runnablesequence" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">ChatOpenAI</span><span class="p">()</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span><span class="n">stop_after_attempt</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;What is retry logic?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retry applies <strong>only to the runnable it is attached to</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="common-retry-use-cases">
+<h2><a class="toc-backref" href="#id6">Common Retry Use Cases</a><a class="headerlink" href="#common-retry-use-cases" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>API rate limits</p></li>
+<li><p>Temporary network drops</p></li>
+<li><p>Model overload</p></li>
+<li><p>Intermittent infra issues</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="fallback">
+<h2><a class="toc-backref" href="#id7">Fallback</a><a class="headerlink" href="#fallback" title="Permalink to this heading">#</a></h2>
+<p><strong>Fallback</strong> defines <strong>alternative runnables</strong> to execute if the primary runnable fails.</p>
+<p>Fallback is ideal for:</p>
+<ul class="simple">
+<li><p>Model outages</p></li>
+<li><p>Cost-aware degradation</p></li>
+<li><p>SLA guarantees</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="fallback-demonstration-two-models">
+<h2><a class="toc-backref" href="#id8">Fallback Demonstration (Two Models)</a><a class="headerlink" href="#fallback-demonstration-two-models" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">primary_llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">)</span>
+<span class="n">backup_llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">)</span>
+
+<span class="n">llm_with_fallback</span> <span class="o">=</span> <span class="n">primary_llm</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">([</span><span class="n">backup_llm</span><span class="p">])</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">llm_with_fallback</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain fallback strategy&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Execution logic</strong></p>
+<ol class="arabic simple">
+<li><p>Try <code class="docutils literal notranslate"><span class="pre">gpt-4</span></code></p></li>
+<li><p>If it fails → switch to <code class="docutils literal notranslate"><span class="pre">gpt-3.5</span></code></p></li>
+<li><p>Return first successful response</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="multiple-fallbacks-priority-order">
+<h2><a class="toc-backref" href="#id9">Multiple Fallbacks (Priority Order)</a><a class="headerlink" href="#multiple-fallbacks-priority-order" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">([</span>
+    <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">),</span>
+    <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo-16k&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>Fallbacks are tried <strong>in order</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="retry-fallback">
+<h2><a class="toc-backref" href="#id10">Retry + Fallback</a><a class="headerlink" href="#retry-fallback" title="Permalink to this heading">#</a></h2>
+<section id="combined-demonstration">
+<h3><a class="toc-backref" href="#id11">Combined Demonstration</a><a class="headerlink" href="#combined-demonstration" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">primary</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span>
+    <span class="n">stop_after_attempt</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="n">secondary</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span>
+    <span class="n">stop_after_attempt</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">primary</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">([</span><span class="n">secondary</span><span class="p">])</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain retry and fallback&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;&quot;Retry&quot; and &quot;fallback&quot; are terms used in computing to describe methods for handling issues when an operation does not succeed on the first attempt.\n\nRetry is a strategy where a system attempts the same operation again if it fails the first time. This can be useful in cases where the failure was due to a temporary issue (like a network glitch). For instance, when you send a request to a server and the server does not respond, the client will often retry the same request instead of immediately indicating a failure.\n\nFallback, on the other hand, is a strategy where a system will try a different approach if the primary method fails. This can be useful in cases where the primary method is known to have reliability issues or in cases where the failure was due to a more permanent issue with the primary method. For example, when a main server fails, the system may have a fallback server to use instead.\n\nBoth are considered as part of error handling and resilience design in software and network engineering. It enables the system to continue functioning even when things go wrong, improving overall reliability and robustness.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 217, &#39;prompt_tokens&#39;: 12, &#39;total_tokens&#39;: 229, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-4-0613&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-Cpzckh6nnMNTdOix7UxWTLzqlgAI5&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4c0f-8b90-73b0-b0f9-bdc278dcc420-0&#39;, usage_metadata={&#39;input_tokens&#39;: 12, &#39;output_tokens&#39;: 217, &#39;total_tokens&#39;: 229, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Execution order</strong></p>
+<ol class="arabic simple">
+<li><p>GPT-4 attempt #1</p></li>
+<li><p>GPT-4 retry #2</p></li>
+<li><p>If still failing → GPT-3.5 attempt #1</p></li>
+<li><p>GPT-3.5 retry #2</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="retry-fallback-in-rag-pipelines">
+<h2><a class="toc-backref" href="#id12">Retry + Fallback in RAG Pipelines</a><a class="headerlink" href="#retry-fallback-in-rag-pipelines" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnablePassthrough</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="c1"># Create a sample retriever and prompt for demonstration</span>
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;LangChain supports retry and fallback mechanisms for resilience.&quot;</span><span class="p">],</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Answer the question based on context:</span><span class="se">\n</span><span class="s2">Context: </span><span class="si">{context}</span><span class="se">\n</span><span class="s2">Question: </span><span class="si">{question}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">RunnablePassthrough</span><span class="p">(),</span>
+        <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span>
+    <span class="p">}</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">ChatOpenAI</span><span class="p">()</span><span class="o">.</span><span class="n">with_retry</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">with_fallbacks</span><span class="p">([</span><span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">)])</span>
+<span class="p">)</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;How does LangChain ensure reliability?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;LangChain ensures reliability by supporting retry and fallback mechanisms for resilience.&#39;, additional_kwargs={&#39;refusal&#39;: None}, response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 13, &#39;prompt_tokens&#39;: 68, &#39;total_tokens&#39;: 81, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;system_fingerprint&#39;: None, &#39;id&#39;: &#39;chatcmpl-Cpzgcz7q30LfaHuuei4EW1Q983cGq&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;stop&#39;, &#39;logprobs&#39;: None}, id=&#39;lc_run--019b4c13-3494-7893-8f06-12404a6ae923-0&#39;, usage_metadata={&#39;input_tokens&#39;: 68, &#39;output_tokens&#39;: 13, &#39;total_tokens&#39;: 81, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>This ensures:</p>
+<ul class="simple">
+<li><p>Retrieval still happens</p></li>
+<li><p>Generation is resilient</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="failure-scoping-important">
+<h2><a class="toc-backref" href="#id13">Failure Scoping (Important)</a><a class="headerlink" href="#failure-scoping-important" title="Permalink to this heading">#</a></h2>
+<section id="where-retry-fallback-applies">
+<h3><a class="toc-backref" href="#id14">Where Retry/Fallback Applies</a><a class="headerlink" href="#where-retry-fallback-applies" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Level</p></th>
+<th class="head"><p>Behavior</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Runnable</p></td>
+<td><p>Only that step retries</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sequence</p></td>
+<td><p>Downstream not executed on failure</p></td>
+</tr>
+<tr class="row-even"><td><p>Parallel</p></td>
+<td><p>Any branch failure fails whole runnable</p></td>
+</tr>
+<tr class="row-odd"><td><p>Batch</p></td>
+<td><p>Per-input isolation</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id15">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<section id="when-to-use-retry">
+<h3><a class="toc-backref" href="#id16">When to Use Retry</a><a class="headerlink" href="#when-to-use-retry" title="Permalink to this heading">#</a></h3>
+<p>Use retry when:</p>
+<ul class="simple">
+<li><p>Failures are transient</p></li>
+<li><p>Same request is safe to repeat</p></li>
+<li><p>You want transparent recovery</p></li>
+</ul>
+<p>Avoid retry when:</p>
+<ul class="simple">
+<li><p>Failures are deterministic</p></li>
+<li><p>Calls are expensive or stateful</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-fallback">
+<h3><a class="toc-backref" href="#id17">When to Use Fallback</a><a class="headerlink" href="#when-to-use-fallback" title="Permalink to this heading">#</a></h3>
+<p>Use fallback when:</p>
+<ul class="simple">
+<li><p>You have alternative models/tools</p></li>
+<li><p>SLA is critical</p></li>
+<li><p>Graceful degradation is acceptable</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h3><a class="toc-backref" href="#id18">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Retrying indefinitely</p></li>
+<li><p>Retrying non-idempotent operations</p></li>
+<li><p>Not logging fallback usage</p></li>
+<li><p>Using fallback without retry</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id19">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Retry = <strong>“try again”</strong>
+Fallback = <strong>“try something else”</strong></p>
+<p>Together they provide <strong>fault tolerance</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id20">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Retry handles <strong>temporary failures</strong></p></li>
+<li><p>Fallback handles <strong>permanent failures</strong></p></li>
+<li><p>Both are composable at runnable level</p></li>
+<li><p>Essential for production-grade LLM systems</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\lcel"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-vs-fallback-conceptual-difference">Retry vs Fallback (Conceptual Difference)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry">Retry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-demonstration-runnable">Retry Demonstration (Runnable)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-in-a-runnablesequence">Retry in a RunnableSequence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-retry-use-cases">Common Retry Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback">Fallback</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback-demonstration-two-models">Fallback Demonstration (Two Models)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-fallbacks-priority-order">Multiple Fallbacks (Priority Order)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-fallback">Retry + Fallback</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-demonstration">Combined Demonstration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-fallback-in-rag-pipelines">Retry + Fallback in RAG Pipelines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-scoping-important">Failure Scoping (Important)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-retry-fallback-applies">Where Retry/Fallback Applies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-retry">When to Use Retry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-fallback">When to Use Fallback</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1003 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Source Attribution &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/11_source_attribution';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/11_source_attribution.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/11_source_attribution.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/11_source_attribution.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Source Attribution</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-source-attribution-is-important">Why Source Attribution Is Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-source-attribution-fits-in-rag">Where Source Attribution Fits in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-source">What Is a “Source”</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-source-attribution-works-mechanism">How Source Attribution Works (Mechanism)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-attach-metadata-at-ingestion">Step 1: Attach Metadata at Ingestion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-preserve-metadata-through-chunking">Step 2: Preserve Metadata Through Chunking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-retrieve-chunks-with-metadata">Step 3: Retrieve Chunks With Metadata</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-return-sources-alongside-the-answer">Step 4: Return Sources Alongside the Answer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-attribution-in-langchain-basic">Source Attribution in LangChain (Basic)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-with-sources">RetrievalQA with Sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-structure">Output Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-attribution-in-lcel-modern-pattern">Source Attribution in LCEL (Modern Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inline-source-attribution-citations">Inline Source Attribution (Citations)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pattern">Pattern</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-its-done">How It’s Done</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-pattern-for-attribution">Prompt Pattern for Attribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hard-attribution-safer">Hard Attribution (Safer)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-attribution-vs-citations">Source Attribution vs Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-attribution-vs-hallucination-control">Source Attribution vs Hallucination Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-source-attribution">Production-Grade Source Attribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-standards">1. Metadata Standards</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ui-level-attribution">2. UI-Level Attribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution-granularity">3. Attribution Granularity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-source-answers">4. Multi-Source Answers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trusting-llm-generated-citations">Trusting LLM-generated citations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#losing-metadata-during-ingestion">Losing metadata during ingestion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overloading-ui-with-all-chunks">Overloading UI with all chunks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixing-sources-from-different-tenants">Mixing sources from different tenants</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#source-attribution" id="id1">Source Attribution</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-source-attribution-is-important" id="id2">Why Source Attribution Is Important</a></p></li>
+<li><p><a class="reference internal" href="#where-source-attribution-fits-in-rag" id="id3">Where Source Attribution Fits in RAG</a></p></li>
+<li><p><a class="reference internal" href="#what-is-a-source" id="id4">What Is a “Source”</a></p></li>
+<li><p><a class="reference internal" href="#how-source-attribution-works-mechanism" id="id5">How Source Attribution Works (Mechanism)</a></p></li>
+<li><p><a class="reference internal" href="#step-1-attach-metadata-at-ingestion" id="id6">Step 1: Attach Metadata at Ingestion</a></p></li>
+<li><p><a class="reference internal" href="#step-2-preserve-metadata-through-chunking" id="id7">Step 2: Preserve Metadata Through Chunking</a></p></li>
+<li><p><a class="reference internal" href="#step-3-retrieve-chunks-with-metadata" id="id8">Step 3: Retrieve Chunks With Metadata</a></p></li>
+<li><p><a class="reference internal" href="#step-4-return-sources-alongside-the-answer" id="id9">Step 4: Return Sources Alongside the Answer</a></p></li>
+<li><p><a class="reference internal" href="#source-attribution-in-langchain-basic" id="id10">Source Attribution in LangChain (Basic)</a></p></li>
+<li><p><a class="reference internal" href="#retrievalqa-with-sources" id="id11">RetrievalQA with Sources</a></p></li>
+<li><p><a class="reference internal" href="#output-structure" id="id12">Output Structure</a></p></li>
+<li><p><a class="reference internal" href="#source-attribution-in-lcel-modern-pattern" id="id13">Source Attribution in LCEL (Modern Pattern)</a></p></li>
+<li><p><a class="reference internal" href="#inline-source-attribution-citations" id="id14">Inline Source Attribution (Citations)</a></p></li>
+<li><p><a class="reference internal" href="#pattern" id="id15">Pattern</a></p></li>
+<li><p><a class="reference internal" href="#how-its-done" id="id16">How It’s Done</a></p></li>
+<li><p><a class="reference internal" href="#prompt-pattern-for-attribution" id="id17">Prompt Pattern for Attribution</a></p></li>
+<li><p><a class="reference internal" href="#hard-attribution-safer" id="id18">Hard Attribution (Safer)</a></p></li>
+<li><p><a class="reference internal" href="#source-attribution-vs-citations" id="id19">Source Attribution vs Citations</a></p></li>
+<li><p><a class="reference internal" href="#source-attribution-vs-hallucination-control" id="id20">Source Attribution vs Hallucination Control</a></p></li>
+<li><p><a class="reference internal" href="#production-grade-source-attribution" id="id21">Production-Grade Source Attribution</a></p></li>
+<li><p><a class="reference internal" href="#metadata-standards" id="id22">1. Metadata Standards</a></p></li>
+<li><p><a class="reference internal" href="#ui-level-attribution" id="id23">2. UI-Level Attribution</a></p></li>
+<li><p><a class="reference internal" href="#attribution-granularity" id="id24">3. Attribution Granularity</a></p></li>
+<li><p><a class="reference internal" href="#multi-source-answers" id="id25">4. Multi-Source Answers</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id26">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#trusting-llm-generated-citations" id="id27">Trusting LLM-generated citations</a></p></li>
+<li><p><a class="reference internal" href="#losing-metadata-during-ingestion" id="id28">Losing metadata during ingestion</a></p></li>
+<li><p><a class="reference internal" href="#overloading-ui-with-all-chunks" id="id29">Overloading UI with all chunks</a></p></li>
+<li><p><a class="reference internal" href="#mixing-sources-from-different-tenants" id="id30">Mixing sources from different tenants</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices" id="id31">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id32">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id33">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="source-attribution">
+<h1><a class="toc-backref" href="#id1">Source Attribution</a><a class="headerlink" href="#source-attribution" title="Permalink to this heading">#</a></h1>
+<p><strong>Source attribution</strong> is the practice of <strong>linking each generated answer back to the original documents or chunks</strong> that supported it.</p>
+<blockquote>
+<div><p>It answers: <strong>“Where did this answer come from?”</strong></p>
+</div></blockquote>
+<p>In RAG systems, source attribution provides <strong>traceability, trust, and debuggability</strong>.</p>
+<hr class="docutils" />
+<section id="why-source-attribution-is-important">
+<h2><a class="toc-backref" href="#id2">Why Source Attribution Is Important</a><a class="headerlink" href="#why-source-attribution-is-important" title="Permalink to this heading">#</a></h2>
+<p>Without attribution:</p>
+<ul class="simple">
+<li><p>Users cannot verify answers</p></li>
+<li><p>Hallucinations go unnoticed</p></li>
+<li><p>Compliance and audits fail</p></li>
+<li><p>Debugging retrieval errors is hard</p></li>
+</ul>
+<p>With attribution:</p>
+<ul class="simple">
+<li><p>Answers are explainable</p></li>
+<li><p>Trust increases</p></li>
+<li><p>Errors are diagnosable</p></li>
+<li><p>Compliance requirements are met</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="where-source-attribution-fits-in-rag">
+<h2><a class="toc-backref" href="#id3">Where Source Attribution Fits in RAG</a><a class="headerlink" href="#where-source-attribution-fits-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Documents
+  ↓
+Chunks (with metadata)
+  ↓
+Vector Store
+  ↓
+Retriever
+  ↓
+LLM
+  ↓
+Answer + Sources
+</pre></div>
+</div>
+<p>Attribution relies on <strong>metadata propagation</strong> from ingestion to output.</p>
+</section>
+<hr class="docutils" />
+<section id="what-is-a-source">
+<h2><a class="toc-backref" href="#id4">What Is a “Source”</a><a class="headerlink" href="#what-is-a-source" title="Permalink to this heading">#</a></h2>
+<p>A source can be:</p>
+<ul class="simple">
+<li><p>File name (PDF, DOC, TXT)</p></li>
+<li><p>URL</p></li>
+<li><p>Database record ID</p></li>
+<li><p>Ticket ID</p></li>
+<li><p>Page number</p></li>
+<li><p>Chunk ID</p></li>
+</ul>
+<p>Example metadata:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jira_ticket_123.csv&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;chunk_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="how-source-attribution-works-mechanism">
+<h2><a class="toc-backref" href="#id5">How Source Attribution Works (Mechanism)</a><a class="headerlink" href="#how-source-attribution-works-mechanism" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="step-1-attach-metadata-at-ingestion">
+<h2><a class="toc-backref" href="#id6">Step 1: Attach Metadata at Ingestion</a><a class="headerlink" href="#step-1-attach-metadata-at-ingestion" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Document</span><span class="p">(</span>
+    <span class="n">page_content</span><span class="o">=</span><span class="s2">&quot;Ticket escalation process...&quot;</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;jira_guide.pdf&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-2-preserve-metadata-through-chunking">
+<h2><a class="toc-backref" href="#id7">Step 2: Preserve Metadata Through Chunking</a><a class="headerlink" href="#step-2-preserve-metadata-through-chunking" title="Permalink to this heading">#</a></h2>
+<p>Text splitters <strong>copy metadata</strong> to every chunk.</p>
+<p>Each chunk knows:</p>
+<ul class="simple">
+<li><p>Where it came from</p></li>
+<li><p>Its position in the source</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="step-3-retrieve-chunks-with-metadata">
+<h2><a class="toc-backref" href="#id8">Step 3: Retrieve Chunks With Metadata</a><a class="headerlink" href="#step-3-retrieve-chunks-with-metadata" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">get_relevant_documents</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each <code class="docutils literal notranslate"><span class="pre">doc</span></code> includes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">page_content</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metadata</span></code></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="step-4-return-sources-alongside-the-answer">
+<h2><a class="toc-backref" href="#id9">Step 4: Return Sources Alongside the Answer</a><a class="headerlink" href="#step-4-return-sources-alongside-the-answer" title="Permalink to this heading">#</a></h2>
+<p>The LLM answer is accompanied by:</p>
+<ul class="simple">
+<li><p>The chunks used</p></li>
+<li><p>Their metadata</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="source-attribution-in-langchain-basic">
+<h2><a class="toc-backref" href="#id10">Source Attribution in LangChain (Basic)</a><a class="headerlink" href="#source-attribution-in-langchain-basic" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="retrievalqa-with-sources">
+<h2><a class="toc-backref" href="#id11">RetrievalQA with Sources</a><a class="headerlink" href="#retrievalqa-with-sources" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.chains</span><span class="w"> </span><span class="kn">import</span> <span class="n">RetrievalQA</span>
+
+<span class="n">qa_chain</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="o">.</span><span class="n">from_chain_type</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">retriever</span><span class="o">=</span><span class="n">retriever</span><span class="p">,</span>
+    <span class="n">return_source_documents</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">qa_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;How does escalation work?&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="output-structure">
+<h2><a class="toc-backref" href="#id12">Output Structure</a><a class="headerlink" href="#output-structure" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="s2">&quot;Escalation happens when...&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;source_documents&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;jira_guide.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}),</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;sla_policy.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="source-attribution-in-lcel-modern-pattern">
+<h2><a class="toc-backref" href="#id13">Source Attribution in LCEL (Modern Pattern)</a><a class="headerlink" href="#source-attribution-in-lcel-modern-pattern" title="Permalink to this heading">#</a></h2>
+<p>Conceptually:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Retriever → Prompt → LLM
+          ↘ sources ↗
+</pre></div>
+</div>
+<p>You explicitly return both:</p>
+<ul class="simple">
+<li><p>Generated answer</p></li>
+<li><p>Retrieved documents</p></li>
+</ul>
+<p>Used in APIs and UIs.</p>
+</section>
+<hr class="docutils" />
+<section id="inline-source-attribution-citations">
+<h2><a class="toc-backref" href="#id14">Inline Source Attribution (Citations)</a><a class="headerlink" href="#inline-source-attribution-citations" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="pattern">
+<h2><a class="toc-backref" href="#id15">Pattern</a><a class="headerlink" href="#pattern" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Escalation</span> <span class="n">occurs</span> <span class="n">after</span> <span class="n">SLA</span> <span class="n">breach</span> <span class="p">[</span><span class="n">jira_guide</span><span class="o">.</span><span class="n">pdf</span><span class="p">,</span> <span class="n">p</span><span class="mf">.5</span><span class="p">]</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="how-its-done">
+<h2><a class="toc-backref" href="#id16">How It’s Done</a><a class="headerlink" href="#how-its-done" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>LLM is instructed to cite sources</p></li>
+<li><p>Chunk IDs or metadata keys are provided</p></li>
+<li><p>Post-processing maps citations to metadata</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="prompt-pattern-for-attribution">
+<h2><a class="toc-backref" href="#id17">Prompt Pattern for Attribution</a><a class="headerlink" href="#prompt-pattern-for-attribution" title="Permalink to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Answer the question using only the provided context.
+For each statement, cite the source using [source, page].
+</pre></div>
+</div>
+<p>This is a <strong>soft guardrail</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="hard-attribution-safer">
+<h2><a class="toc-backref" href="#id18">Hard Attribution (Safer)</a><a class="headerlink" href="#hard-attribution-safer" title="Permalink to this heading">#</a></h2>
+<p>Instead of trusting the LLM:</p>
+<ul class="simple">
+<li><p>Extract sources programmatically</p></li>
+<li><p>Attach them outside the generated text</p></li>
+</ul>
+<p>Preferred in production.</p>
+</section>
+<hr class="docutils" />
+<section id="source-attribution-vs-citations">
+<h2><a class="toc-backref" href="#id19">Source Attribution vs Citations</a><a class="headerlink" href="#source-attribution-vs-citations" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Concept</p></th>
+<th class="head"><p>Source Attribution</p></th>
+<th class="head"><p>Citations</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Location</p></td>
+<td><p>Metadata / UI</p></td>
+<td><p>Inline text</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reliability</p></td>
+<td><p>High</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-even"><td><p>LLM-controlled</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Production use</p></td>
+<td><p>✅</p></td>
+<td><p>⚠️</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="source-attribution-vs-hallucination-control">
+<h2><a class="toc-backref" href="#id20">Source Attribution vs Hallucination Control</a><a class="headerlink" href="#source-attribution-vs-hallucination-control" title="Permalink to this heading">#</a></h2>
+<p>Attribution does <strong>not prevent hallucination by itself</strong>, but:</p>
+<ul class="simple">
+<li><p>Makes hallucinations visible</p></li>
+<li><p>Enables confidence scoring</p></li>
+<li><p>Enables fallback logic</p></li>
+</ul>
+<p>Often combined with:</p>
+<ul class="simple">
+<li><p>“Answer only from context” prompts</p></li>
+<li><p>Similarity thresholds</p></li>
+<li><p>Reranking</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="production-grade-source-attribution">
+<h2><a class="toc-backref" href="#id21">Production-Grade Source Attribution</a><a class="headerlink" href="#production-grade-source-attribution" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="metadata-standards">
+<h2><a class="toc-backref" href="#id22">1. Metadata Standards</a><a class="headerlink" href="#metadata-standards" title="Permalink to this heading">#</a></h2>
+<p>Always include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">source_id</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">document_name</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chunk_id</span></code></p></li>
+<li><p>Optional: page, URL, timestamp</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="ui-level-attribution">
+<h2><a class="toc-backref" href="#id23">2. UI-Level Attribution</a><a class="headerlink" href="#ui-level-attribution" title="Permalink to this heading">#</a></h2>
+<p>Display:</p>
+<ul class="simple">
+<li><p>Answer</p></li>
+<li><p>Clickable sources</p></li>
+<li><p>Highlighted snippets</p></li>
+</ul>
+<p>Never rely on plain text citations alone.</p>
+</section>
+<hr class="docutils" />
+<section id="attribution-granularity">
+<h2><a class="toc-backref" href="#id24">3. Attribution Granularity</a><a class="headerlink" href="#attribution-granularity" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Granularity</p></th>
+<th class="head"><p>Use Case</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Document-level</p></td>
+<td><p>High-level QA</p></td>
+</tr>
+<tr class="row-odd"><td><p>Page-level</p></td>
+<td><p>PDFs</p></td>
+</tr>
+<tr class="row-even"><td><p>Chunk-level</p></td>
+<td><p>Precise answers</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sentence-level</p></td>
+<td><p>Regulated domains</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="multi-source-answers">
+<h2><a class="toc-backref" href="#id25">4. Multi-Source Answers</a><a class="headerlink" href="#multi-source-answers" title="Permalink to this heading">#</a></h2>
+<p>Answers may rely on <strong>multiple sources</strong>.
+Production systems:</p>
+<ul class="simple">
+<li><p>Deduplicate sources</p></li>
+<li><p>Rank by contribution</p></li>
+<li><p>Show top-N sources</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id26">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="trusting-llm-generated-citations">
+<h3><a class="toc-backref" href="#id27">Trusting LLM-generated citations</a><a class="headerlink" href="#trusting-llm-generated-citations" title="Permalink to this heading">#</a></h3>
+<p>❌ Can hallucinate sources</p>
+</section>
+<section id="losing-metadata-during-ingestion">
+<h3><a class="toc-backref" href="#id28">Losing metadata during ingestion</a><a class="headerlink" href="#losing-metadata-during-ingestion" title="Permalink to this heading">#</a></h3>
+<p>❌ No attribution possible</p>
+</section>
+<section id="overloading-ui-with-all-chunks">
+<h3><a class="toc-backref" href="#id29">Overloading UI with all chunks</a><a class="headerlink" href="#overloading-ui-with-all-chunks" title="Permalink to this heading">#</a></h3>
+<p>❌ Confusing for users</p>
+</section>
+<section id="mixing-sources-from-different-tenants">
+<h3><a class="toc-backref" href="#id30">Mixing sources from different tenants</a><a class="headerlink" href="#mixing-sources-from-different-tenants" title="Permalink to this heading">#</a></h3>
+<p>❌ Security risk</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id31">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Attach metadata at ingestion</p></li>
+<li><p>Preserve metadata through all stages</p></li>
+<li><p>Return sources separately from answer text</p></li>
+<li><p>Use attribution as a confidence signal</p></li>
+<li><p>Log sources for observability</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id32">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Source attribution is the process of linking LLM-generated answers back to the documents or chunks used during retrieval. In RAG systems, it relies on metadata propagation and is critical for trust, debugging, and compliance.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id33">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>No metadata → no attribution</strong></p></li>
+<li><p><strong>Attribution ≠ citation</strong></p></li>
+<li><p><strong>Production systems must show sources</strong></p></li>
+<li><p><strong>If you can’t explain the source, don’t trust the answer</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-source-attribution-is-important">Why Source Attribution Is Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-source-attribution-fits-in-rag">Where Source Attribution Fits in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-source">What Is a “Source”</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-source-attribution-works-mechanism">How Source Attribution Works (Mechanism)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-attach-metadata-at-ingestion">Step 1: Attach Metadata at Ingestion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-preserve-metadata-through-chunking">Step 2: Preserve Metadata Through Chunking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-retrieve-chunks-with-metadata">Step 3: Retrieve Chunks With Metadata</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-return-sources-alongside-the-answer">Step 4: Return Sources Alongside the Answer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-attribution-in-langchain-basic">Source Attribution in LangChain (Basic)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalqa-with-sources">RetrievalQA with Sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-structure">Output Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-attribution-in-lcel-modern-pattern">Source Attribution in LCEL (Modern Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inline-source-attribution-citations">Inline Source Attribution (Citations)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pattern">Pattern</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-its-done">How It’s Done</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-pattern-for-attribution">Prompt Pattern for Attribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hard-attribution-safer">Hard Attribution (Safer)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-attribution-vs-citations">Source Attribution vs Citations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-attribution-vs-hallucination-control">Source Attribution vs Hallucination Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-source-attribution">Production-Grade Source Attribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-standards">1. Metadata Standards</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ui-level-attribution">2. UI-Level Attribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution-granularity">3. Attribution Granularity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-source-answers">4. Multi-Source Answers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trusting-llm-generated-citations">Trusting LLM-generated citations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#losing-metadata-during-ingestion">Losing metadata during ingestion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overloading-ui-with-all-chunks">Overloading UI with all chunks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixing-sources-from-different-tenants">Mixing sources from different tenants</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

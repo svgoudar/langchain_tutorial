@@ -1,0 +1,1132 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tool Calling &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/agents/01_tool_calling';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/agents/01_tool_calling.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/agents/01_tool_calling.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/agents/01_tool_calling.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tool Calling</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-tool-calling-is-needed">Why Tool Calling Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-tool-calling-fits-in-an-llm-system">Where Tool Calling Fits in an LLM System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-concepts-in-tool-calling">Core Concepts in Tool Calling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool">Tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-schema">Tool Schema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-call">Tool Call</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-result">Tool Result</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-vs-prompt-based-apis">Tool Calling vs Prompt-Based APIs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-in-langchain">Tool Calling in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-tool-definition-langchain">Simple Tool Definition (LangChain)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-with-tools-chat-model">LLM with Tools (Chat Model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binding-tools-to-the-llm">Binding Tools to the LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-demonstration-end-to-end">Tool Calling Demonstration (End-to-End)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt">Prompt</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain">Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invocation">Invocation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-llm-produces-conceptual">What the LLM Produces (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-llm-response">Final LLM Response</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-vs-agents">Tool Calling vs Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-vs-mcp">Tool Calling vs MCP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-tool-types">Common Tool Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-tools">Data Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#action-tools">Action Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computation-tools">Computation Tools</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-guardrails-critical">Tool Calling Guardrails (Critical)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strict-schemas">Strict Schemas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-tools">Deterministic Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#allowlist-tools">Allowlist Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-temperature">Low Temperature</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-modes">Failure Modes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucinated-tool-calls">Hallucinated Tool Calls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrong-tool-selection">Wrong Tool Selection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#infinite-tool-loops">Infinite Tool Loops</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-best-practices">Production Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-tool-calling">When to Use Tool Calling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-tool-calling">When NOT to Use Tool Calling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#tool-calling" id="id1">Tool Calling</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-tool-calling-is-needed" id="id2">Why Tool Calling Is Needed</a></p></li>
+<li><p><a class="reference internal" href="#where-tool-calling-fits-in-an-llm-system" id="id3">Where Tool Calling Fits in an LLM System</a></p></li>
+<li><p><a class="reference internal" href="#core-concepts-in-tool-calling" id="id4">Core Concepts in Tool Calling</a></p>
+<ul>
+<li><p><a class="reference internal" href="#tool" id="id5">Tool</a></p></li>
+<li><p><a class="reference internal" href="#tool-schema" id="id6">Tool Schema</a></p></li>
+<li><p><a class="reference internal" href="#tool-call" id="id7">Tool Call</a></p></li>
+<li><p><a class="reference internal" href="#tool-result" id="id8">Tool Result</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tool-calling-vs-prompt-based-apis" id="id9">Tool Calling vs Prompt-Based APIs</a></p></li>
+<li><p><a class="reference internal" href="#tool-calling-in-langchain" id="id10">Tool Calling in LangChain</a></p></li>
+<li><p><a class="reference internal" href="#simple-tool-definition-langchain" id="id11">Simple Tool Definition (LangChain)</a></p></li>
+<li><p><a class="reference internal" href="#llm-with-tools-chat-model" id="id12">LLM with Tools (Chat Model)</a></p></li>
+<li><p><a class="reference internal" href="#binding-tools-to-the-llm" id="id13">Binding Tools to the LLM</a></p></li>
+<li><p><a class="reference internal" href="#tool-calling-demonstration-end-to-end" id="id14">Tool Calling Demonstration (End-to-End)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#prompt" id="id15">Prompt</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#chain" id="id16">Chain</a></p></li>
+<li><p><a class="reference internal" href="#invocation" id="id17">Invocation</a></p></li>
+<li><p><a class="reference internal" href="#what-the-llm-produces-conceptual" id="id18">What the LLM Produces (Conceptual)</a></p></li>
+<li><p><a class="reference internal" href="#final-llm-response" id="id19">Final LLM Response</a></p></li>
+<li><p><a class="reference internal" href="#tool-calling-vs-agents" id="id20">Tool Calling vs Agents</a></p></li>
+<li><p><a class="reference internal" href="#tool-calling-vs-mcp" id="id21">Tool Calling vs MCP</a></p></li>
+<li><p><a class="reference internal" href="#common-tool-types" id="id22">Common Tool Types</a></p>
+<ul>
+<li><p><a class="reference internal" href="#data-tools" id="id23">Data Tools</a></p></li>
+<li><p><a class="reference internal" href="#action-tools" id="id24">Action Tools</a></p></li>
+<li><p><a class="reference internal" href="#computation-tools" id="id25">Computation Tools</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tool-calling-guardrails-critical" id="id26">Tool Calling Guardrails (Critical)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#strict-schemas" id="id27">Strict Schemas</a></p></li>
+<li><p><a class="reference internal" href="#deterministic-tools" id="id28">Deterministic Tools</a></p></li>
+<li><p><a class="reference internal" href="#allowlist-tools" id="id29">Allowlist Tools</a></p></li>
+<li><p><a class="reference internal" href="#low-temperature" id="id30">Low Temperature</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#failure-modes" id="id31">Failure Modes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#hallucinated-tool-calls" id="id32">Hallucinated Tool Calls</a></p></li>
+<li><p><a class="reference internal" href="#wrong-tool-selection" id="id33">Wrong Tool Selection</a></p></li>
+<li><p><a class="reference internal" href="#infinite-tool-loops" id="id34">Infinite Tool Loops</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#production-best-practices" id="id35">Production Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-tool-calling" id="id36">When to Use Tool Calling</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-tool-calling" id="id37">When NOT to Use Tool Calling</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id38">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id39">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="tool-calling">
+<h1><a class="toc-backref" href="#id1">Tool Calling</a><a class="headerlink" href="#tool-calling" title="Permalink to this heading">#</a></h1>
+<p><strong>Tool calling</strong> is a mechanism where an LLM can <strong>decide to invoke external functions/tools</strong> (APIs, databases, calculators, code, services) during reasoning, instead of answering purely from text generation.</p>
+<blockquote>
+<div><p>Tool calling turns an LLM from a text generator into an <strong>action-taking system</strong>.</p>
+</div></blockquote>
+<p>The LLM:</p>
+<ol class="arabic simple">
+<li><p>Understands the user request</p></li>
+<li><p>Decides <strong>which tool</strong> is needed</p></li>
+<li><p>Produces a <strong>structured tool call</strong></p></li>
+<li><p>Receives the tool’s result</p></li>
+<li><p>Uses it to produce the final answer</p></li>
+</ol>
+<hr class="docutils" />
+<section id="why-tool-calling-is-needed">
+<h2><a class="toc-backref" href="#id2">Why Tool Calling Is Needed</a><a class="headerlink" href="#why-tool-calling-is-needed" title="Permalink to this heading">#</a></h2>
+<p>LLMs alone cannot:</p>
+<ul class="simple">
+<li><p>Query live databases</p></li>
+<li><p>Fetch real-time data</p></li>
+<li><p>Perform exact calculations reliably</p></li>
+<li><p>Interact with systems (Jira, DBs, APIs)</p></li>
+</ul>
+<p>Tool calling enables:</p>
+<ul class="simple">
+<li><p>Accuracy</p></li>
+<li><p>Fresh data</p></li>
+<li><p>Deterministic actions</p></li>
+<li><p>Enterprise integrations</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="where-tool-calling-fits-in-an-llm-system">
+<h2><a class="toc-backref" href="#id3">Where Tool Calling Fits in an LLM System</a><a class="headerlink" href="#where-tool-calling-fits-in-an-llm-system" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Input
+   ↓
+LLM (Reasoning)
+   ↓
+Tool Selection
+   ↓
+Tool Execution
+   ↓
+Tool Result
+   ↓
+LLM (Final Answer)
+</pre></div>
+</div>
+<p>This loop may run <strong>once or multiple times</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="core-concepts-in-tool-calling">
+<h2><a class="toc-backref" href="#id4">Core Concepts in Tool Calling</a><a class="headerlink" href="#core-concepts-in-tool-calling" title="Permalink to this heading">#</a></h2>
+<section id="tool">
+<h3><a class="toc-backref" href="#id5">Tool</a><a class="headerlink" href="#tool" title="Permalink to this heading">#</a></h3>
+<p>A <strong>function with a strict input schema</strong>.</p>
+</section>
+<section id="tool-schema">
+<h3><a class="toc-backref" href="#id6">Tool Schema</a><a class="headerlink" href="#tool-schema" title="Permalink to this heading">#</a></h3>
+<p>Defines:</p>
+<ul class="simple">
+<li><p>Tool name</p></li>
+<li><p>Description</p></li>
+<li><p>Input parameters (JSON schema)</p></li>
+</ul>
+</section>
+<section id="tool-call">
+<h3><a class="toc-backref" href="#id7">Tool Call</a><a class="headerlink" href="#tool-call" title="Permalink to this heading">#</a></h3>
+<p>A <strong>structured JSON output</strong> generated by the LLM requesting tool execution.</p>
+</section>
+<section id="tool-result">
+<h3><a class="toc-backref" href="#id8">Tool Result</a><a class="headerlink" href="#tool-result" title="Permalink to this heading">#</a></h3>
+<p>The deterministic output returned by the tool.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="tool-calling-vs-prompt-based-apis">
+<h2><a class="toc-backref" href="#id9">Tool Calling vs Prompt-Based APIs</a><a class="headerlink" href="#tool-calling-vs-prompt-based-apis" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Prompt Only</p></th>
+<th class="head"><p>Tool Calling</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Determinism</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Live data</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Structured inputs</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Enterprise-ready</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="tool-calling-in-langchain">
+<h2><a class="toc-backref" href="#id10">Tool Calling in LangChain</a><a class="headerlink" href="#tool-calling-in-langchain" title="Permalink to this heading">#</a></h2>
+<p>LangChain standardizes tool calling across model providers.</p>
+<p>A tool is typically:</p>
+<ul class="simple">
+<li><p>A Python function</p></li>
+<li><p>Annotated with metadata</p></li>
+<li><p>Auto-converted to JSON schema</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="simple-tool-definition-langchain">
+<h2><a class="toc-backref" href="#id11">Simple Tool Definition (LangChain)</a><a class="headerlink" href="#simple-tool-definition-langchain" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
+
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ticket_count</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return total number of tickets for a given source&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">128</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>LangChain automatically infers:</p>
+<ul class="simple">
+<li><p>Tool name: <code class="docutils literal notranslate"><span class="pre">ticket_count</span></code></p></li>
+<li><p>Input schema: <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;source&quot;:</span> <span class="pre">&quot;string&quot;</span> <span class="pre">}</span></code></p></li>
+<li><p>Output type: <code class="docutils literal notranslate"><span class="pre">int</span></code></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="llm-with-tools-chat-model">
+<h2><a class="toc-backref" href="#id12">LLM with Tools (Chat Model)</a><a class="headerlink" href="#llm-with-tools-chat-model" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="binding-tools-to-the-llm">
+<h2><a class="toc-backref" href="#id13">Binding Tools to the LLM</a><a class="headerlink" href="#binding-tools-to-the-llm" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">llm_with_tools</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">([</span><span class="n">ticket_count</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This allows the model to <strong>call the tool when needed</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="tool-calling-demonstration-end-to-end">
+<h2><a class="toc-backref" href="#id14">Tool Calling Demonstration (End-to-End)</a><a class="headerlink" href="#tool-calling-demonstration-end-to-end" title="Permalink to this heading">#</a></h2>
+<section id="prompt">
+<h3><a class="toc-backref" href="#id15">Prompt</a><a class="headerlink" href="#prompt" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;You may use tools to answer questions.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="chain">
+<h2><a class="toc-backref" href="#id16">Chain</a><a class="headerlink" href="#chain" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm_with_tools</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="invocation">
+<h2><a class="toc-backref" href="#id17">Invocation</a><a class="headerlink" href="#invocation" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Get ticket counts of Jira&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>content=&#39;&#39; additional_kwargs={&#39;refusal&#39;: None} response_metadata={&#39;token_usage&#39;: {&#39;completion_tokens&#39;: 15, &#39;prompt_tokens&#39;: 60, &#39;total_tokens&#39;: 75, &#39;completion_tokens_details&#39;: {&#39;accepted_prediction_tokens&#39;: 0, &#39;audio_tokens&#39;: 0, &#39;reasoning_tokens&#39;: 0, &#39;rejected_prediction_tokens&#39;: 0}, &#39;prompt_tokens_details&#39;: {&#39;audio_tokens&#39;: 0, &#39;cached_tokens&#39;: 0}}, &#39;model_provider&#39;: &#39;openai&#39;, &#39;model_name&#39;: &#39;gpt-4o-mini-2024-07-18&#39;, &#39;system_fingerprint&#39;: &#39;fp_db64b059be&#39;, &#39;id&#39;: &#39;chatcmpl-CpIbaMa0FJWzUAfu50EUfEBxf9jH2&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;finish_reason&#39;: &#39;tool_calls&#39;, &#39;logprobs&#39;: None} id=&#39;lc_run--019b4234-50fc-73d2-be8a-a07e9594996a-0&#39; tool_calls=[{&#39;name&#39;: &#39;ticket_count&#39;, &#39;args&#39;: {&#39;source&#39;: &#39;Jira&#39;}, &#39;id&#39;: &#39;call_eVNTflzTGyX84QaCFAzwDoOS&#39;, &#39;type&#39;: &#39;tool_call&#39;}] usage_metadata={&#39;input_tokens&#39;: 60, &#39;output_tokens&#39;: 15, &#39;total_tokens&#39;: 75, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="what-the-llm-produces-conceptual">
+<h2><a class="toc-backref" href="#id18">What the LLM Produces (Conceptual)</a><a class="headerlink" href="#what-the-llm-produces-conceptual" title="Permalink to this heading">#</a></h2>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tool_calls&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ticket_count&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jira&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>LangChain:</p>
+<ul class="simple">
+<li><p>Executes the tool</p></li>
+<li><p>Feeds the result back to the LLM</p></li>
+<li><p>Produces the final answer</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="final-llm-response">
+<h2><a class="toc-backref" href="#id19">Final LLM Response</a><a class="headerlink" href="#final-llm-response" title="Permalink to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>There are 128 tickets in Jira.
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="tool-calling-vs-agents">
+<h2><a class="toc-backref" href="#id20">Tool Calling vs Agents</a><a class="headerlink" href="#tool-calling-vs-agents" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Tool Calling</p></th>
+<th class="head"><p>Agents</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Decision</p></td>
+<td><p>Single-step</p></td>
+<td><p>Multi-step</p></td>
+</tr>
+<tr class="row-odd"><td><p>Control</p></td>
+<td><p>High</p></td>
+<td><p>Lower</p></td>
+</tr>
+<tr class="row-even"><td><p>Complexity</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>Predictability</p></td>
+<td><p>High</p></td>
+<td><p>Medium</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Tool calling is often used <strong>inside agents</strong>, but can be used standalone.</p>
+</section>
+<hr class="docutils" />
+<section id="tool-calling-vs-mcp">
+<h2><a class="toc-backref" href="#id21">Tool Calling vs MCP</a><a class="headerlink" href="#tool-calling-vs-mcp" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Tool Calling</p></th>
+<th class="head"><p>MCP</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Scope</p></td>
+<td><p>Single app</p></td>
+<td><p>Cross-app</p></td>
+</tr>
+<tr class="row-odd"><td><p>Transport</p></td>
+<td><p>In-process</p></td>
+<td><p>Client–server</p></td>
+</tr>
+<tr class="row-even"><td><p>Security</p></td>
+<td><p>Local</p></td>
+<td><p>Isolated</p></td>
+</tr>
+<tr class="row-odd"><td><p>Enterprise</p></td>
+<td><p>Medium</p></td>
+<td><p>High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="common-tool-types">
+<h2><a class="toc-backref" href="#id22">Common Tool Types</a><a class="headerlink" href="#common-tool-types" title="Permalink to this heading">#</a></h2>
+<section id="data-tools">
+<h3><a class="toc-backref" href="#id23">Data Tools</a><a class="headerlink" href="#data-tools" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Database queries</p></li>
+<li><p>CSV readers</p></li>
+<li><p>Vector search</p></li>
+</ul>
+</section>
+<section id="action-tools">
+<h3><a class="toc-backref" href="#id24">Action Tools</a><a class="headerlink" href="#action-tools" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Create ticket</p></li>
+<li><p>Update record</p></li>
+<li><p>Send email</p></li>
+</ul>
+</section>
+<section id="computation-tools">
+<h3><a class="toc-backref" href="#id25">Computation Tools</a><a class="headerlink" href="#computation-tools" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Calculator</p></li>
+<li><p>Date math</p></li>
+<li><p>Validators</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="tool-calling-guardrails-critical">
+<h2><a class="toc-backref" href="#id26">Tool Calling Guardrails (Critical)</a><a class="headerlink" href="#tool-calling-guardrails-critical" title="Permalink to this heading">#</a></h2>
+<section id="strict-schemas">
+<h3><a class="toc-backref" href="#id27">Strict Schemas</a><a class="headerlink" href="#strict-schemas" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Prevent malformed calls</p></li>
+</ul>
+</section>
+<section id="deterministic-tools">
+<h3><a class="toc-backref" href="#id28">Deterministic Tools</a><a class="headerlink" href="#deterministic-tools" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>No side effects without validation</p></li>
+</ul>
+</section>
+<section id="allowlist-tools">
+<h3><a class="toc-backref" href="#id29">Allowlist Tools</a><a class="headerlink" href="#allowlist-tools" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Only approved tools exposed</p></li>
+</ul>
+</section>
+<section id="low-temperature">
+<h3><a class="toc-backref" href="#id30">Low Temperature</a><a class="headerlink" href="#low-temperature" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Reduces tool misuse</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="failure-modes">
+<h2><a class="toc-backref" href="#id31">Failure Modes</a><a class="headerlink" href="#failure-modes" title="Permalink to this heading">#</a></h2>
+<section id="hallucinated-tool-calls">
+<h3><a class="toc-backref" href="#id32">Hallucinated Tool Calls</a><a class="headerlink" href="#hallucinated-tool-calls" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Prevented by schema validation</p></li>
+</ul>
+</section>
+<section id="wrong-tool-selection">
+<h3><a class="toc-backref" href="#id33">Wrong Tool Selection</a><a class="headerlink" href="#wrong-tool-selection" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Mitigated with better descriptions</p></li>
+</ul>
+</section>
+<section id="infinite-tool-loops">
+<h3><a class="toc-backref" href="#id34">Infinite Tool Loops</a><a class="headerlink" href="#infinite-tool-loops" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Prevented with max-steps limits</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="production-best-practices">
+<h2><a class="toc-backref" href="#id35">Production Best Practices</a><a class="headerlink" href="#production-best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use clear tool descriptions</p></li>
+<li><p>Keep tool interfaces minimal</p></li>
+<li><p>Validate tool inputs</p></li>
+<li><p>Log all tool calls</p></li>
+<li><p>Separate read vs write tools</p></li>
+<li><p>Add human approval for destructive actions</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-tool-calling">
+<h2><a class="toc-backref" href="#id36">When to Use Tool Calling</a><a class="headerlink" href="#when-to-use-tool-calling" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Real-time data access</p></li>
+<li><p>System integrations</p></li>
+<li><p>Deterministic workflows</p></li>
+<li><p>Enterprise automation</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-not-to-use-tool-calling">
+<h2><a class="toc-backref" href="#id37">When NOT to Use Tool Calling</a><a class="headerlink" href="#when-not-to-use-tool-calling" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Pure text generation</p></li>
+<li><p>Creative writing</p></li>
+<li><p>Static knowledge answers</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id38">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Tool calling allows an LLM to invoke external functions using structured schemas, enabling deterministic actions, real-time data access, and system integrations. In LangChain, tools are first-class abstractions that power production-grade agentic workflows.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id39">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Knowledge → RAG</strong></p></li>
+<li><p><strong>Actions → Tools</strong></p></li>
+<li><p><strong>Complex decisions → Agents</strong></p></li>
+<li><p><strong>Enterprise integration → Tool calling + guardrails</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\agents"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-tool-calling-is-needed">Why Tool Calling Is Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-tool-calling-fits-in-an-llm-system">Where Tool Calling Fits in an LLM System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-concepts-in-tool-calling">Core Concepts in Tool Calling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool">Tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-schema">Tool Schema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-call">Tool Call</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-result">Tool Result</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-vs-prompt-based-apis">Tool Calling vs Prompt-Based APIs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-in-langchain">Tool Calling in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-tool-definition-langchain">Simple Tool Definition (LangChain)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-with-tools-chat-model">LLM with Tools (Chat Model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binding-tools-to-the-llm">Binding Tools to the LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-demonstration-end-to-end">Tool Calling Demonstration (End-to-End)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt">Prompt</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain">Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invocation">Invocation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-llm-produces-conceptual">What the LLM Produces (Conceptual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-llm-response">Final LLM Response</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-vs-agents">Tool Calling vs Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-vs-mcp">Tool Calling vs MCP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-tool-types">Common Tool Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-tools">Data Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#action-tools">Action Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computation-tools">Computation Tools</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-guardrails-critical">Tool Calling Guardrails (Critical)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strict-schemas">Strict Schemas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-tools">Deterministic Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#allowlist-tools">Allowlist Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-temperature">Low Temperature</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-modes">Failure Modes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucinated-tool-calls">Hallucinated Tool Calls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrong-tool-selection">Wrong Tool Selection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#infinite-tool-loops">Infinite Tool Loops</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-best-practices">Production Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-tool-calling">When to Use Tool Calling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-tool-calling">When NOT to Use Tool Calling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

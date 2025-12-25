@@ -1,0 +1,1042 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>RAG and Knowledge Grounding Metrics &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/metrics/03_RAG_metrics';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/metrics/03_RAG_metrics.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/metrics/03_RAG_metrics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/metrics/03_RAG_metrics.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>RAG and Knowledge Grounding Metrics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-rag-metrics-are-separate-from-quality-metrics">Why RAG Metrics Are Separate from Quality Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categories-of-rag-grounding-metrics">Categories of RAG &amp; Grounding Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-quality-metrics">Retrieval Quality Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-precision-k">Retrieval Precision@K</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-recall-k">Retrieval Recall@K</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-reciprocal-rank-mrr">Mean Reciprocal Rank (MRR)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-quality-metrics">Context Quality Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-relevance">Context Relevance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-coverage">Context Coverage</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-grounding-faithfulness-metrics">Knowledge Grounding / Faithfulness Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-groundedness">Faithfulness (Groundedness)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution-accuracy">Attribution Accuracy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucination-metrics">Hallucination Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucination-rate">Hallucination Rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupported-claim-ratio">Unsupported Claim Ratio</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-rag-evaluation-flow-demo">End-to-End RAG Evaluation Flow (Demo)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-thresholds-industry-practice">Acceptance Thresholds (Industry Practice)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-rag-failure-patterns">Common RAG Failure Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#rag-and-knowledge-grounding-metrics" id="id1">RAG and Knowledge Grounding Metrics</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-rag-metrics-are-separate-from-quality-metrics" id="id2">Why RAG Metrics Are Separate from Quality Metrics</a></p></li>
+<li><p><a class="reference internal" href="#categories-of-rag-grounding-metrics" id="id3">Categories of RAG &amp; Grounding Metrics</a></p></li>
+<li><p><a class="reference internal" href="#retrieval-quality-metrics" id="id4">Retrieval Quality Metrics</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retrieval-precision-k" id="id5">Retrieval Precision&#64;K</a></p></li>
+<li><p><a class="reference internal" href="#retrieval-recall-k" id="id6">Retrieval Recall&#64;K</a></p></li>
+<li><p><a class="reference internal" href="#mean-reciprocal-rank-mrr" id="id7">Mean Reciprocal Rank (MRR)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#context-quality-metrics" id="id8">Context Quality Metrics</a></p>
+<ul>
+<li><p><a class="reference internal" href="#context-relevance" id="id9">Context Relevance</a></p></li>
+<li><p><a class="reference internal" href="#context-coverage" id="id10">Context Coverage</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#knowledge-grounding-faithfulness-metrics" id="id11">Knowledge Grounding / Faithfulness Metrics</a></p>
+<ul>
+<li><p><a class="reference internal" href="#faithfulness-groundedness" id="id12">Faithfulness (Groundedness)</a></p></li>
+<li><p><a class="reference internal" href="#attribution-accuracy" id="id13">Attribution Accuracy</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#hallucination-metrics" id="id14">Hallucination Metrics</a></p>
+<ul>
+<li><p><a class="reference internal" href="#hallucination-rate" id="id15">Hallucination Rate</a></p></li>
+<li><p><a class="reference internal" href="#unsupported-claim-ratio" id="id16">Unsupported Claim Ratio</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#end-to-end-rag-evaluation-flow-demo" id="id17">End-to-End RAG Evaluation Flow (Demo)</a></p></li>
+<li><p><a class="reference internal" href="#acceptance-thresholds-industry-practice" id="id18">Acceptance Thresholds (Industry Practice)</a></p></li>
+<li><p><a class="reference internal" href="#common-rag-failure-patterns" id="id19">Common RAG Failure Patterns</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id20">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id21">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="rag-and-knowledge-grounding-metrics">
+<h1><a class="toc-backref" href="#id1">RAG and Knowledge Grounding Metrics</a><a class="headerlink" href="#rag-and-knowledge-grounding-metrics" title="Permalink to this heading">#</a></h1>
+<p><strong>RAG (Retrieval-Augmented Generation) and knowledge grounding metrics</strong> evaluate whether:</p>
+<ol class="arabic simple">
+<li><p>The <strong>right documents were retrieved</strong></p></li>
+<li><p>The <strong>retrieved knowledge was relevant</strong></p></li>
+<li><p>The <strong>LLM used only that knowledge</strong></p></li>
+<li><p>The answer <strong>did not hallucinate</strong></p></li>
+</ol>
+<p>They answer the most important RAG question:</p>
+<blockquote>
+<div><p><strong>Did the model say only what it could justify from retrieved knowledge?</strong></p>
+</div></blockquote>
+<p>These metrics are <strong>mandatory</strong> for enterprise, regulated, and high-trust systems.</p>
+<hr class="docutils" />
+<section id="why-rag-metrics-are-separate-from-quality-metrics">
+<h2><a class="toc-backref" href="#id2">Why RAG Metrics Are Separate from Quality Metrics</a><a class="headerlink" href="#why-rag-metrics-are-separate-from-quality-metrics" title="Permalink to this heading">#</a></h2>
+<p>A response can be:</p>
+<ul class="simple">
+<li><p>Relevant ❌</p></li>
+<li><p>Fluent ❌</p></li>
+<li><p>Confident ❌
+and still be <strong>hallucinated</strong>.</p></li>
+</ul>
+<p>RAG metrics focus on <strong>evidence alignment</strong>, not language quality.</p>
+</section>
+<hr class="docutils" />
+<section id="categories-of-rag-grounding-metrics">
+<h2><a class="toc-backref" href="#id3">Categories of RAG &amp; Grounding Metrics</a><a class="headerlink" href="#categories-of-rag-grounding-metrics" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>RAG Metrics
+│
+├── Retrieval Quality Metrics
+├── Context Quality Metrics
+├── Grounding / Faithfulness Metrics
+└── Hallucination Metrics
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="retrieval-quality-metrics">
+<h2><a class="toc-backref" href="#id4">Retrieval Quality Metrics</a><a class="headerlink" href="#retrieval-quality-metrics" title="Permalink to this heading">#</a></h2>
+<section id="retrieval-precision-k">
+<h3><a class="toc-backref" href="#id5">Retrieval Precision&#64;K</a><a class="headerlink" href="#retrieval-precision-k" title="Permalink to this heading">#</a></h3>
+<p><strong>What it measures</strong>
+How many retrieved documents are actually relevant.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Precision&#64;K} = \frac{\text{Relevant Docs Retrieved}}{K}
+\]</div>
+<p><strong>Demonstration</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">precision_at_k</span><span class="p">(</span><span class="n">retrieved_docs</span><span class="p">,</span> <span class="n">relevant_docs</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">retrieved</span> <span class="o">=</span> <span class="n">retrieved_docs</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">relevant</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">relevant_docs</span><span class="p">)</span>
+    <span class="n">hits</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">retrieved</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">relevant</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hits</span> <span class="o">/</span> <span class="n">k</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="retrieval-recall-k">
+<h3><a class="toc-backref" href="#id6">Retrieval Recall&#64;K</a><a class="headerlink" href="#retrieval-recall-k" title="Permalink to this heading">#</a></h3>
+<p><strong>What it measures</strong>
+Whether the system retrieved at least one required document.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Recall&#64;K} = \frac{\text{Relevant Docs Retrieved}}{\text{Total Relevant Docs}}
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">recall_at_k</span><span class="p">(</span><span class="n">retrieved_docs</span><span class="p">,</span> <span class="n">relevant_docs</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">retrieved</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">retrieved_docs</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span>
+    <span class="n">relevant</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">relevant_docs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">retrieved</span> <span class="o">&amp;</span> <span class="n">relevant</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">relevant</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Key rule</strong>
+If recall = 0 → generation is guaranteed to fail.</p>
+</section>
+<hr class="docutils" />
+<section id="mean-reciprocal-rank-mrr">
+<h3><a class="toc-backref" href="#id7">Mean Reciprocal Rank (MRR)</a><a class="headerlink" href="#mean-reciprocal-rank-mrr" title="Permalink to this heading">#</a></h3>
+<p><strong>What it measures</strong>
+How early the first correct document appears.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{MRR} = \frac{1}{\text{rank of first relevant doc}}
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mrr</span><span class="p">(</span><span class="n">retrieved_docs</span><span class="p">,</span> <span class="n">relevant_docs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">retrieved_docs</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">relevant_docs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="context-quality-metrics">
+<h2><a class="toc-backref" href="#id8">Context Quality Metrics</a><a class="headerlink" href="#context-quality-metrics" title="Permalink to this heading">#</a></h2>
+<section id="context-relevance">
+<h3><a class="toc-backref" href="#id9">Context Relevance</a><a class="headerlink" href="#context-relevance" title="Permalink to this heading">#</a></h3>
+<p><strong>What it measures</strong>
+Are the retrieved documents relevant to the question?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_evaluator</span>
+
+<span class="c1"># Example question and context for demonstration</span>
+<span class="n">question</span> <span class="o">=</span> <span class="s2">&quot;What is RAG in machine learning?&quot;</span>
+<span class="n">context_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">RAG stands for Retrieval-Augmented Generation. It is a technique that combines </span>
+<span class="s2">document retrieval with language model generation. The system first retrieves </span>
+<span class="s2">relevant documents from a knowledge base, then uses those documents as context </span>
+<span class="s2">to generate accurate, grounded responses.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">context_relevance</span> <span class="o">=</span> <span class="n">load_evaluator</span><span class="p">(</span><span class="s2">&quot;criteria&quot;</span><span class="p">,</span> <span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;relevance&quot;</span><span class="p">)</span>
+
+<span class="n">context_relevance</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+    <span class="n">prediction</span><span class="o">=</span><span class="n">context_text</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;reasoning&#39;: &#39;The criterion asks if the submission is referring to a real quote from the text. However, there is no text provided for the submission to quote from. The submission is answering the question about what RAG in machine learning is, but it is not quoting from any text. Therefore, the submission does not meet the criterion.\n\nN&#39;,
+ &#39;value&#39;: &#39;N&#39;,
+ &#39;score&#39;: 0}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Prevents <strong>prompt pollution</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="context-coverage">
+<h3><a class="toc-backref" href="#id10">Context Coverage</a><a class="headerlink" href="#context-coverage" title="Permalink to this heading">#</a></h3>
+<p><strong>What it measures</strong>
+Does the context contain all necessary information?</p>
+<p>Often measured by:</p>
+<ul class="simple">
+<li><p>Keyword coverage</p></li>
+<li><p>LLM-as-judge completeness</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define custom completeness criteria</span>
+<span class="n">custom_criteria</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;completeness&quot;</span><span class="p">:</span> <span class="s2">&quot;Does the context contain all necessary information to answer the question comprehensively?&quot;</span>
+<span class="p">}</span>
+
+<span class="n">coverage_eval</span> <span class="o">=</span> <span class="n">load_evaluator</span><span class="p">(</span><span class="s2">&quot;criteria&quot;</span><span class="p">,</span> <span class="n">criteria</span><span class="o">=</span><span class="n">custom_criteria</span><span class="p">)</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">coverage_result</span> <span class="o">=</span> <span class="n">coverage_eval</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+    <span class="n">prediction</span><span class="o">=</span><span class="n">context_text</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Coverage score: </span><span class="si">{</span><span class="n">coverage_result</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reasoning: </span><span class="si">{</span><span class="n">coverage_result</span><span class="p">[</span><span class="s1">&#39;reasoning&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coverage score: 1
+Reasoning: The criterion is completeness. The question asks for the meaning of RAG in machine learning. 
+
+The submitted answer provides a definition of RAG, explaining that it stands for Retrieval-Augmented Generation. It also explains what this technique does, combining document retrieval with language model generation. The answer further explains how the system works, retrieving relevant documents from a knowledge base and using those documents as context to generate responses. 
+
+The answer seems to cover all necessary information to answer the question comprehensively. It provides a definition, explains the technique, and describes how it works. 
+
+Therefore, the submission meets the criterion of completeness. 
+
+Y
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="knowledge-grounding-faithfulness-metrics">
+<h2><a class="toc-backref" href="#id11">Knowledge Grounding / Faithfulness Metrics</a><a class="headerlink" href="#knowledge-grounding-faithfulness-metrics" title="Permalink to this heading">#</a></h2>
+<section id="faithfulness-groundedness">
+<h3><a class="toc-backref" href="#id12">Faithfulness (Groundedness)</a><a class="headerlink" href="#faithfulness-groundedness" title="Permalink to this heading">#</a></h3>
+<p><strong>What it measures</strong>
+Is every claim in the answer supported by retrieved context?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define answer for demonstration</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">RAG (Retrieval-Augmented Generation) is a machine learning technique that combines </span>
+<span class="s2">information retrieval with text generation. It retrieves relevant documents and uses </span>
+<span class="s2">them as context for generating responses.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Option 1: Use context_qa evaluator (checks if answer is supported by context)</span>
+<span class="n">context_qa_eval</span> <span class="o">=</span> <span class="n">load_evaluator</span><span class="p">(</span><span class="s2">&quot;context_qa&quot;</span><span class="p">)</span>
+
+<span class="n">faithfulness_result</span> <span class="o">=</span> <span class="n">context_qa_eval</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+    <span class="n">prediction</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span>
+    <span class="n">reference</span><span class="o">=</span><span class="n">context_text</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Faithfulness evaluation:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Score: </span><span class="si">{</span><span class="n">faithfulness_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reasoning: </span><span class="si">{</span><span class="n">faithfulness_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reasoning&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Option 2: Use custom criteria for faithfulness</span>
+<span class="n">faithfulness_criteria</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;faithfulness&quot;</span><span class="p">:</span> <span class="s2">&quot;Is every claim in the answer supported by the provided context? The answer should not include information that cannot be verified from the context.&quot;</span>
+<span class="p">}</span>
+
+<span class="n">faithfulness_eval</span> <span class="o">=</span> <span class="n">load_evaluator</span><span class="p">(</span><span class="s2">&quot;criteria&quot;</span><span class="p">,</span> <span class="n">criteria</span><span class="o">=</span><span class="n">faithfulness_criteria</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">faithfulness_eval</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+    <span class="n">prediction</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span>
+    <span class="n">reference</span><span class="o">=</span><span class="n">context_text</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Custom Faithfulness score: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reasoning: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;reasoning&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Faithfulness evaluation:
+Score: 1
+Reasoning: CORRECT
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\sangouda\AppData\Local\Temp\ipykernel_43300\2593192178.py:28: UserWarning: Ignoring reference in CriteriaEvalChain, as it is not expected.
+To use references, use the labeled_criteria instead.
+  result = faithfulness_eval.evaluate_strings(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Custom Faithfulness score: 0
+Reasoning: The criterion is faithfulness, which requires that every claim in the answer is supported by the provided context. The context in this case is the question &quot;What is RAG in machine learning?&quot;
+
+The submission claims that RAG (Retrieval-Augmented Generation) is a machine learning technique that combines information retrieval with text generation. It also claims that RAG retrieves relevant documents and uses them as context for generating responses.
+
+The context, which is the question, does not provide any information to verify these claims. Therefore, the submission does not meet the criterion of faithfulness.
+
+N
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the <strong>single most important RAG metric</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="attribution-accuracy">
+<h3><a class="toc-backref" href="#id13">Attribution Accuracy</a><a class="headerlink" href="#attribution-accuracy" title="Permalink to this heading">#</a></h3>
+<p><strong>What it measures</strong>
+Can the answer be traced to specific sources?</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Answer: RAG combines retrieval with generation. [Doc1]
+</pre></div>
+</div>
+<p>Used in:</p>
+<ul class="simple">
+<li><p>Legal</p></li>
+<li><p>Healthcare</p></li>
+<li><p>Enterprise search</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="hallucination-metrics">
+<h2><a class="toc-backref" href="#id14">Hallucination Metrics</a><a class="headerlink" href="#hallucination-metrics" title="Permalink to this heading">#</a></h2>
+<section id="hallucination-rate">
+<h3><a class="toc-backref" href="#id15">Hallucination Rate</a><a class="headerlink" href="#hallucination-rate" title="Permalink to this heading">#</a></h3>
+<p><strong>What it measures</strong>
+Percentage of answers that include unsupported claims.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Hallucination Rate} = \frac{\text{Unfaithful Answers}}{\text{Total Answers}}
+\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hallucination_rate</span> <span class="o">=</span> <span class="n">unfaithful_answers</span> <span class="o">/</span> <span class="n">total_answers</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="unsupported-claim-ratio">
+<h3><a class="toc-backref" href="#id16">Unsupported Claim Ratio</a><a class="headerlink" href="#unsupported-claim-ratio" title="Permalink to this heading">#</a></h3>
+<p>Measures:</p>
+<ul class="simple">
+<li><p>How much of the answer is unsupported</p></li>
+<li><p>Partial hallucinations</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="end-to-end-rag-evaluation-flow-demo">
+<h2><a class="toc-backref" href="#id17">End-to-End RAG Evaluation Flow (Demo)</a><a class="headerlink" href="#end-to-end-rag-evaluation-flow-demo" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+<span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">page_content</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="n">rag_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">question</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+
+<span class="n">faithfulness_score</span> <span class="o">=</span> <span class="n">faithfulness</span><span class="o">.</span><span class="n">evaluate_strings</span><span class="p">(</span>
+    <span class="nb">input</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+    <span class="n">prediction</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span>
+    <span class="n">reference</span><span class="o">=</span><span class="n">context</span>
+<span class="p">)[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="acceptance-thresholds-industry-practice">
+<h2><a class="toc-backref" href="#id18">Acceptance Thresholds (Industry Practice)</a><a class="headerlink" href="#acceptance-thresholds-industry-practice" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Typical Threshold</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Faithfulness</p></td>
+<td><p>≥ 0.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>Recall&#64;K</p></td>
+<td><p>≥ 0.9</p></td>
+</tr>
+<tr class="row-even"><td><p>Precision&#64;K</p></td>
+<td><p>≥ 0.6</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hallucination Rate</p></td>
+<td><p>≤ 5%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="common-rag-failure-patterns">
+<h2><a class="toc-backref" href="#id19">Common RAG Failure Patterns</a><a class="headerlink" href="#common-rag-failure-patterns" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Failure</p></th>
+<th class="head"><p>Metric That Detects It</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Wrong documents</p></td>
+<td><p>Recall&#64;K</p></td>
+</tr>
+<tr class="row-odd"><td><p>Too much noise</p></td>
+<td><p>Precision&#64;K</p></td>
+</tr>
+<tr class="row-even"><td><p>Hallucinations</p></td>
+<td><p>Faithfulness</p></td>
+</tr>
+<tr class="row-odd"><td><p>Incomplete answers</p></td>
+<td><p>Context Coverage</p></td>
+</tr>
+<tr class="row-even"><td><p>Over-confident answers</p></td>
+<td><p>Attribution accuracy</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id20">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>RAG Quality =
+Did we fetch the right knowledge?
+Did we give enough knowledge?
+Did the model stick to that knowledge?
+</pre></div>
+</div>
+<p>If any answer is <strong>no</strong>, the RAG system failed.</p>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id21">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>RAG metrics evaluate <strong>evidence usage</strong>, not language quality</p></li>
+<li><p>Faithfulness is the most critical metric</p></li>
+<li><p>Retrieval failure guarantees generation failure</p></li>
+<li><p>Hallucination detection is mandatory in production</p></li>
+<li><p>These metrics protect trust, safety, and compliance</p></li>
+</ul>
+<hr class="docutils" />
+<p>If you want next:</p>
+<ul class="simple">
+<li><p><strong>Safety &amp; alignment metrics</strong></p></li>
+<li><p><strong>RAG regression testing</strong></p></li>
+<li><p><strong>Production RAG metric dashboards</strong></p></li>
+<li><p><strong>How to auto-regenerate answers on low faithfulness</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\metrics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-rag-metrics-are-separate-from-quality-metrics">Why RAG Metrics Are Separate from Quality Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categories-of-rag-grounding-metrics">Categories of RAG &amp; Grounding Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-quality-metrics">Retrieval Quality Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-precision-k">Retrieval Precision@K</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-recall-k">Retrieval Recall@K</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-reciprocal-rank-mrr">Mean Reciprocal Rank (MRR)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-quality-metrics">Context Quality Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-relevance">Context Relevance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-coverage">Context Coverage</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-grounding-faithfulness-metrics">Knowledge Grounding / Faithfulness Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faithfulness-groundedness">Faithfulness (Groundedness)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution-accuracy">Attribution Accuracy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucination-metrics">Hallucination Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucination-rate">Hallucination Rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupported-claim-ratio">Unsupported Claim Ratio</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-rag-evaluation-flow-demo">End-to-End RAG Evaluation Flow (Demo)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-thresholds-industry-practice">Acceptance Thresholds (Industry Practice)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-rag-failure-patterns">Common RAG Failure Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,996 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Router Chain &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/chains/04_router_chain';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/chains/04_router_chain.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/chains/04_router_chain.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/chains/04_router_chain.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Router Chain</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-router-chain-exists">Why Router Chain Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea">Core Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-vs-sequential-chain">Router Chain vs Sequential Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-routing-works-internally">How Routing Works Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-router-chain-components">Basic Router Chain Components</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#router-prompt">Router Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#destination-chains">Destination Chains</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#router-output-parser">Router Output Parser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-router-chain-demonstration">Basic Router Chain Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-destination-chains">Step 1: Define Destination Chains</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-define-router-prompt">Step 2: Define Router Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-combine-into-a-router-chain">Step 3: Combine into a Router Chain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-invoke-the-router-chain">Step 4: Invoke the Router Chain</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-routing-decision-looks-conceptually">How Routing Decision Looks (Conceptually)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-vs-agents">Router Chain vs Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-limitations">Router Chain Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-vs-lcel-routing-modern">Router Chain vs LCEL Routing (Modern)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-legacy">Router Chain (Legacy)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-conditional-routing-recommended">LCEL Conditional Routing (Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-router-chain">When to Use Router Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-router-chain">When NOT to Use Router Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#router-chain" id="id1">Router Chain</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-router-chain-exists" id="id2">Why Router Chain Exists</a></p></li>
+<li><p><a class="reference internal" href="#core-idea" id="id3">Core Idea</a></p></li>
+<li><p><a class="reference internal" href="#router-chain-vs-sequential-chain" id="id4">Router Chain vs Sequential Chain</a></p></li>
+<li><p><a class="reference internal" href="#how-routing-works-internally" id="id5">How Routing Works Internally</a></p></li>
+<li><p><a class="reference internal" href="#basic-router-chain-components" id="id6">Basic Router Chain Components</a></p>
+<ul>
+<li><p><a class="reference internal" href="#router-prompt" id="id7">Router Prompt</a></p></li>
+<li><p><a class="reference internal" href="#destination-chains" id="id8">Destination Chains</a></p></li>
+<li><p><a class="reference internal" href="#router-output-parser" id="id9">Router Output Parser</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#basic-router-chain-demonstration" id="id10">Basic Router Chain Demonstration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-define-destination-chains" id="id11">Step 1: Define Destination Chains</a></p></li>
+<li><p><a class="reference internal" href="#step-2-define-router-prompt" id="id12">Step 2: Define Router Prompt</a></p></li>
+<li><p><a class="reference internal" href="#step-3-combine-into-a-router-chain" id="id13">Step 3: Combine into a Router Chain</a></p></li>
+<li><p><a class="reference internal" href="#step-4-invoke-the-router-chain" id="id14">Step 4: Invoke the Router Chain</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#how-routing-decision-looks-conceptually" id="id15">How Routing Decision Looks (Conceptually)</a></p></li>
+<li><p><a class="reference internal" href="#common-use-cases" id="id16">Common Use Cases</a></p></li>
+<li><p><a class="reference internal" href="#router-chain-vs-agents" id="id17">Router Chain vs Agents</a></p></li>
+<li><p><a class="reference internal" href="#router-chain-limitations" id="id18">Router Chain Limitations</a></p></li>
+<li><p><a class="reference internal" href="#router-chain-vs-lcel-routing-modern" id="id19">Router Chain vs LCEL Routing (Modern)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#router-chain-legacy" id="id20">Router Chain (Legacy)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#lcel-conditional-routing-recommended" id="id21">LCEL Conditional Routing (Recommended)</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-router-chain" id="id22">When to Use Router Chain</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-router-chain" id="id23">When NOT to Use Router Chain</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id24">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id25">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id26">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="router-chain">
+<h1><a class="toc-backref" href="#id1">Router Chain</a><a class="headerlink" href="#router-chain" title="Permalink to this heading">#</a></h1>
+<p>A <strong>Router Chain</strong> is a LangChain abstraction that <strong>dynamically routes an input to one of multiple downstream chains</strong> based on the <strong>content or intent of the input</strong>.</p>
+<blockquote>
+<div><p>Instead of executing a fixed sequence, a router <strong>decides which chain should handle the request</strong>.</p>
+</div></blockquote>
+<p>Conceptually, it introduces <strong>conditional logic</strong> into LLM pipelines.</p>
+<hr class="docutils" />
+<section id="why-router-chain-exists">
+<h2><a class="toc-backref" href="#id2">Why Router Chain Exists</a><a class="headerlink" href="#why-router-chain-exists" title="Permalink to this heading">#</a></h2>
+<p>Router chains solve problems where:</p>
+<ul class="simple">
+<li><p>Different inputs need different processing</p></li>
+<li><p>One prompt/model does not fit all tasks</p></li>
+<li><p>You want specialization without agents</p></li>
+</ul>
+<p>Typical examples:</p>
+<ul class="simple">
+<li><p>Question answering vs summarization</p></li>
+<li><p>Technical vs non-technical queries</p></li>
+<li><p>SQL vs general knowledge queries</p></li>
+<li><p>Multiple domain-specific pipelines</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="core-idea">
+<h2><a class="toc-backref" href="#id3">Core Idea</a><a class="headerlink" href="#core-idea" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Input
+   ↓
+Router (classification / decision)
+   ↓
+Selected Chain
+   ↓
+Final Output
+</pre></div>
+</div>
+<p>Only <strong>one downstream chain</strong> is executed.</p>
+</section>
+<hr class="docutils" />
+<section id="router-chain-vs-sequential-chain">
+<h2><a class="toc-backref" href="#id4">Router Chain vs Sequential Chain</a><a class="headerlink" href="#router-chain-vs-sequential-chain" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>SequentialChain</p></th>
+<th class="head"><p>RouterChain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Execution</p></td>
+<td><p>Always linear</p></td>
+<td><p>Conditional</p></td>
+</tr>
+<tr class="row-odd"><td><p>Branches</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Parallelism</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Determinism</p></td>
+<td><p>High</p></td>
+<td><p>Medium</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="how-routing-works-internally">
+<h2><a class="toc-backref" href="#id5">How Routing Works Internally</a><a class="headerlink" href="#how-routing-works-internally" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Input is sent to a <strong>router prompt</strong></p></li>
+<li><p>Router decides a <strong>destination name</strong></p></li>
+<li><p>Matching chain is invoked</p></li>
+<li><p>Output is returned</p></li>
+</ol>
+<p>The router itself is usually <strong>LLM-based</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="basic-router-chain-components">
+<h2><a class="toc-backref" href="#id6">Basic Router Chain Components</a><a class="headerlink" href="#basic-router-chain-components" title="Permalink to this heading">#</a></h2>
+<section id="router-prompt">
+<h3><a class="toc-backref" href="#id7">Router Prompt</a><a class="headerlink" href="#router-prompt" title="Permalink to this heading">#</a></h3>
+<p>Classifies or routes the input.</p>
+</section>
+<section id="destination-chains">
+<h3><a class="toc-backref" href="#id8">Destination Chains</a><a class="headerlink" href="#destination-chains" title="Permalink to this heading">#</a></h3>
+<p>Each handles a specific task.</p>
+</section>
+<section id="router-output-parser">
+<h3><a class="toc-backref" href="#id9">Router Output Parser</a><a class="headerlink" href="#router-output-parser" title="Permalink to this heading">#</a></h3>
+<p>Ensures valid destination selection.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="basic-router-chain-demonstration">
+<h2><a class="toc-backref" href="#id10">Basic Router Chain Demonstration</a><a class="headerlink" href="#basic-router-chain-demonstration" title="Permalink to this heading">#</a></h2>
+<section id="step-1-define-destination-chains">
+<h3><a class="toc-backref" href="#id11">Step 1: Define Destination Chains</a><a class="headerlink" href="#step-1-define-destination-chains" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMChain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">qa_prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Answer the question clearly:</span><span class="se">\n</span><span class="si">{input}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">summary_prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Summarize the following text:</span><span class="se">\n</span><span class="si">{input}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">qa_chain</span> <span class="o">=</span> <span class="n">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">qa_prompt</span><span class="p">)</span>
+<span class="n">summary_chain</span> <span class="o">=</span> <span class="n">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">summary_prompt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-2-define-router-prompt">
+<h3><a class="toc-backref" href="#id12">Step 2: Define Router Prompt</a><a class="headerlink" href="#step-2-define-router-prompt" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains.router.llm_router</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRouterChain</span><span class="p">,</span> <span class="n">RouterOutputParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains.router.multi_prompt_prompt</span><span class="w"> </span><span class="kn">import</span> <span class="n">MULTI_PROMPT_ROUTER_TEMPLATE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span>
+
+<span class="c1"># Define destination information for the router</span>
+<span class="n">destinations</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;qa&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Good for answering questions&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;summary&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Good for summarizing text&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="c1"># Format destination strings</span>
+<span class="n">destinations_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">destinations</span><span class="p">])</span>
+
+<span class="c1"># Create the router prompt template</span>
+<span class="n">router_template</span> <span class="o">=</span> <span class="n">MULTI_PROMPT_ROUTER_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destinations</span><span class="o">=</span><span class="n">destinations_str</span><span class="p">)</span>
+<span class="n">router_prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
+    <span class="n">template</span><span class="o">=</span><span class="n">router_template</span><span class="p">,</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">],</span>
+    <span class="n">output_parser</span><span class="o">=</span><span class="n">RouterOutputParser</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="c1"># Create the router chain</span>
+<span class="n">router_chain</span> <span class="o">=</span> <span class="n">LLMRouterChain</span><span class="o">.</span><span class="n">from_llm</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="n">router_prompt</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The router prompt decides which destination is appropriate.</p>
+</section>
+<hr class="docutils" />
+<section id="step-3-combine-into-a-router-chain">
+<h3><a class="toc-backref" href="#id13">Step 3: Combine into a Router Chain</a><a class="headerlink" href="#step-3-combine-into-a-router-chain" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains.router.multi_prompt</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiPromptChain</span>
+
+<span class="n">destination_chains</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;qa&quot;</span><span class="p">:</span> <span class="n">qa_chain</span><span class="p">,</span>
+    <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="n">summary_chain</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">multi_chain</span> <span class="o">=</span> <span class="n">MultiPromptChain</span><span class="p">(</span>
+    <span class="n">router_chain</span><span class="o">=</span><span class="n">router_chain</span><span class="p">,</span>
+    <span class="n">destination_chains</span><span class="o">=</span><span class="n">destination_chains</span><span class="p">,</span>
+    <span class="n">default_chain</span><span class="o">=</span><span class="n">qa_chain</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-4-invoke-the-router-chain">
+<h3><a class="toc-backref" href="#id14">Step 4: Invoke the Router Chain</a><a class="headerlink" href="#step-4-invoke-the-router-chain" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Summarize the LangChain framework&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">&gt; Entering new MultiPromptChain chain...</span>
+summary: {&#39;input&#39;: &#39;Summarize the LangChain framework.&#39;}
+<span class=" -Color -Color-Bold">&gt; Finished chain.</span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;input&#39;: &#39;Summarize the LangChain framework.&#39;,
+ &#39;text&#39;: &#39;The LangChain framework is designed to facilitate the development of applications that utilize language models. It provides a structured approach to integrate various components such as data sources, models, and output formats, enabling developers to create complex workflows. LangChain supports features like prompt management, memory handling, and chaining of multiple language model calls, making it easier to build sophisticated natural language processing applications. Its modular design allows for flexibility and scalability, catering to a wide range of use cases in AI-driven projects.&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p>If input is a question → <code class="docutils literal notranslate"><span class="pre">qa_chain</span></code>
+If input is long text → <code class="docutils literal notranslate"><span class="pre">summary_chain</span></code></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="how-routing-decision-looks-conceptually">
+<h2><a class="toc-backref" href="#id15">How Routing Decision Looks (Conceptually)</a><a class="headerlink" href="#how-routing-decision-looks-conceptually" title="Permalink to this heading">#</a></h2>
+<p>Router output:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;destination&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;summary&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;next_inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;input&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Summarize the LangChain framework&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>LangChain validates this before execution.</p>
+</section>
+<hr class="docutils" />
+<section id="common-use-cases">
+<h2><a class="toc-backref" href="#id16">Common Use Cases</a><a class="headerlink" href="#common-use-cases" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Intent-based routing</p></li>
+<li><p>Multi-domain chatbots</p></li>
+<li><p>Query type classification</p></li>
+<li><p>Specialized pipelines (RAG vs tools)</p></li>
+<li><p>Cost optimization (cheap vs expensive models)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="router-chain-vs-agents">
+<h2><a class="toc-backref" href="#id17">Router Chain vs Agents</a><a class="headerlink" href="#router-chain-vs-agents" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Router Chain</p></th>
+<th class="head"><p>Agent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Decision</p></td>
+<td><p>One-time</p></td>
+<td><p>Iterative</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tool usage</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Complex reasoning</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Predictability</p></td>
+<td><p>High</p></td>
+<td><p>Lower</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Router chains are <strong>simpler and cheaper</strong> than agents.</p>
+</section>
+<hr class="docutils" />
+<section id="router-chain-limitations">
+<h2><a class="toc-backref" href="#id18">Router Chain Limitations</a><a class="headerlink" href="#router-chain-limitations" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>❌ Only one route selected</p></li>
+<li><p>❌ No iterative reasoning</p></li>
+<li><p>❌ No tool execution</p></li>
+<li><p>❌ Legacy abstraction</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="router-chain-vs-lcel-routing-modern">
+<h2><a class="toc-backref" href="#id19">Router Chain vs LCEL Routing (Modern)</a><a class="headerlink" href="#router-chain-vs-lcel-routing-modern" title="Permalink to this heading">#</a></h2>
+<section id="router-chain-legacy">
+<h3><a class="toc-backref" href="#id20">Router Chain (Legacy)</a><a class="headerlink" href="#router-chain-legacy" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MultiPromptChain</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="lcel-conditional-routing-recommended">
+<h2><a class="toc-backref" href="#id21">LCEL Conditional Routing (Recommended)</a><a class="headerlink" href="#lcel-conditional-routing-recommended" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">route</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">qa_chain</span> <span class="k">if</span> <span class="s2">&quot;?&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">summary_chain</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">route</span> <span class="o">|</span> <span class="n">llm</span>
+</pre></div>
+</div>
+<p>LCEL provides more flexibility and composability.</p>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-router-chain">
+<h2><a class="toc-backref" href="#id22">When to Use Router Chain</a><a class="headerlink" href="#when-to-use-router-chain" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Legacy LangChain codebases</p></li>
+<li><p>Simple intent routing</p></li>
+<li><p>Learning conditional workflows</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-not-to-use-router-chain">
+<h2><a class="toc-backref" href="#id23">When NOT to Use Router Chain</a><a class="headerlink" href="#when-not-to-use-router-chain" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>New projects</p></li>
+<li><p>Complex decision logic</p></li>
+<li><p>Tool-based reasoning</p></li>
+<li><p>Multi-step workflows</p></li>
+</ul>
+<p>Use <strong>LCEL</strong> or <strong>LangGraph</strong> instead.</p>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id24">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Keep router prompt simple</p></li>
+<li><p>Limit number of destinations</p></li>
+<li><p>Always define a default chain</p></li>
+<li><p>Log routing decisions</p></li>
+<li><p>Plan migration to LCEL</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id25">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“A Router Chain in LangChain dynamically selects one of multiple downstream chains based on input content. It enables conditional execution but is a legacy abstraction that has largely been replaced by LCEL and LangGraph for modern workflows.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id26">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Simple conditional routing → Router Chain</strong></p></li>
+<li><p><strong>Modern pipelines → LCEL</strong></p></li>
+<li><p><strong>Dynamic reasoning → Agents or LangGraph</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\chains"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-router-chain-exists">Why Router Chain Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea">Core Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-vs-sequential-chain">Router Chain vs Sequential Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-routing-works-internally">How Routing Works Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-router-chain-components">Basic Router Chain Components</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#router-prompt">Router Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#destination-chains">Destination Chains</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#router-output-parser">Router Output Parser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-router-chain-demonstration">Basic Router Chain Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-destination-chains">Step 1: Define Destination Chains</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-define-router-prompt">Step 2: Define Router Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-combine-into-a-router-chain">Step 3: Combine into a Router Chain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-invoke-the-router-chain">Step 4: Invoke the Router Chain</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-routing-decision-looks-conceptually">How Routing Decision Looks (Conceptually)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-vs-agents">Router Chain vs Agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-limitations">Router Chain Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-vs-lcel-routing-modern">Router Chain vs LCEL Routing (Modern)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#router-chain-legacy">Router Chain (Legacy)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-conditional-routing-recommended">LCEL Conditional Routing (Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-router-chain">When to Use Router Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-router-chain">When NOT to Use Router Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

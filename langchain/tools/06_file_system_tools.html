@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>File System Tools &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/tools/06_file_system_tools';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/tools/06_file_system_tools.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/tools/06_file_system_tools.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/tools/06_file_system_tools.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>File System Tools</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-file-system-tools-are-important">Why File System Tools Are Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-file-system-tool-capabilities">Common File System Tool Capabilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-operations">Read Operations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-operations">Write Operations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#navigation-metadata">Navigation &amp; Metadata</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tool-anatomy">File System Tool Anatomy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-file-system-tool-python">Basic File System Tool (Python)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-file-tool">Read File Tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-file-tool">Write File Tool</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tool-as-an-api-fastapi">File System Tool as an API (FastAPI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tools-in-llm-workflows">File System Tools in LLM Workflows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tool-in-langchain">File System Tool in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tools-for-rag-local-documents">File System Tools for RAG (Local Documents)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-documents">Load Documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-in-retrieval">Use in Retrieval</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tools-vs-database-tools">File System Tools vs Database Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-world-agentic-use-case">Real-World Agentic Use Case</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-production-practices">Security &amp; Production Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#file-system-tools" id="id1">File System Tools</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-file-system-tools-are-important" id="id2">Why File System Tools Are Important</a></p></li>
+<li><p><a class="reference internal" href="#common-file-system-tool-capabilities" id="id3">Common File System Tool Capabilities</a></p>
+<ul>
+<li><p><a class="reference internal" href="#read-operations" id="id4">Read Operations</a></p></li>
+<li><p><a class="reference internal" href="#write-operations" id="id5">Write Operations</a></p></li>
+<li><p><a class="reference internal" href="#navigation-metadata" id="id6">Navigation &amp; Metadata</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#file-system-tool-anatomy" id="id7">File System Tool Anatomy</a></p></li>
+<li><p><a class="reference internal" href="#basic-file-system-tool-python" id="id8">Basic File System Tool (Python)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#read-file-tool" id="id9">Read File Tool</a></p></li>
+<li><p><a class="reference internal" href="#write-file-tool" id="id10">Write File Tool</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#file-system-tool-as-an-api-fastapi" id="id11">File System Tool as an API (FastAPI)</a></p></li>
+<li><p><a class="reference internal" href="#file-system-tools-in-llm-workflows" id="id12">File System Tools in LLM Workflows</a></p></li>
+<li><p><a class="reference internal" href="#file-system-tool-in-langchain" id="id13">File System Tool in LangChain</a></p></li>
+<li><p><a class="reference internal" href="#file-system-tools-for-rag-local-documents" id="id14">File System Tools for RAG (Local Documents)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#load-documents" id="id15">Load Documents</a></p></li>
+<li><p><a class="reference internal" href="#use-in-retrieval" id="id16">Use in Retrieval</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#file-system-tools-vs-database-tools" id="id17">File System Tools vs Database Tools</a></p></li>
+<li><p><a class="reference internal" href="#real-world-agentic-use-case" id="id18">Real-World Agentic Use Case</a></p></li>
+<li><p><a class="reference internal" href="#security-production-practices" id="id19">Security &amp; Production Practices</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id20">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="file-system-tools">
+<h1><a class="toc-backref" href="#id1">File System Tools</a><a class="headerlink" href="#file-system-tools" title="Permalink to this heading">#</a></h1>
+<p>File system tools are <strong>programmatic interfaces</strong> that allow applications or agents to <strong>read, write, list, search, and manage files and directories</strong> on local or remote storage.
+In LLM/agent systems, they provide <strong>grounded access to documents, logs, configs, and artifacts</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LLM / App / Agent  →  File System Tool  →  Files / Folders  →  Content / Metadata
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="why-file-system-tools-are-important">
+<h2><a class="toc-backref" href="#id2">Why File System Tools Are Important</a><a class="headerlink" href="#why-file-system-tools-are-important" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Access <strong>documents as source-of-truth</strong></p></li>
+<li><p>Enable <strong>local RAG</strong> without a database</p></li>
+<li><p>Support <strong>stateful workflows</strong> (logs, checkpoints)</p></li>
+<li><p>Allow <strong>automation</strong> (ETL, ingestion, backups)</p></li>
+<li><p>Reduce hallucinations by grounding on files</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-file-system-tool-capabilities">
+<h2><a class="toc-backref" href="#id3">Common File System Tool Capabilities</a><a class="headerlink" href="#common-file-system-tool-capabilities" title="Permalink to this heading">#</a></h2>
+<section id="read-operations">
+<h3><a class="toc-backref" href="#id4">Read Operations</a><a class="headerlink" href="#read-operations" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Read text / JSON / CSV / PDF</p></li>
+<li><p>Load configs, prompts, policies</p></li>
+</ul>
+</section>
+<section id="write-operations">
+<h3><a class="toc-backref" href="#id5">Write Operations</a><a class="headerlink" href="#write-operations" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Save outputs</p></li>
+<li><p>Persist agent memory snapshots</p></li>
+<li><p>Generate reports</p></li>
+</ul>
+</section>
+<section id="navigation-metadata">
+<h3><a class="toc-backref" href="#id6">Navigation &amp; Metadata</a><a class="headerlink" href="#navigation-metadata" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>List directories</p></li>
+<li><p>Search files</p></li>
+<li><p>File size, timestamps, permissions</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="file-system-tool-anatomy">
+<h2><a class="toc-backref" href="#id7">File System Tool Anatomy</a><a class="headerlink" href="#file-system-tool-anatomy" title="Permalink to this heading">#</a></h2>
+<p>A file system tool usually defines:</p>
+<ul class="simple">
+<li><p><strong>Root path / sandbox</strong></p></li>
+<li><p><strong>Allowed operations</strong> (read-only vs read-write)</p></li>
+<li><p><strong>Input schema</strong> (path, pattern)</p></li>
+<li><p><strong>Output schema</strong> (content, metadata)</p></li>
+<li><p><strong>Security constraints</strong></p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;docs/incident.md&quot;</span> <span class="p">}</span>
+<span class="n">Output</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">2048</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="basic-file-system-tool-python">
+<h2><a class="toc-backref" href="#id8">Basic File System Tool (Python)</a><a class="headerlink" href="#basic-file-system-tool-python" title="Permalink to this heading">#</a></h2>
+<section id="read-file-tool">
+<h3><a class="toc-backref" href="#id9">Read File Tool</a><a class="headerlink" href="#read-file-tool" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">read_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="write-file-tool">
+<h3><a class="toc-backref" href="#id10">Write File Tool</a><a class="headerlink" href="#write-file-tool" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">write_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These functions are the <strong>core primitives</strong> of file system tools.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="file-system-tool-as-an-api-fastapi">
+<h2><a class="toc-backref" href="#id11">File System Tool as an API (FastAPI)</a><a class="headerlink" href="#file-system-tool-as-an-api-fastapi" title="Permalink to this heading">#</a></h2>
+<p>Using FastAPI to expose file access safely:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./sandbox&quot;</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/fs/read&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fs_read</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">full_path</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="n">file_path</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">full_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;File not found&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">full_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()}</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/fs/write&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fs_write</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">full_path</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="n">file_path</span>
+    <span class="n">full_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">full_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;written&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This creates a <strong>controlled file system tool</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="file-system-tools-in-llm-workflows">
+<h2><a class="toc-backref" href="#id12">File System Tools in LLM Workflows</a><a class="headerlink" href="#file-system-tools-in-llm-workflows" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://community.intersystems.com/sites/default/files/inline/images/images/image%289789%29.png?utm_source=chatgpt.com" /></p>
+<p><img alt="Image" src="https://images.ctfassets.net/0uuz8ydxyd9p/26t4SwsjnUJHpJy8vyZOAM/8357530cbb4df285125bcf0e30ecaedb/Screenshot_2025-07-07_at_3.04.27%C3%A2__PM.png?utm_source=chatgpt.com" /></p>
+<p><img alt="Image" src="https://weaviate.io/assets/images/fig2-d0febceaefdcc84b555caad8bfd0b1f2.png?utm_source=chatgpt.com" /></p>
+<p><strong>Flow</strong></p>
+<ol class="arabic simple">
+<li><p>User asks about a document</p></li>
+<li><p>LLM selects file system tool</p></li>
+<li><p>Tool reads file content</p></li>
+<li><p>Content is injected into context</p></li>
+<li><p>LLM produces grounded response</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="file-system-tool-in-langchain">
+<h2><a class="toc-backref" href="#id13">File System Tool in LangChain</a><a class="headerlink" href="#file-system-tool-in-langchain" title="Permalink to this heading">#</a></h2>
+<p>Using LangChain:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">read_local_doc</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+
+<span class="n">fs_tool</span> <span class="o">=</span> <span class="n">Tool</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;LocalFileReader&quot;</span><span class="p">,</span>
+    <span class="n">func</span><span class="o">=</span><span class="n">read_local_doc</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Read local documents from file system&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The agent can now <strong>decide when to read a file</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="file-system-tools-for-rag-local-documents">
+<h2><a class="toc-backref" href="#id14">File System Tools for RAG (Local Documents)</a><a class="headerlink" href="#file-system-tools-for-rag-local-documents" title="Permalink to this heading">#</a></h2>
+<section id="load-documents">
+<h3><a class="toc-backref" href="#id15">Load Documents</a><a class="headerlink" href="#load-documents" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.document_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">DirectoryLoader</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">DirectoryLoader</span><span class="p">(</span><span class="s2">&quot;./docs&quot;</span><span class="p">,</span> <span class="n">glob</span><span class="o">=</span><span class="s2">&quot;**/*.md&quot;</span><span class="p">)</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="use-in-retrieval">
+<h3><a class="toc-backref" href="#id16">Use in Retrieval</a><a class="headerlink" href="#use-in-retrieval" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Chunk files</p></li>
+<li><p>Embed content</p></li>
+<li><p>Retrieve relevant sections</p></li>
+</ul>
+<p>This is <strong>file-based RAG</strong>, often used before vector DBs.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="file-system-tools-vs-database-tools">
+<h2><a class="toc-backref" href="#id17">File System Tools vs Database Tools</a><a class="headerlink" href="#file-system-tools-vs-database-tools" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>File System Tool</p></th>
+<th class="head"><p>Database Tool</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Structure</p></td>
+<td><p>Unstructured</p></td>
+<td><p>Structured</p></td>
+</tr>
+<tr class="row-odd"><td><p>Latency</p></td>
+<td><p>Very low</p></td>
+<td><p>Low</p></td>
+</tr>
+<tr class="row-even"><td><p>Query</p></td>
+<td><p>Path-based</p></td>
+<td><p>SQL / Vector</p></td>
+</tr>
+<tr class="row-odd"><td><p>Versioning</p></td>
+<td><p>Manual</p></td>
+<td><p>Built-in</p></td>
+</tr>
+<tr class="row-even"><td><p>Best for</p></td>
+<td><p>Docs, logs</p></td>
+<td><p>Records, memory</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="real-world-agentic-use-case">
+<h2><a class="toc-backref" href="#id18">Real-World Agentic Use Case</a><a class="headerlink" href="#real-world-agentic-use-case" title="Permalink to this heading">#</a></h2>
+<p><strong>IT Support Agent</strong></p>
+<ul class="simple">
+<li><p>File system tool → Read runbooks (PDF/MD)</p></li>
+<li><p>File system tool → Load SLA policies</p></li>
+<li><p>Vector DB → Similar incidents</p></li>
+<li><p>API tool → Escalation</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="security-production-practices">
+<h2><a class="toc-backref" href="#id19">Security &amp; Production Practices</a><a class="headerlink" href="#security-production-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Sandbox root directory</p></li>
+<li><p>Read-only tools for agents</p></li>
+<li><p>Path traversal protection</p></li>
+<li><p>File size limits</p></li>
+<li><p>Audit logs</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id20">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>File system tools connect agents to <strong>local truth</strong></p></li>
+<li><p>They are essential for document-heavy workflows</p></li>
+<li><p>Ideal for ingestion, RAG, logs, configs</p></li>
+<li><p>Often combined with vector DBs and APIs</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\tools"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-file-system-tools-are-important">Why File System Tools Are Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-file-system-tool-capabilities">Common File System Tool Capabilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-operations">Read Operations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-operations">Write Operations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#navigation-metadata">Navigation &amp; Metadata</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tool-anatomy">File System Tool Anatomy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-file-system-tool-python">Basic File System Tool (Python)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-file-tool">Read File Tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-file-tool">Write File Tool</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tool-as-an-api-fastapi">File System Tool as an API (FastAPI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tools-in-llm-workflows">File System Tools in LLM Workflows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tool-in-langchain">File System Tool in LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tools-for-rag-local-documents">File System Tools for RAG (Local Documents)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-documents">Load Documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-in-retrieval">Use in Retrieval</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-tools-vs-database-tools">File System Tools vs Database Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-world-agentic-use-case">Real-World Agentic Use Case</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-production-practices">Security &amp; Production Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

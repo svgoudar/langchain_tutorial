@@ -1,0 +1,941 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Synthetic Data Generation &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/evaluation/06_synthetic_data_generation';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/evaluation/06_synthetic_data_generation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/evaluation/06_synthetic_data_generation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/evaluation/06_synthetic_data_generation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Synthetic Data Generation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-synthetic-data-is-important">Why Synthetic Data Is Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-synthetic-data-llm-context">Types of Synthetic Data (LLM Context)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-synthetic-q-a-generation-llm-only">Simple Synthetic Q&amp;A Generation (LLM-only)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-synthetic-questions-and-answers">Generate Synthetic Questions and Answers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-from-documents-rag-grounded">Synthetic Data from Documents (RAG-grounded)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-grounded-q-a-from-context">Generate Grounded Q&amp;A from Context</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-evaluation-dataset-creation">Synthetic Evaluation Dataset Creation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-synthetic-dataset">Structured Synthetic Dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-edge-case-generation">Synthetic Edge-Case Generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-hard-tricky-cases">Generate Hard / Tricky Cases</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-for-faithfulness-evaluation">Synthetic Data for Faithfulness Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-hallucination-test-cases">Create Hallucination Test Cases</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-synthetic-dataset-at-scale-pattern">Automated Synthetic Dataset at Scale (Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#human-in-the-loop-recommended">Human-in-the-Loop (Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-vs-real-data">Synthetic Data vs Real Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-pitfalls">Common Pitfalls</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#synthetic-data-generation" id="id1">Synthetic Data Generation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-synthetic-data-is-important" id="id2">Why Synthetic Data Is Important</a></p></li>
+<li><p><a class="reference internal" href="#types-of-synthetic-data-llm-context" id="id3">Types of Synthetic Data (LLM Context)</a></p></li>
+<li><p><a class="reference internal" href="#architecture-view" id="id4">Architecture View</a></p></li>
+<li><p><a class="reference internal" href="#simple-synthetic-q-a-generation-llm-only" id="id5">Simple Synthetic Q&amp;A Generation (LLM-only)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#generate-synthetic-questions-and-answers" id="id6">Generate Synthetic Questions and Answers</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#synthetic-data-from-documents-rag-grounded" id="id7">Synthetic Data from Documents (RAG-grounded)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#generate-grounded-q-a-from-context" id="id8">Generate Grounded Q&amp;A from Context</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#synthetic-evaluation-dataset-creation" id="id9">Synthetic Evaluation Dataset Creation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#structured-synthetic-dataset" id="id10">Structured Synthetic Dataset</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#synthetic-edge-case-generation" id="id11">Synthetic Edge-Case Generation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#generate-hard-tricky-cases" id="id12">Generate Hard / Tricky Cases</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#synthetic-data-for-faithfulness-evaluation" id="id13">Synthetic Data for Faithfulness Evaluation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#create-hallucination-test-cases" id="id14">Create Hallucination Test Cases</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#automated-synthetic-dataset-at-scale-pattern" id="id15">Automated Synthetic Dataset at Scale (Pattern)</a></p></li>
+<li><p><a class="reference internal" href="#human-in-the-loop-recommended" id="id16">Human-in-the-Loop (Recommended)</a></p></li>
+<li><p><a class="reference internal" href="#synthetic-data-vs-real-data" id="id17">Synthetic Data vs Real Data</a></p></li>
+<li><p><a class="reference internal" href="#common-pitfalls" id="id18">Common Pitfalls</a></p></li>
+<li><p><a class="reference internal" href="#best-practices" id="id19">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id20">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id21">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="synthetic-data-generation">
+<h1><a class="toc-backref" href="#id1">Synthetic Data Generation</a><a class="headerlink" href="#synthetic-data-generation" title="Permalink to this heading">#</a></h1>
+<p><strong>Synthetic data generation</strong> is the process of <strong>creating artificial data that mimics real-world data</strong> in structure and semantics, without using sensitive or scarce real samples.</p>
+<p>In LLM systems, synthetic data is commonly used to:</p>
+<ul class="simple">
+<li><p>Create <strong>evaluation datasets</strong></p></li>
+<li><p>Bootstrap <strong>training/fine-tuning data</strong></p></li>
+<li><p>Test <strong>RAG pipelines</strong></p></li>
+<li><p>Simulate <strong>edge cases</strong> safely</p></li>
+</ul>
+<p>It is widely used with LangChain and modern LLMs.</p>
+<hr class="docutils" />
+<section id="why-synthetic-data-is-important">
+<h2><a class="toc-backref" href="#id2">Why Synthetic Data Is Important</a><a class="headerlink" href="#why-synthetic-data-is-important" title="Permalink to this heading">#</a></h2>
+<p>Synthetic data solves key problems:</p>
+<ul class="simple">
+<li><p>❌ Lack of labeled data</p></li>
+<li><p>❌ Privacy / PII constraints</p></li>
+<li><p>❌ Expensive human annotation</p></li>
+<li><p>❌ Poor coverage of edge cases</p></li>
+</ul>
+<p>With synthetic data:</p>
+<ul class="simple">
+<li><p>Faster iteration</p></li>
+<li><p>Controlled distributions</p></li>
+<li><p>Safer experimentation</p></li>
+<li><p>Better evaluation coverage</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="types-of-synthetic-data-llm-context">
+<h2><a class="toc-backref" href="#id3">Types of Synthetic Data (LLM Context)</a><a class="headerlink" href="#types-of-synthetic-data-llm-context" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Q&amp;A pairs</p></td>
+<td><p>LLM / RAG evaluation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Instruction–response</p></td>
+<td><p>Fine-tuning</p></td>
+</tr>
+<tr class="row-even"><td><p>Noisy / adversarial</p></td>
+<td><p>Robustness testing</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edge cases</p></td>
+<td><p>Failure discovery</p></td>
+</tr>
+<tr class="row-even"><td><p>Grounded (context-based)</p></td>
+<td><p>Faithfulness evaluation</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="architecture-view">
+<h2><a class="toc-backref" href="#id4">Architecture View</a><a class="headerlink" href="#architecture-view" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://www.researchgate.net/publication/394539698/figure/fig2/AS%3A11431281596008788%401755573324438/Pipeline-overview-of-the-synthetic-data-generation-system.ppm" /></p>
+<p><img alt="Image" src="https://blogs.nvidia.com/wp-content/uploads/2024/06/Synthetic-Data-Generation-Pipeline-scaled.jpg" /></p>
+<p><img alt="Image" src="https://towardsdatascience.com/wp-content/uploads/2025/02/1_Euv7imyg9AQrjJyUKUZ7pA-1.webp" /></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Source Docs / Rules
+        ↓
+   LLM Generator
+        ↓
+ Synthetic Samples
+        ↓
+ Evaluation / Training
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="simple-synthetic-q-a-generation-llm-only">
+<h2><a class="toc-backref" href="#id5">Simple Synthetic Q&amp;A Generation (LLM-only)</a><a class="headerlink" href="#simple-synthetic-q-a-generation-llm-only" title="Permalink to this heading">#</a></h2>
+<section id="generate-synthetic-questions-and-answers">
+<h3><a class="toc-backref" href="#id6">Generate Synthetic Questions and Answers</a><a class="headerlink" href="#generate-synthetic-questions-and-answers" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">()</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate 3 question–answer pairs about the topic below.</span>
+
+<span class="sd">    Topic: {topic}</span>
+
+<span class="sd">    Format:</span>
+<span class="sd">    Q: ...</span>
+<span class="sd">    A: ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="s2">&quot;Retrieval Augmented Generation&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Use case</strong></p>
+<ul class="simple">
+<li><p>Bootstrapping eval datasets</p></li>
+<li><p>Quick demos</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="synthetic-data-from-documents-rag-grounded">
+<h2><a class="toc-backref" href="#id7">Synthetic Data from Documents (RAG-grounded)</a><a class="headerlink" href="#synthetic-data-from-documents-rag-grounded" title="Permalink to this heading">#</a></h2>
+<section id="generate-grounded-q-a-from-context">
+<h3><a class="toc-backref" href="#id8">Generate Grounded Q&amp;A from Context</a><a class="headerlink" href="#generate-grounded-q-a-from-context" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">RAG combines document retrieval with language model generation.</span>
+<span class="s2">It improves factual accuracy by grounding answers in retrieved documents.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Using ONLY the context below, generate 2 question–answer pairs.</span>
+
+<span class="sd">    Context:</span>
+<span class="sd">    {context}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">context</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>✔ Grounded
+✔ Faithful
+✔ Ideal for RAG evaluation</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="synthetic-evaluation-dataset-creation">
+<h2><a class="toc-backref" href="#id9">Synthetic Evaluation Dataset Creation</a><a class="headerlink" href="#synthetic-evaluation-dataset-creation" title="Permalink to this heading">#</a></h2>
+<section id="structured-synthetic-dataset">
+<h3><a class="toc-backref" href="#id10">Structured Synthetic Dataset</a><a class="headerlink" href="#structured-synthetic-dataset" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">synthetic_dataset</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">qa</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+        <span class="s2">&quot;Generate a question and its correct answer about RAG.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">synthetic_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qa</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="n">synthetic_dataset</span>
+</pre></div>
+</div>
+<p>Used for:</p>
+<ul class="simple">
+<li><p>Regression testing</p></li>
+<li><p>Prompt comparison</p></li>
+<li><p>CI pipelines</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="synthetic-edge-case-generation">
+<h2><a class="toc-backref" href="#id11">Synthetic Edge-Case Generation</a><a class="headerlink" href="#synthetic-edge-case-generation" title="Permalink to this heading">#</a></h2>
+<section id="generate-hard-tricky-cases">
+<h3><a class="toc-backref" href="#id12">Generate Hard / Tricky Cases</a><a class="headerlink" href="#generate-hard-tricky-cases" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Generate 3 tricky or ambiguous questions</span>
+<span class="s2">that could confuse a RAG system about RAG itself.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Used to:</p>
+<ul class="simple">
+<li><p>Discover hallucinations</p></li>
+<li><p>Stress-test retrieval</p></li>
+<li><p>Improve prompts</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="synthetic-data-for-faithfulness-evaluation">
+<h2><a class="toc-backref" href="#id13">Synthetic Data for Faithfulness Evaluation</a><a class="headerlink" href="#synthetic-data-for-faithfulness-evaluation" title="Permalink to this heading">#</a></h2>
+<section id="create-hallucination-test-cases">
+<h3><a class="toc-backref" href="#id14">Create Hallucination Test Cases</a><a class="headerlink" href="#create-hallucination-test-cases" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Given the context below, generate:</span>
+<span class="s2">1 correct answer</span>
+<span class="s2">1 hallucinated answer (unsupported by context)</span>
+
+<span class="s2">Context:</span>
+<span class="s2">RAG combines retrieval with generation.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>This creates <strong>positive and negative samples</strong> for faithfulness checks.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="automated-synthetic-dataset-at-scale-pattern">
+<h2><a class="toc-backref" href="#id15">Automated Synthetic Dataset at Scale (Pattern)</a><a class="headerlink" href="#automated-synthetic-dataset-at-scale-pattern" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_synthetic_samples</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">llm</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Generate a Q&amp;A about </span><span class="si">{</span><span class="n">topic</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="p">)</span>
+
+<span class="n">samples</span> <span class="o">=</span> <span class="n">generate_synthetic_samples</span><span class="p">(</span><span class="s2">&quot;vector databases&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="human-in-the-loop-recommended">
+<h2><a class="toc-backref" href="#id16">Human-in-the-Loop (Recommended)</a><a class="headerlink" href="#human-in-the-loop-recommended" title="Permalink to this heading">#</a></h2>
+<p>Best practice:</p>
+<ol class="arabic simple">
+<li><p>Generate synthetic data</p></li>
+<li><p>Sample and review</p></li>
+<li><p>Fix obvious errors</p></li>
+<li><p>Approve for eval/training</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="synthetic-data-vs-real-data">
+<h2><a class="toc-backref" href="#id17">Synthetic Data vs Real Data</a><a class="headerlink" href="#synthetic-data-vs-real-data" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Synthetic</p></th>
+<th class="head"><p>Real</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cost</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>Privacy</p></td>
+<td><p>Safe</p></td>
+<td><p>Risky</p></td>
+</tr>
+<tr class="row-even"><td><p>Coverage</p></td>
+<td><p>High (controlled)</p></td>
+<td><p>Limited</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bias</p></td>
+<td><p>Can be amplified</p></td>
+<td><p>Exists naturally</p></td>
+</tr>
+<tr class="row-even"><td><p>Ground truth</p></td>
+<td><p>LLM-defined</p></td>
+<td><p>Human-defined</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Use <strong>both</strong>, not one.</p>
+</section>
+<hr class="docutils" />
+<section id="common-pitfalls">
+<h2><a class="toc-backref" href="#id18">Common Pitfalls</a><a class="headerlink" href="#common-pitfalls" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Using synthetic data only</p></li>
+<li><p>Reinforcing LLM biases</p></li>
+<li><p>Poor grounding</p></li>
+<li><p>No human validation</p></li>
+<li><p>Overfitting to synthetic patterns</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id19">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Ground synthetic data in real docs</p></li>
+<li><p>Mix real + synthetic datasets</p></li>
+<li><p>Use multiple prompts/models</p></li>
+<li><p>Track provenance (synthetic vs real)</p></li>
+<li><p>Evaluate synthetic data quality</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id20">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Synthetic data is a <strong>data multiplier</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Small real data → LLM → Large labeled dataset
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id21">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Synthetic data accelerates LLM development</p></li>
+<li><p>Essential for evaluation, RAG testing, and fine-tuning</p></li>
+<li><p>Grounded synthetic data reduces hallucinations</p></li>
+<li><p>Must be validated and combined with real data</p></li>
+<li><p>Industry-standard practice for GenAI systems</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\evaluation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-synthetic-data-is-important">Why Synthetic Data Is Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-synthetic-data-llm-context">Types of Synthetic Data (LLM Context)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-synthetic-q-a-generation-llm-only">Simple Synthetic Q&amp;A Generation (LLM-only)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-synthetic-questions-and-answers">Generate Synthetic Questions and Answers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-from-documents-rag-grounded">Synthetic Data from Documents (RAG-grounded)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-grounded-q-a-from-context">Generate Grounded Q&amp;A from Context</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-evaluation-dataset-creation">Synthetic Evaluation Dataset Creation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-synthetic-dataset">Structured Synthetic Dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-edge-case-generation">Synthetic Edge-Case Generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-hard-tricky-cases">Generate Hard / Tricky Cases</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-for-faithfulness-evaluation">Synthetic Data for Faithfulness Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-hallucination-test-cases">Create Hallucination Test Cases</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-synthetic-dataset-at-scale-pattern">Automated Synthetic Dataset at Scale (Pattern)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#human-in-the-loop-recommended">Human-in-the-Loop (Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-vs-real-data">Synthetic Data vs Real Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-pitfalls">Common Pitfalls</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,965 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Chat Model &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/core/02_chat_models';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/core/02_chat_models.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/core/02_chat_models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/core/02_chat_models.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chat Model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Chat Model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-chat-models-exist">Why Chat Models Exist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-model-interface-key-difference">Chat Model Interface (Key Difference)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#message-types-very-important">Message Types (Very Important)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-chat-model-usage">Basic Chat Model Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explicit-message-control">Explicit Message Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-chat-models-only">Tool Calling (Chat Models Only)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-json-enforcement">Structured Output (JSON Enforcement)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-tokens">9. Streaming Tokens</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-models-in-rag">Chat Models in RAG</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-models-in-agents">11. Chat Models in Agents</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lifecycle-of-a-chat-model-call">Lifecycle of a Chat Model Call</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-langchain-uses-chat-models-everywhere">Why LangChain Uses Chat Models Everywhere</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-chat-models">When NOT to Use Chat Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-model-providers">Chat Model Providers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#chat-model" id="id1">Chat Model</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-chat-models-exist" id="id2">Why Chat Models Exist</a></p></li>
+<li><p><a class="reference internal" href="#chat-model-interface-key-difference" id="id3">Chat Model Interface (Key Difference)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#input" id="id4">Input</a></p></li>
+<li><p><a class="reference internal" href="#output" id="id5">Output</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#message-types-very-important" id="id6">Message Types (Very Important)</a></p></li>
+<li><p><a class="reference internal" href="#basic-chat-model-usage" id="id7">Basic Chat Model Usage</a></p></li>
+<li><p><a class="reference internal" href="#explicit-message-control" id="id8">Explicit Message Control</a></p></li>
+<li><p><a class="reference internal" href="#tool-calling-chat-models-only" id="id9">Tool Calling (Chat Models Only)</a></p></li>
+<li><p><a class="reference internal" href="#structured-output-json-enforcement" id="id10">Structured Output (JSON Enforcement)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#streaming-tokens" id="id11">9. Streaming Tokens</a></p>
+<ul>
+<li><p><a class="reference internal" href="#chat-models-in-rag" id="id12">Chat Models in RAG</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#chat-models-in-agents" id="id13">11. Chat Models in Agents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#lifecycle-of-a-chat-model-call" id="id14">Lifecycle of a Chat Model Call</a></p></li>
+<li><p><a class="reference internal" href="#why-langchain-uses-chat-models-everywhere" id="id15">Why LangChain Uses Chat Models Everywhere</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-chat-models" id="id16">When NOT to Use Chat Models</a></p></li>
+<li><p><a class="reference internal" href="#chat-model-providers" id="id17">Chat Model Providers</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id18">Common Mistakes</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="chat-model">
+<h1><a class="toc-backref" href="#id1">Chat Model</a><a class="headerlink" href="#chat-model" title="Permalink to this heading">#</a></h1>
+<p>In <strong>LangChain</strong>, a <strong>Chat Model</strong> is:</p>
+<blockquote>
+<div><p>A message-based LLM interface that accepts structured conversation turns (roles), supports tool/function calling, and enables agentic and RAG workflows.</p>
+</div></blockquote>
+<p>It is <strong>not just “chat”</strong> — it is the <strong>core execution engine</strong> for modern LLM systems.</p>
+<hr class="docutils" />
+<section id="why-chat-models-exist">
+<h2><a class="toc-backref" href="#id2">Why Chat Models Exist</a><a class="headerlink" href="#why-chat-models-exist" title="Permalink to this heading">#</a></h2>
+<p>Earlier LLM APIs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&quot;text prompt&quot; → &quot;text completion&quot;
+</pre></div>
+</div>
+<p>Modern LLM systems require:</p>
+<ul class="simple">
+<li><p>Role separation</p></li>
+<li><p>Tool calling</p></li>
+<li><p>Multi-turn context</p></li>
+<li><p>Structured outputs</p></li>
+<li><p>Streaming</p></li>
+</ul>
+<p>Chat Models were introduced to support this.</p>
+</section>
+<hr class="docutils" />
+<section id="chat-model-interface-key-difference">
+<h2><a class="toc-backref" href="#id3">Chat Model Interface (Key Difference)</a><a class="headerlink" href="#chat-model-interface-key-difference" title="Permalink to this heading">#</a></h2>
+<section id="input">
+<h3><a class="toc-backref" href="#id4">Input</a><a class="headerlink" href="#input" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="output">
+<h3><a class="toc-backref" href="#id5">Output</a><a class="headerlink" href="#output" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">AIMessage</span><span class="p">(</span>
+  <span class="n">content</span><span class="o">=</span><span class="s2">&quot;answer&quot;</span><span class="p">,</span>
+  <span class="n">tool_calls</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="message-types-very-important">
+<h2><a class="toc-backref" href="#id6">Message Types (Very Important)</a><a class="headerlink" href="#message-types-very-important" title="Permalink to this heading">#</a></h2>
+<p>LangChain defines explicit message objects:</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Message Type</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SystemMessage</p></td>
+<td><p>Global instructions</p></td>
+</tr>
+<tr class="row-odd"><td><p>HumanMessage</p></td>
+<td><p>User input</p></td>
+</tr>
+<tr class="row-even"><td><p>AIMessage</p></td>
+<td><p>Model response</p></td>
+</tr>
+<tr class="row-odd"><td><p>ToolMessage</p></td>
+<td><p>Tool execution result</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This is what enables <strong>control and safety</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="basic-chat-model-usage">
+<h2><a class="toc-backref" href="#id7">Basic Chat Model Usage</a><a class="headerlink" href="#basic-chat-model-usage" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">chat</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain LangChain&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LangChain is a framework designed to facilitate the development of applications that utilize large language models (LLMs). It provides a structured way to build applications that can leverage the capabilities of LLMs for various tasks, such as natural language understanding, text generation, and conversational agents. Here are some key components and features of LangChain:
+
+1. **Modular Design**: LangChain is built with a modular architecture, allowing developers to easily integrate different components such as language models, data sources, and tools. This modularity enables flexibility in designing applications tailored to specific use cases.
+
+2. **Chains**: One of the core concepts in LangChain is the idea of &quot;chains.&quot; A chain is a sequence of operations that can involve multiple steps, such as retrieving data, processing it with an LLM, and then returning a response. Chains can be simple or complex, depending on the application&#39;s requirements.
+
+3. **Agents**: LangChain supports the creation of agents that can make decisions based on user input and context. Agents can utilize LLMs to interpret user queries and determine the best course of action, such as fetching information from a database or generating a response.
+
+4. **Memory**: LangChain includes features for managing memory, allowing applications to maintain context over multiple interactions. This is particularly useful for conversational agents that need to remember previous exchanges to provide coherent and contextually relevant responses.
+
+5. **Integrations**: LangChain can integrate with various external tools and APIs, enabling developers to enhance their applications with additional functionalities, such as web scraping, database access, or third-party services.
+
+6. **Use Cases**: LangChain can be applied to a wide range of use cases, including chatbots, virtual assistants, content generation, data analysis, and more. Its flexibility makes it suitable for both simple and complex applications.
+
+7. **Community and Ecosystem**: LangChain has an active community and ecosystem, with resources such as documentation, tutorials, and examples that help developers get started and share their experiences.
+
+Overall, LangChain aims to simplify the process of building applications that harness the power of language models, making it easier for developers to create intelligent and interactive solutions.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Internally, LangChain converts the string into a <code class="docutils literal notranslate"><span class="pre">HumanMessage</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="explicit-message-control">
+<h2><a class="toc-backref" href="#id8">Explicit Message Control</a><a class="headerlink" href="#explicit-message-control" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemMessage</span><span class="p">,</span> <span class="n">HumanMessage</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">SystemMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;You are an IT support assistant&quot;</span><span class="p">),</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;VPN is not working&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This allows:</p>
+<ul class="simple">
+<li><p>Role-based behavior</p></li>
+<li><p>Priority ordering</p></li>
+<li><p>Instruction hierarchy</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="tool-calling-chat-models-only">
+<h2><a class="toc-backref" href="#id9">Tool Calling (Chat Models Only)</a><a class="headerlink" href="#tool-calling-chat-models-only" title="Permalink to this heading">#</a></h2>
+<p>Chat Models can <strong>decide to call tools</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ticket_count</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">120</span>
+
+<span class="n">chat_with_tools</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">([</span><span class="n">ticket_count</span><span class="p">])</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">chat_with_tools</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">&quot;How many tickets are there in Jira?&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>What happens:</p>
+<ol class="arabic simple">
+<li><p>Model emits a tool call</p></li>
+<li><p>LangChain parses it</p></li>
+<li><p>Executor runs the tool</p></li>
+<li><p>Tool result is fed back</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="structured-output-json-enforcement">
+<h2><a class="toc-backref" href="#id10">Structured Output (JSON Enforcement)</a><a class="headerlink" href="#structured-output-json-enforcement" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Ticket</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="n">structured_chat</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Ticket</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">structured_chat</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;CEO cannot access email&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Benefits:</p>
+<ul class="simple">
+<li><p>No hallucinated formats</p></li>
+<li><p>Type-safe output</p></li>
+<li><p>Retry on validation failure</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="streaming-tokens">
+<h1><a class="toc-backref" href="#id11">9. Streaming Tokens</a><a class="headerlink" href="#streaming-tokens" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chat</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="s2">&quot;Explain Chat Models&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Used for:</p>
+<ul class="simple">
+<li><p>Chat UIs</p></li>
+<li><p>SSE</p></li>
+<li><p>WebSockets</p></li>
+</ul>
+<hr class="docutils" />
+<section id="chat-models-in-rag">
+<h2><a class="toc-backref" href="#id12">Chat Models in RAG</a><a class="headerlink" href="#chat-models-in-rag" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">qa</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="o">.</span><span class="n">from_chain_type</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">chat</span><span class="p">,</span>
+    <span class="n">retriever</span><span class="o">=</span><span class="n">retriever</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Chat Model role:</p>
+<ul class="simple">
+<li><p>Read retrieved documents</p></li>
+<li><p>Synthesize answer</p></li>
+<li><p>Respect system instructions</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="chat-models-in-agents">
+<h1><a class="toc-backref" href="#id13">11. Chat Models in Agents</a><a class="headerlink" href="#chat-models-in-agents" title="Permalink to this heading">#</a></h1>
+<p>Agents <strong>require</strong> Chat Models.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span> <span class="o">=</span> <span class="n">create_openai_tools_agent</span><span class="p">(</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">chat</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">ticket_count</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>LLMs (text completion) <strong>cannot do this</strong>.</p>
+<hr class="docutils" />
+<section id="lifecycle-of-a-chat-model-call">
+<h2><a class="toc-backref" href="#id14">Lifecycle of a Chat Model Call</a><a class="headerlink" href="#lifecycle-of-a-chat-model-call" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Messages
+ → Prompt assembly
+ → Tool schema injection
+ → Model invocation
+ → Tool call parsing
+ → Output parsing
+ → Callbacks / tracing
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="why-langchain-uses-chat-models-everywhere">
+<h2><a class="toc-backref" href="#id15">Why LangChain Uses Chat Models Everywhere</a><a class="headerlink" href="#why-langchain-uses-chat-models-everywhere" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Requirement</p></th>
+<th class="head"><p>Chat Model</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Multi-turn chat</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tool calling</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Agents</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Structured output</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Streaming</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Safety &amp; control</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="when-not-to-use-chat-models">
+<h2><a class="toc-backref" href="#id16">When NOT to Use Chat Models</a><a class="headerlink" href="#when-not-to-use-chat-models" title="Permalink to this heading">#</a></h2>
+<p>Rare cases only:</p>
+<ul class="simple">
+<li><p>Legacy completion-only models</p></li>
+<li><p>Static batch text generation</p></li>
+<li><p>Migration scenarios</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="chat-model-providers">
+<h2><a class="toc-backref" href="#id17">Chat Model Providers</a><a class="headerlink" href="#chat-model-providers" title="Permalink to this heading">#</a></h2>
+<p>LangChain supports:</p>
+<ul class="simple">
+<li><p>OpenAI (<code class="docutils literal notranslate"><span class="pre">ChatOpenAI</span></code>)</p></li>
+<li><p>Anthropic (<code class="docutils literal notranslate"><span class="pre">ChatAnthropic</span></code>)</p></li>
+<li><p>Ollama (<code class="docutils literal notranslate"><span class="pre">ChatOllama</span></code>)</p></li>
+<li><p>Hugging Face (<code class="docutils literal notranslate"><span class="pre">ChatHuggingFace</span></code>)</p></li>
+<li><p>Azure OpenAI</p></li>
+</ul>
+<p>Same interface, different backends.</p>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id18">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mistake</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Using <code class="docutils literal notranslate"><span class="pre">LLM</span></code> instead of ChatModel</p></td>
+<td><p>Limited functionality</p></td>
+</tr>
+<tr class="row-odd"><td><p>Passing raw strings everywhere</p></td>
+<td><p>Loss of role control</p></td>
+</tr>
+<tr class="row-even"><td><p>Ignoring system messages</p></td>
+<td><p>Unstable behavior</p></td>
+</tr>
+<tr class="row-odd"><td><p>Not using tool calling</p></td>
+<td><p>Manual routing logic</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>Interview-Ready Summary</strong></p>
+<blockquote>
+<div><p>“Chat Models in LangChain are message-based, tool-aware LLM interfaces that enable agents, RAG, structured outputs, and streaming. They are the primary abstraction for building production-grade LLM systems.”</p>
+</div></blockquote>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\core"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Chat Model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-chat-models-exist">Why Chat Models Exist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-model-interface-key-difference">Chat Model Interface (Key Difference)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#message-types-very-important">Message Types (Very Important)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-chat-model-usage">Basic Chat Model Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explicit-message-control">Explicit Message Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-chat-models-only">Tool Calling (Chat Models Only)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-output-json-enforcement">Structured Output (JSON Enforcement)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-tokens">9. Streaming Tokens</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-models-in-rag">Chat Models in RAG</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-models-in-agents">11. Chat Models in Agents</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lifecycle-of-a-chat-model-call">Lifecycle of a Chat Model Call</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-langchain-uses-chat-models-everywhere">Why LangChain Uses Chat Models Everywhere</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-chat-models">When NOT to Use Chat Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-model-providers">Chat Model Providers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

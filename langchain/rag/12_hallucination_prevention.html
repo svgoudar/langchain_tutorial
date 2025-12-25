@@ -1,0 +1,1003 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Hallucination Prevention and Control &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/rag/12_hallucination_prevention';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/rag/12_hallucination_prevention.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/rag/12_hallucination_prevention.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/rag/12_hallucination_prevention.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hallucination Prevention and Control</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-hallucinations-happen">Why Hallucinations Happen</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#root-causes">Root Causes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-hallucination-control-fits">Where Hallucination Control Fits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layered-hallucination-prevention-strategy">Layered Hallucination Prevention Strategy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-1-grounding-with-retrieval-primary-defense">Layer 1: Grounding with Retrieval (Primary Defense)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-2-strong-prompt-constraints">Layer 2: Strong Prompt Constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-prompt-guardrail">Example Prompt Guardrail</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-3-context-quality-control">Layer 3: Context Quality Control</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#techniques">Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-4-similarity-thresholding">Layer 4: Similarity Thresholding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-5-output-structure-enforcement">Layer 5: Output Structure Enforcement</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-6-output-validation-guardrails">Layer 6: Output Validation &amp; Guardrails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-7-temperature-and-sampling-control">Layer 7: Temperature and Sampling Control</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-8-context-window-management">Layer 8: Context Window Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-9-source-attribution-detection-tool">Layer 9: Source Attribution (Detection Tool)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-10-human-in-the-loop-fail-safe">Layer 10: Human-in-the-Loop (Fail-Safe)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucination-control-by-stage">Hallucination Control by Stage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-stage">Input Stage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-stage">Retrieval Stage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-stage">Generation Stage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-stage">Output Stage</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-does-not-prevent-hallucinations">What Does NOT Prevent Hallucinations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-production-mistakes">Common Production Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#over-retrieving-context">Over-retrieving context</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-similarity-threshold">No similarity threshold</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trusting-llm-citations">Trusting LLM citations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-fallback-logic">No fallback logic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-hallucination-control-checklist">Production-Grade Hallucination Control Checklist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-hallucinations-detection">Measuring Hallucinations (Detection)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#hallucination-prevention-and-control" id="id1">Hallucination Prevention and Control</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-hallucinations-happen" id="id2">Why Hallucinations Happen</a></p>
+<ul>
+<li><p><a class="reference internal" href="#root-causes" id="id3">Root Causes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#where-hallucination-control-fits" id="id4">Where Hallucination Control Fits</a></p></li>
+<li><p><a class="reference internal" href="#layered-hallucination-prevention-strategy" id="id5">Layered Hallucination Prevention Strategy</a></p>
+<ul>
+<li><p><a class="reference internal" href="#layer-1-grounding-with-retrieval-primary-defense" id="id6">Layer 1: Grounding with Retrieval (Primary Defense)</a></p></li>
+<li><p><a class="reference internal" href="#layer-2-strong-prompt-constraints" id="id7">Layer 2: Strong Prompt Constraints</a></p></li>
+<li><p><a class="reference internal" href="#example-prompt-guardrail" id="id8">Example Prompt Guardrail</a></p></li>
+<li><p><a class="reference internal" href="#layer-3-context-quality-control" id="id9">Layer 3: Context Quality Control</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#techniques" id="id10">Techniques</a></p>
+<ul>
+<li><p><a class="reference internal" href="#layer-4-similarity-thresholding" id="id11">Layer 4: Similarity Thresholding</a></p></li>
+<li><p><a class="reference internal" href="#layer-5-output-structure-enforcement" id="id12">Layer 5: Output Structure Enforcement</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#example" id="id13">Example</a></p>
+<ul>
+<li><p><a class="reference internal" href="#layer-6-output-validation-guardrails" id="id14">Layer 6: Output Validation &amp; Guardrails</a></p></li>
+<li><p><a class="reference internal" href="#layer-7-temperature-and-sampling-control" id="id15">Layer 7: Temperature and Sampling Control</a></p></li>
+<li><p><a class="reference internal" href="#layer-8-context-window-management" id="id16">Layer 8: Context Window Management</a></p></li>
+<li><p><a class="reference internal" href="#layer-9-source-attribution-detection-tool" id="id17">Layer 9: Source Attribution (Detection Tool)</a></p></li>
+<li><p><a class="reference internal" href="#layer-10-human-in-the-loop-fail-safe" id="id18">Layer 10: Human-in-the-Loop (Fail-Safe)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#hallucination-control-by-stage" id="id19">Hallucination Control by Stage</a></p>
+<ul>
+<li><p><a class="reference internal" href="#input-stage" id="id20">Input Stage</a></p></li>
+<li><p><a class="reference internal" href="#retrieval-stage" id="id21">Retrieval Stage</a></p></li>
+<li><p><a class="reference internal" href="#generation-stage" id="id22">Generation Stage</a></p></li>
+<li><p><a class="reference internal" href="#output-stage" id="id23">Output Stage</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#what-does-not-prevent-hallucinations" id="id24">What Does NOT Prevent Hallucinations</a></p></li>
+<li><p><a class="reference internal" href="#common-production-mistakes" id="id25">Common Production Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#over-retrieving-context" id="id26">Over-retrieving context</a></p></li>
+<li><p><a class="reference internal" href="#no-similarity-threshold" id="id27">No similarity threshold</a></p></li>
+<li><p><a class="reference internal" href="#trusting-llm-citations" id="id28">Trusting LLM citations</a></p></li>
+<li><p><a class="reference internal" href="#no-fallback-logic" id="id29">No fallback logic</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#production-grade-hallucination-control-checklist" id="id30">Production-Grade Hallucination Control Checklist</a></p></li>
+<li><p><a class="reference internal" href="#measuring-hallucinations-detection" id="id31">Measuring Hallucinations (Detection)</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id32">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id33">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="hallucination-prevention-and-control">
+<h1><a class="toc-backref" href="#id1">Hallucination Prevention and Control</a><a class="headerlink" href="#hallucination-prevention-and-control" title="Permalink to this heading">#</a></h1>
+<p>A <strong>hallucination</strong> occurs when an LLM generates <strong>confident but incorrect, fabricated, or unverifiable information</strong> that is <strong>not grounded in the provided data or reality</strong>.</p>
+<blockquote>
+<div><p>Hallucinations are not bugs — they are a natural outcome of probabilistic language generation.</p>
+</div></blockquote>
+<p>Prevention and control require <strong>system-level design</strong>, not just better prompts.</p>
+<hr class="docutils" />
+<section id="why-hallucinations-happen">
+<h2><a class="toc-backref" href="#id2">Why Hallucinations Happen</a><a class="headerlink" href="#why-hallucinations-happen" title="Permalink to this heading">#</a></h2>
+<section id="root-causes">
+<h3><a class="toc-backref" href="#id3">Root Causes</a><a class="headerlink" href="#root-causes" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>No grounding data</strong></p></li>
+<li><p><strong>Ambiguous or underspecified prompts</strong></p></li>
+<li><p><strong>Excessive context or noisy context</strong></p></li>
+<li><p><strong>High temperature / randomness</strong></p></li>
+<li><p><strong>Training bias toward fluent completion</strong></p></li>
+<li><p><strong>Model guessing to satisfy the prompt</strong></p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="where-hallucination-control-fits">
+<h2><a class="toc-backref" href="#id4">Where Hallucination Control Fits</a><a class="headerlink" href="#where-hallucination-control-fits" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Input
+  ↓
+Input Guardrails
+  ↓
+Retrieval (Grounding)
+  ↓
+Context Selection
+  ↓
+Prompt Constraints
+  ↓
+LLM
+  ↓
+Output Validation
+</pre></div>
+</div>
+<p>Hallucination control must exist <strong>at every stage</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="layered-hallucination-prevention-strategy">
+<h2><a class="toc-backref" href="#id5">Layered Hallucination Prevention Strategy</a><a class="headerlink" href="#layered-hallucination-prevention-strategy" title="Permalink to this heading">#</a></h2>
+<section id="layer-1-grounding-with-retrieval-primary-defense">
+<h3><a class="toc-backref" href="#id6">Layer 1: Grounding with Retrieval (Primary Defense)</a><a class="headerlink" href="#layer-1-grounding-with-retrieval-primary-defense" title="Permalink to this heading">#</a></h3>
+<p><strong>RAG (Retrieval-Augmented Generation)</strong> forces the model to answer <strong>from real documents</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Question → Retrieve Context → Answer from Context
+</pre></div>
+</div>
+<p>Key rule:</p>
+<blockquote>
+<div><p>If it’s not in the retrieved context, the model should say <em>“I don’t know”</em>.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="layer-2-strong-prompt-constraints">
+<h3><a class="toc-backref" href="#id7">Layer 2: Strong Prompt Constraints</a><a class="headerlink" href="#layer-2-strong-prompt-constraints" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="example-prompt-guardrail">
+<h3><a class="toc-backref" href="#id8">Example Prompt Guardrail</a><a class="headerlink" href="#example-prompt-guardrail" title="Permalink to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Answer only using the provided context.
+If the answer is not present, say &quot;I don’t know&quot;.
+Do not use outside knowledge.
+</pre></div>
+</div>
+<p>This reduces, but does not eliminate hallucinations.</p>
+</section>
+<hr class="docutils" />
+<section id="layer-3-context-quality-control">
+<h3><a class="toc-backref" href="#id9">Layer 3: Context Quality Control</a><a class="headerlink" href="#layer-3-context-quality-control" title="Permalink to this heading">#</a></h3>
+</section>
+</section>
+<section id="techniques">
+<h2><a class="toc-backref" href="#id10">Techniques</a><a class="headerlink" href="#techniques" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Proper <strong>chunking</strong></p></li>
+<li><p><strong>Chunk overlap</strong></p></li>
+<li><p><strong>Top-k limits</strong></p></li>
+<li><p><strong>MMR (diversity)</strong></p></li>
+<li><p><strong>Reranking (precision)</strong></p></li>
+</ul>
+<p>Bad context = hallucinated answers.</p>
+<hr class="docutils" />
+<section id="layer-4-similarity-thresholding">
+<h3><a class="toc-backref" href="#id11">Layer 4: Similarity Thresholding</a><a class="headerlink" href="#layer-4-similarity-thresholding" title="Permalink to this heading">#</a></h3>
+<p>Reject weak retrievals.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>If similarity score &lt; threshold → do not answer
+</pre></div>
+</div>
+<p>Production pattern:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Low confidence → Ask clarifying question or escalate
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="layer-5-output-structure-enforcement">
+<h3><a class="toc-backref" href="#id12">Layer 5: Output Structure Enforcement</a><a class="headerlink" href="#layer-5-output-structure-enforcement" title="Permalink to this heading">#</a></h3>
+<p>Structured outputs reduce creative guessing.</p>
+</section>
+</section>
+<section id="example">
+<h2><a class="toc-backref" href="#id13">Example</a><a class="headerlink" href="#example" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Schema</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Benefits:</p>
+<ul class="simple">
+<li><p>Forces explicit fields</p></li>
+<li><p>Prevents free-form fabrication</p></li>
+<li><p>Enables validation</p></li>
+</ul>
+<hr class="docutils" />
+<section id="layer-6-output-validation-guardrails">
+<h3><a class="toc-backref" href="#id14">Layer 6: Output Validation &amp; Guardrails</a><a class="headerlink" href="#layer-6-output-validation-guardrails" title="Permalink to this heading">#</a></h3>
+<p><strong>Validation Examples</strong></p>
+<ul class="simple">
+<li><p>Schema validation (Pydantic)</p></li>
+<li><p>Allowed values (enums)</p></li>
+<li><p>Numeric range checks</p></li>
+<li><p>Regex checks</p></li>
+</ul>
+<p>Invalid outputs are:</p>
+<ul class="simple">
+<li><p>Rejected</p></li>
+<li><p>Re-prompted</p></li>
+<li><p>Escalated</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="layer-7-temperature-and-sampling-control">
+<h3><a class="toc-backref" href="#id15">Layer 7: Temperature and Sampling Control</a><a class="headerlink" href="#layer-7-temperature-and-sampling-control" title="Permalink to this heading">#</a></h3>
+<p><strong>Recommended Settings</strong></p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
+<th class="head"><p>Temperature</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fact-based QA</p></td>
+<td><p>0.0–0.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>RAG answers</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Creative writing</p></td>
+<td><p>0.7+</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Lower temperature = fewer hallucinations.</p>
+</section>
+<hr class="docutils" />
+<section id="layer-8-context-window-management">
+<h3><a class="toc-backref" href="#id16">Layer 8: Context Window Management</a><a class="headerlink" href="#layer-8-context-window-management" title="Permalink to this heading">#</a></h3>
+<p>Too much context causes:</p>
+<ul class="simple">
+<li><p>Contradictions</p></li>
+<li><p>Confusion</p></li>
+<li><p>Fabrication</p></li>
+</ul>
+<p>Use:</p>
+<ul class="simple">
+<li><p>Reranking</p></li>
+<li><p>Context compression</p></li>
+<li><p>Summarization</p></li>
+<li><p>Memory pruning</p></li>
+</ul>
+<p><strong>Relevant context beats maximum context.</strong></p>
+</section>
+<hr class="docutils" />
+<section id="layer-9-source-attribution-detection-tool">
+<h3><a class="toc-backref" href="#id17">Layer 9: Source Attribution (Detection Tool)</a><a class="headerlink" href="#layer-9-source-attribution-detection-tool" title="Permalink to this heading">#</a></h3>
+<p>Hallucinations become visible when:</p>
+<ul class="simple">
+<li><p>Sources are missing</p></li>
+<li><p>Sources don’t support claims</p></li>
+</ul>
+<p>Production rule:</p>
+<blockquote>
+<div><p>No source → low confidence answer.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="layer-10-human-in-the-loop-fail-safe">
+<h3><a class="toc-backref" href="#id18">Layer 10: Human-in-the-Loop (Fail-Safe)</a><a class="headerlink" href="#layer-10-human-in-the-loop-fail-safe" title="Permalink to this heading">#</a></h3>
+<p>For critical systems:</p>
+<ul class="simple">
+<li><p>Low confidence → escalate to human</p></li>
+<li><p>Hallucination risk → require approval</p></li>
+</ul>
+<p>Used in:</p>
+<ul class="simple">
+<li><p>Legal</p></li>
+<li><p>Medical</p></li>
+<li><p>Compliance</p></li>
+<li><p>IT incident response</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="hallucination-control-by-stage">
+<h2><a class="toc-backref" href="#id19">Hallucination Control by Stage</a><a class="headerlink" href="#hallucination-control-by-stage" title="Permalink to this heading">#</a></h2>
+<section id="input-stage">
+<h3><a class="toc-backref" href="#id20">Input Stage</a><a class="headerlink" href="#input-stage" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Prompt injection detection</p></li>
+<li><p>Input sanitization</p></li>
+<li><p>Clarification requests</p></li>
+</ul>
+</section>
+<section id="retrieval-stage">
+<h3><a class="toc-backref" href="#id21">Retrieval Stage</a><a class="headerlink" href="#retrieval-stage" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Hybrid search</p></li>
+<li><p>Reranking</p></li>
+<li><p>Similarity thresholds</p></li>
+</ul>
+</section>
+<section id="generation-stage">
+<h3><a class="toc-backref" href="#id22">Generation Stage</a><a class="headerlink" href="#generation-stage" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Low temperature</p></li>
+<li><p>Constrained prompts</p></li>
+<li><p>Tool-only answers</p></li>
+</ul>
+</section>
+<section id="output-stage">
+<h3><a class="toc-backref" href="#id23">Output Stage</a><a class="headerlink" href="#output-stage" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Validation</p></li>
+<li><p>Schema enforcement</p></li>
+<li><p>Source checks</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="what-does-not-prevent-hallucinations">
+<h2><a class="toc-backref" href="#id24">What Does NOT Prevent Hallucinations</a><a class="headerlink" href="#what-does-not-prevent-hallucinations" title="Permalink to this heading">#</a></h2>
+<p>❌ Prompt engineering alone
+❌ Larger context windows
+❌ More retrieved documents
+❌ Asking the model to “be accurate”
+❌ Trusting confidence in tone</p>
+</section>
+<hr class="docutils" />
+<section id="common-production-mistakes">
+<h2><a class="toc-backref" href="#id25">Common Production Mistakes</a><a class="headerlink" href="#common-production-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="over-retrieving-context">
+<h3><a class="toc-backref" href="#id26">Over-retrieving context</a><a class="headerlink" href="#over-retrieving-context" title="Permalink to this heading">#</a></h3>
+<p>❌ Increases hallucinations</p>
+</section>
+<section id="no-similarity-threshold">
+<h3><a class="toc-backref" href="#id27">No similarity threshold</a><a class="headerlink" href="#no-similarity-threshold" title="Permalink to this heading">#</a></h3>
+<p>❌ Model answers without evidence</p>
+</section>
+<section id="trusting-llm-citations">
+<h3><a class="toc-backref" href="#id28">Trusting LLM citations</a><a class="headerlink" href="#trusting-llm-citations" title="Permalink to this heading">#</a></h3>
+<p>❌ Citations can be hallucinated</p>
+</section>
+<section id="no-fallback-logic">
+<h3><a class="toc-backref" href="#id29">No fallback logic</a><a class="headerlink" href="#no-fallback-logic" title="Permalink to this heading">#</a></h3>
+<p>❌ Users get wrong answers instead of “unknown”</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="production-grade-hallucination-control-checklist">
+<h2><a class="toc-backref" href="#id30">Production-Grade Hallucination Control Checklist</a><a class="headerlink" href="#production-grade-hallucination-control-checklist" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>✅ RAG with high-quality data</p></li>
+<li><p>✅ Hybrid retrieval + reranking</p></li>
+<li><p>✅ Similarity thresholds</p></li>
+<li><p>✅ Strong system prompts</p></li>
+<li><p>✅ Structured output validation</p></li>
+<li><p>✅ Source attribution</p></li>
+<li><p>✅ Human escalation path</p></li>
+<li><p>✅ Observability &amp; logging</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="measuring-hallucinations-detection">
+<h2><a class="toc-backref" href="#id31">Measuring Hallucinations (Detection)</a><a class="headerlink" href="#measuring-hallucinations-detection" title="Permalink to this heading">#</a></h2>
+<p>Indicators:</p>
+<ul class="simple">
+<li><p>Answer without sources</p></li>
+<li><p>Low retrieval scores</p></li>
+<li><p>Contradictory statements</p></li>
+<li><p>Overconfident language</p></li>
+</ul>
+<p>Metrics:</p>
+<ul class="simple">
+<li><p>Answer groundedness</p></li>
+<li><p>Retrieval confidence</p></li>
+<li><p>Source coverage ratio</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id32">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Hallucination prevention is a layered system design problem. It combines grounding via retrieval, prompt constraints, context control, low-temperature generation, structured outputs, validation, source attribution, and human-in-the-loop safeguards.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id33">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>No grounding → hallucinations</strong></p></li>
+<li><p><strong>More context ≠ safer answers</strong></p></li>
+<li><p><strong>Structure reduces guessing</strong></p></li>
+<li><p><strong>If accuracy matters, validate everything</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\rag"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-hallucinations-happen">Why Hallucinations Happen</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#root-causes">Root Causes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-hallucination-control-fits">Where Hallucination Control Fits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layered-hallucination-prevention-strategy">Layered Hallucination Prevention Strategy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-1-grounding-with-retrieval-primary-defense">Layer 1: Grounding with Retrieval (Primary Defense)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-2-strong-prompt-constraints">Layer 2: Strong Prompt Constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-prompt-guardrail">Example Prompt Guardrail</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-3-context-quality-control">Layer 3: Context Quality Control</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#techniques">Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-4-similarity-thresholding">Layer 4: Similarity Thresholding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-5-output-structure-enforcement">Layer 5: Output Structure Enforcement</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-6-output-validation-guardrails">Layer 6: Output Validation &amp; Guardrails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-7-temperature-and-sampling-control">Layer 7: Temperature and Sampling Control</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-8-context-window-management">Layer 8: Context Window Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-9-source-attribution-detection-tool">Layer 9: Source Attribution (Detection Tool)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-10-human-in-the-loop-fail-safe">Layer 10: Human-in-the-Loop (Fail-Safe)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucination-control-by-stage">Hallucination Control by Stage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-stage">Input Stage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-stage">Retrieval Stage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-stage">Generation Stage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-stage">Output Stage</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-does-not-prevent-hallucinations">What Does NOT Prevent Hallucinations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-production-mistakes">Common Production Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#over-retrieving-context">Over-retrieving context</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-similarity-threshold">No similarity threshold</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trusting-llm-citations">Trusting LLM citations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-fallback-logic">No fallback logic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-grade-hallucination-control-checklist">Production-Grade Hallucination Control Checklist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-hallucinations-detection">Measuring Hallucinations (Detection)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

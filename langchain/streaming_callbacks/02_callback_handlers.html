@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Callback Handlers &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/streaming_callbacks/02_callback_handlers';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/streaming_callbacks/02_callback_handlers.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/streaming_callbacks/02_callback_handlers.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/streaming_callbacks/02_callback_handlers.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Callback Handlers</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-callback-handlers-are-needed">Why Callback Handlers Are Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callback-lifecycle-high-level">Callback Lifecycle (High Level)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-callback-handler-stdout">Built-in Callback Handler (StdOut)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-callback-handler-most-important">Custom Callback Handler (Most Important)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-custom-handler">Define a Custom Handler</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attach-it-to-a-runnable">Attach It to a Runnable</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-events-you-can-hook-into">What Events You Can Hook Into</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callback-handlers-with-runnablesequence">Callback Handlers with RunnableSequence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-invocation-vs-global-callbacks">Per-Invocation vs Global Callbacks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#per-invocation">Per-invocation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-applies-everywhere">Global (applies everywhere)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callbacks-streaming-real-time-ui">Callbacks + Streaming (Real-Time UI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callbacks-in-async-execution">Callbacks in Async Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callback-handlers-vs-middleware">Callback Handlers vs Middleware</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#callback-handlers" id="id1">Callback Handlers</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-callback-handlers-are-needed" id="id2">Why Callback Handlers Are Needed</a></p></li>
+<li><p><a class="reference internal" href="#architecture-view" id="id3">Architecture View</a></p></li>
+<li><p><a class="reference internal" href="#callback-lifecycle-high-level" id="id4">Callback Lifecycle (High Level)</a></p></li>
+<li><p><a class="reference internal" href="#built-in-callback-handler-stdout" id="id5">Built-in Callback Handler (StdOut)</a></p></li>
+<li><p><a class="reference internal" href="#custom-callback-handler-most-important" id="id6">Custom Callback Handler (Most Important)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#define-a-custom-handler" id="id7">Define a Custom Handler</a></p></li>
+<li><p><a class="reference internal" href="#attach-it-to-a-runnable" id="id8">Attach It to a Runnable</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#what-events-you-can-hook-into" id="id9">What Events You Can Hook Into</a></p></li>
+<li><p><a class="reference internal" href="#callback-handlers-with-runnablesequence" id="id10">Callback Handlers with RunnableSequence</a></p></li>
+<li><p><a class="reference internal" href="#per-invocation-vs-global-callbacks" id="id11">Per-Invocation vs Global Callbacks</a></p>
+<ul>
+<li><p><a class="reference internal" href="#per-invocation" id="id12">Per-invocation</a></p></li>
+<li><p><a class="reference internal" href="#global-applies-everywhere" id="id13">Global (applies everywhere)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#callbacks-streaming-real-time-ui" id="id14">Callbacks + Streaming (Real-Time UI)</a></p></li>
+<li><p><a class="reference internal" href="#callbacks-in-async-execution" id="id15">Callbacks in Async Execution</a></p></li>
+<li><p><a class="reference internal" href="#callback-handlers-vs-middleware" id="id16">Callback Handlers vs Middleware</a></p></li>
+<li><p><a class="reference internal" href="#common-use-cases" id="id17">Common Use Cases</a></p></li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id18">Common Mistakes</a></p></li>
+<li><p><a class="reference internal" href="#mental-model" id="id19">Mental Model</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id20">Key Takeaways</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="callback-handlers">
+<h1><a class="toc-backref" href="#id1">Callback Handlers</a><a class="headerlink" href="#callback-handlers" title="Permalink to this heading">#</a></h1>
+<p><strong>Callback handlers</strong> are hooks that let you <strong>observe, log, stream, or react to internal events</strong> occurring during runnable execution—such as chain start/end, LLM token generation, tool calls, and errors.</p>
+<p>They are a core observability and control mechanism in LangChain.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Runnable Execution
+   ├── on_chain_start
+   ├── on_llm_start
+   ├── on_llm_new_token
+   ├── on_tool_start
+   ├── on_chain_end / on_error
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="why-callback-handlers-are-needed">
+<h2><a class="toc-backref" href="#id2">Why Callback Handlers Are Needed</a><a class="headerlink" href="#why-callback-handlers-are-needed" title="Permalink to this heading">#</a></h2>
+<p>Callback handlers enable:</p>
+<ul class="simple">
+<li><p>Token streaming to UI</p></li>
+<li><p>Debugging and tracing</p></li>
+<li><p>Logging prompts and responses</p></li>
+<li><p>Metrics and monitoring</p></li>
+<li><p>Guardrails and policy checks</p></li>
+</ul>
+<p>Without callbacks, runnable execution is a <strong>black box</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="architecture-view">
+<h2><a class="toc-backref" href="#id3">Architecture View</a><a class="headerlink" href="#architecture-view" title="Permalink to this heading">#</a></h2>
+<p><img alt="Image" src="https://miro.medium.com/1%2AL-qolcgDJOGwxdZ9QaM1vA.jpeg" /></p>
+<p><img alt="Image" src="https://masterofcode.com/wp-content/uploads/2023/11/LOFTs-Architecture.png" /></p>
+<p><img alt="Image" src="https://framerusercontent.com/images/8WL6CwrJPxTeDBwqoQ4CNBJpMMc.jpg?height=640&amp;width=1600" /></p>
+</section>
+<hr class="docutils" />
+<section id="callback-lifecycle-high-level">
+<h2><a class="toc-backref" href="#id4">Callback Lifecycle (High Level)</a><a class="headerlink" href="#callback-lifecycle-high-level" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Runnable starts</p></li>
+<li><p>Callback handler is notified</p></li>
+<li><p>Sub-steps emit events</p></li>
+<li><p>Handler processes events</p></li>
+<li><p>Runnable finishes or errors</p></li>
+</ol>
+<p>Callbacks <strong>do not change outputs</strong> by default—they <strong>observe</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="built-in-callback-handler-stdout">
+<h2><a class="toc-backref" href="#id5">Built-in Callback Handler (StdOut)</a><a class="headerlink" href="#built-in-callback-handler-stdout" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.callbacks.streaming_stdout</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamingStdOutCallbackHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">StreamingStdOutCallbackHandler</span><span class="p">()]</span>
+<span class="p">)</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Explain callback handlers briefly&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Callback handlers are functions that are passed as arguments to other functions and are invoked by those functions at a later time. They are commonly used in event-driven programming to handle asynchronous tasks and respond to events. Callback handlers allow for modular and flexible code as they enable functions to be executed in response to specific events or conditions.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;Callback handlers are functions that are passed as arguments to other functions and are invoked by those functions at a later time. They are commonly used in event-driven programming to handle asynchronous tasks and respond to events. Callback handlers allow for modular and flexible code as they enable functions to be executed in response to specific events or conditions.&#39;, additional_kwargs={}, response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4c29-589f-7bd1-a341-c4da5e645fec&#39;, usage_metadata={&#39;input_tokens&#39;: 12, &#39;output_tokens&#39;: 63, &#39;total_tokens&#39;: 75, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>What happens</strong></p>
+<ul class="simple">
+<li><p>Tokens are printed to stdout as they arrive</p></li>
+<li><p>No custom code required</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="custom-callback-handler-most-important">
+<h2><a class="toc-backref" href="#id6">Custom Callback Handler (Most Important)</a><a class="headerlink" href="#custom-callback-handler-most-important" title="Permalink to this heading">#</a></h2>
+<section id="define-a-custom-handler">
+<h3><a class="toc-backref" href="#id7">Define a Custom Handler</a><a class="headerlink" href="#define-a-custom-handler" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.callbacks.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCallbackHandler</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCallbackHandler</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serialized</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Chain started:&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_new_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Chain ended:&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="attach-it-to-a-runnable">
+<h3><a class="toc-backref" href="#id8">Attach It to a Runnable</a><a class="headerlink" href="#attach-it-to-a-runnable" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">&quot;Explain </span><span class="si">{topic}</span><span class="s2"> in one sentence&quot;</span>
+<span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">MyCallbackHandler</span><span class="p">()]</span>
+<span class="p">)</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="s2">&quot;callback handlers&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Callback handlers are functions that are passed as arguments to other functions and are called when a certain event or condition occurs.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;Callback handlers are functions that are passed as arguments to other functions and are called when a certain event or condition occurs.&#39;, additional_kwargs={}, response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4c2b-55ca-7293-bca1-04335331b79c&#39;, usage_metadata={&#39;input_tokens&#39;: 14, &#39;output_tokens&#39;: 23, &#39;total_tokens&#39;: 37, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="what-events-you-can-hook-into">
+<h2><a class="toc-backref" href="#id9">What Events You Can Hook Into</a><a class="headerlink" href="#what-events-you-can-hook-into" title="Permalink to this heading">#</a></h2>
+<p>Common callback methods:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>on_chain_start / on_chain_end
+on_llm_start / on_llm_end
+on_llm_new_token
+on_tool_start / on_tool_end
+on_retriever_start / on_retriever_end
+on_error
+</pre></div>
+</div>
+<p>You implement <strong>only what you need</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="callback-handlers-with-runnablesequence">
+<h2><a class="toc-backref" href="#id10">Callback Handlers with RunnableSequence</a><a class="headerlink" href="#callback-handlers-with-runnablesequence" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="o">|</span> <span class="n">llm</span>
+<span class="p">)</span>
+
+<span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">&quot;callbacks in sequence&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;callbacks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">MyCallbackHandler</span><span class="p">()]}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain started: callbacks in sequence
+Chain started: callbacks in sequence
+
+Chain ended: CALLBACKS IN SEQUENCE
+11.. The The first first callback callback function function is is executed executed.
+.
+22.. Once Once the the first first callback callback function function completes completes its its task task,, the the next next callback callback function function in in the the sequence sequence is is invoked invoked.
+.
+33.. This This process process continues continues until until all all the the callback callback functions functions in in the the sequence sequence have have been been executed executed..
+Chain ended: content=&#39;1. The first callback function is executed.\n2. Once the first callback function completes its task, the next callback function in the sequence is invoked.\n3. This process continues until all the callback functions in the sequence have been executed.&#39; additional_kwargs={} response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;} id=&#39;lc_run--019b4c2b-d458-77d3-8aea-ddfc766e3f75&#39; usage_metadata={&#39;input_tokens&#39;: 13, &#39;output_tokens&#39;: 47, &#39;total_tokens&#39;: 60, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;1. The first callback function is executed.\n2. Once the first callback function completes its task, the next callback function in the sequence is invoked.\n3. This process continues until all the callback functions in the sequence have been executed.&#39;, additional_kwargs={}, response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4c2b-d458-77d3-8aea-ddfc766e3f75&#39;, usage_metadata={&#39;input_tokens&#39;: 13, &#39;output_tokens&#39;: 47, &#39;total_tokens&#39;: 60, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>Callbacks receive events from <strong>all steps</strong> in the sequence.</p>
+</section>
+<hr class="docutils" />
+<section id="per-invocation-vs-global-callbacks">
+<h2><a class="toc-backref" href="#id11">Per-Invocation vs Global Callbacks</a><a class="headerlink" href="#per-invocation-vs-global-callbacks" title="Permalink to this heading">#</a></h2>
+<section id="per-invocation">
+<h3><a class="toc-backref" href="#id12">Per-invocation</a><a class="headerlink" href="#per-invocation" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">&quot;Explain callbacks&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;callbacks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">MyCallbackHandler</span><span class="p">()]}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain started: Explain callbacks
+Chain started: Explain callbacks
+
+Chain ended: EXPLAIN CALLBACKS
+CallbacksCallbacks are are functions functions that that are are passed passed as as arguments arguments to to another another function function and and are are intended intended to to be be executed executed once once the the main main function function has has completed completed its its task task.. They They are are a a way way to to handle handle asynchronous asynchronous operations operations in in JavaScript JavaScript,, such such as as fetching fetching data data from from an an API API or or executing executing a a time time-consuming-consuming computation computation.
+
+.
+
+WhenWhen a a function function accepts accepts a a callback callback as as an an argument argument,, it it can can call call that that callback callback once once it it has has completed completed its its task task.. This This allows allows the the original original function function to to continue continue running running other other tasks tasks while while waiting waiting for for the the callback callback to to be be executed executed.
+
+.
+
+CallbacksCallbacks are are commonly commonly used used in in event event handlers handlers,, AJAX AJAX requests requests,, and and other other asynchronous asynchronous operations operations in in JavaScript JavaScript.. They They are are a a key key concept concept in in modern modern web web development development,, as as they they allow allow for for non non-blocking-blocking code code execution execution and and help help improve improve the the performance performance of of web web applications applications..
+Chain ended: content=&#39;Callbacks are functions that are passed as arguments to another function and are intended to be executed once the main function has completed its task. They are a way to handle asynchronous operations in JavaScript, such as fetching data from an API or executing a time-consuming computation.\n\nWhen a function accepts a callback as an argument, it can call that callback once it has completed its task. This allows the original function to continue running other tasks while waiting for the callback to be executed.\n\nCallbacks are commonly used in event handlers, AJAX requests, and other asynchronous operations in JavaScript. They are a key concept in modern web development, as they allow for non-blocking code execution and help improve the performance of web applications.&#39; additional_kwargs={} response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;} id=&#39;lc_run--019b4c2c-261a-71b1-8342-a75d6c90c9e4&#39; usage_metadata={&#39;input_tokens&#39;: 11, &#39;output_tokens&#39;: 137, &#39;total_tokens&#39;: 148, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}}
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIMessage(content=&#39;Callbacks are functions that are passed as arguments to another function and are intended to be executed once the main function has completed its task. They are a way to handle asynchronous operations in JavaScript, such as fetching data from an API or executing a time-consuming computation.\n\nWhen a function accepts a callback as an argument, it can call that callback once it has completed its task. This allows the original function to continue running other tasks while waiting for the callback to be executed.\n\nCallbacks are commonly used in event handlers, AJAX requests, and other asynchronous operations in JavaScript. They are a key concept in modern web development, as they allow for non-blocking code execution and help improve the performance of web applications.&#39;, additional_kwargs={}, response_metadata={&#39;finish_reason&#39;: &#39;stop&#39;, &#39;model_name&#39;: &#39;gpt-3.5-turbo-0125&#39;, &#39;service_tier&#39;: &#39;default&#39;, &#39;model_provider&#39;: &#39;openai&#39;}, id=&#39;lc_run--019b4c2c-261a-71b1-8342-a75d6c90c9e4&#39;, usage_metadata={&#39;input_tokens&#39;: 11, &#39;output_tokens&#39;: 137, &#39;total_tokens&#39;: 148, &#39;input_token_details&#39;: {&#39;audio&#39;: 0, &#39;cache_read&#39;: 0}, &#39;output_token_details&#39;: {&#39;audio&#39;: 0, &#39;reasoning&#39;: 0}})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="global-applies-everywhere">
+<h3><a class="toc-backref" href="#id13">Global (applies everywhere)</a><a class="headerlink" href="#global-applies-everywhere" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">MyCallbackHandler</span><span class="p">()])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="callbacks-streaming-real-time-ui">
+<h2><a class="toc-backref" href="#id14">Callbacks + Streaming (Real-Time UI)</a><a class="headerlink" href="#callbacks-streaming-real-time-ui" title="Permalink to this heading">#</a></h2>
+<p>Callback handlers are the <strong>foundation</strong> of:</p>
+<ul class="simple">
+<li><p>Token streaming</p></li>
+<li><p>SSE / WebSocket updates</p></li>
+<li><p>Progress indicators</p></li>
+</ul>
+<p>Example usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">on_llm_new_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">websocket</span><span class="o">.</span><span class="n">send_text</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="callbacks-in-async-execution">
+<h2><a class="toc-backref" href="#id15">Callbacks in Async Execution</a><a class="headerlink" href="#callbacks-in-async-execution" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">llm</span><span class="o">.</span><span class="n">astream</span><span class="p">(</span>
+    <span class="s2">&quot;Explain async callbacks&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;callbacks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">MyCallbackHandler</span><span class="p">()]}</span>
+<span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Async and sync callbacks work the same conceptually.</p>
+</section>
+<hr class="docutils" />
+<section id="callback-handlers-vs-middleware">
+<h2><a class="toc-backref" href="#id16">Callback Handlers vs Middleware</a><a class="headerlink" href="#callback-handlers-vs-middleware" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Callback Handler</p></th>
+<th class="head"><p>Middleware</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Observe events</p></td>
+<td><p>Modify flow</p></td>
+</tr>
+<tr class="row-odd"><td><p>Granularity</p></td>
+<td><p>Step-level</p></td>
+<td><p>Request-level</p></td>
+</tr>
+<tr class="row-even"><td><p>Streaming</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>LCEL-native</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="common-use-cases">
+<h2><a class="toc-backref" href="#id17">Common Use Cases</a><a class="headerlink" href="#common-use-cases" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Streaming tokens to UI</p></li>
+<li><p>Logging prompts/responses</p></li>
+<li><p>Cost and token accounting</p></li>
+<li><p>Tracing (LangSmith)</p></li>
+<li><p>Policy checks and audits</p></li>
+<li><p>Debugging chains and agents</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id18">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Doing heavy blocking work in callbacks</p></li>
+<li><p>Logging sensitive data</p></li>
+<li><p>Forgetting callbacks don’t alter output</p></li>
+<li><p>Attaching callbacks at the wrong scope</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mental-model">
+<h2><a class="toc-backref" href="#id19">Mental Model</a><a class="headerlink" href="#mental-model" title="Permalink to this heading">#</a></h2>
+<p>Callback handlers are <strong>event listeners</strong> for runnable execution.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Runnable runs → events fire → handlers react
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id20">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Callback handlers provide <strong>observability</strong></p></li>
+<li><p>They hook into every stage of execution</p></li>
+<li><p>Essential for streaming, logging, and monitoring</p></li>
+<li><p>Core building block for production LLM systems</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\streaming_callbacks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-callback-handlers-are-needed">Why Callback Handlers Are Needed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-view">Architecture View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callback-lifecycle-high-level">Callback Lifecycle (High Level)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-callback-handler-stdout">Built-in Callback Handler (StdOut)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-callback-handler-most-important">Custom Callback Handler (Most Important)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-custom-handler">Define a Custom Handler</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attach-it-to-a-runnable">Attach It to a Runnable</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-events-you-can-hook-into">What Events You Can Hook Into</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callback-handlers-with-runnablesequence">Callback Handlers with RunnableSequence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-invocation-vs-global-callbacks">Per-Invocation vs Global Callbacks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#per-invocation">Per-invocation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-applies-everywhere">Global (applies everywhere)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callbacks-streaming-real-time-ui">Callbacks + Streaming (Real-Time UI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callbacks-in-async-execution">Callbacks in Async Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callback-handlers-vs-middleware">Callback Handlers vs Middleware</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model">Mental Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

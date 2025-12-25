@@ -1,0 +1,927 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>SimpleSequentialChain (LangChain) &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/chains/03_simple_sequential_chain';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/chains/03_simple_sequential_chain.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/chains/03_simple_sequential_chain.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/chains/03_simple_sequential_chain.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SimpleSequentialChain (LangChain)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-simplesequentialchain-is">What SimpleSequentialChain Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea">Core Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-simplesequentialchain-exists">Why SimpleSequentialChain Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-characteristics">Key Characteristics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints">Constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-demonstration">Basic Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-create-individual-llmchains">Step 1: Create Individual LLMChains</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-create-simplesequentialchain">Step 2: Create SimpleSequentialChain</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-invoke-the-chain">Step 3: Invoke the Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-data-flows-internally">How Data Flows Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplesequentialchain-vs-sequentialchain">SimpleSequentialChain vs SequentialChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-comparison">Feature Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplesequentialchain-vs-lcel-modern-approach">SimpleSequentialChain vs LCEL (Modern Approach)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplesequentialchain-legacy">SimpleSequentialChain (Legacy)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-equivalent-recommended">LCEL Equivalent (Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-important">Limitations (Important)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-simplesequentialchain">When to Use SimpleSequentialChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-it">When NOT to Use It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#migration-to-lcel-recommended">Migration to LCEL (Recommended)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#before">Before</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#after">After</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-if-you-must-use-it">Best Practices (If You Must Use It)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#simplesequentialchain-langchain" id="id1">SimpleSequentialChain (LangChain)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-simplesequentialchain-is" id="id2">What SimpleSequentialChain Is</a></p></li>
+<li><p><a class="reference internal" href="#core-idea" id="id3">Core Idea</a></p></li>
+<li><p><a class="reference internal" href="#why-simplesequentialchain-exists" id="id4">Why SimpleSequentialChain Exists</a></p></li>
+<li><p><a class="reference internal" href="#key-characteristics" id="id5">Key Characteristics</a></p></li>
+<li><p><a class="reference internal" href="#constraints" id="id6">Constraints</a></p></li>
+<li><p><a class="reference internal" href="#basic-demonstration" id="id7">Basic Demonstration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-create-individual-llmchains" id="id8">Step 1: Create Individual LLMChains</a></p></li>
+<li><p><a class="reference internal" href="#step-2-create-simplesequentialchain" id="id9">Step 2: Create SimpleSequentialChain</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#step-3-invoke-the-chain" id="id10">Step 3: Invoke the Chain</a></p></li>
+<li><p><a class="reference internal" href="#how-data-flows-internally" id="id11">How Data Flows Internally</a></p></li>
+<li><p><a class="reference internal" href="#simplesequentialchain-vs-sequentialchain" id="id12">SimpleSequentialChain vs SequentialChain</a></p></li>
+<li><p><a class="reference internal" href="#feature-comparison" id="id13">Feature Comparison</a></p></li>
+<li><p><a class="reference internal" href="#simplesequentialchain-vs-lcel-modern-approach" id="id14">SimpleSequentialChain vs LCEL (Modern Approach)</a></p></li>
+<li><p><a class="reference internal" href="#simplesequentialchain-legacy" id="id15">SimpleSequentialChain (Legacy)</a></p></li>
+<li><p><a class="reference internal" href="#lcel-equivalent-recommended" id="id16">LCEL Equivalent (Recommended)</a></p></li>
+<li><p><a class="reference internal" href="#common-use-cases" id="id17">Common Use Cases</a></p></li>
+<li><p><a class="reference internal" href="#limitations-important" id="id18">Limitations (Important)</a></p></li>
+<li><p><a class="reference internal" href="#when-to-use-simplesequentialchain" id="id19">When to Use SimpleSequentialChain</a></p></li>
+<li><p><a class="reference internal" href="#when-not-to-use-it" id="id20">When NOT to Use It</a></p></li>
+<li><p><a class="reference internal" href="#migration-to-lcel-recommended" id="id21">Migration to LCEL (Recommended)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#before" id="id22">Before</a></p></li>
+<li><p><a class="reference internal" href="#after" id="id23">After</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices-if-you-must-use-it" id="id24">Best Practices (If You Must Use It)</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id25">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id26">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="simplesequentialchain-langchain">
+<h1><a class="toc-backref" href="#id1">SimpleSequentialChain (LangChain)</a><a class="headerlink" href="#simplesequentialchain-langchain" title="Permalink to this heading">#</a></h1>
+<section id="what-simplesequentialchain-is">
+<h2><a class="toc-backref" href="#id2">What SimpleSequentialChain Is</a><a class="headerlink" href="#what-simplesequentialchain-is" title="Permalink to this heading">#</a></h2>
+<p><strong>SimpleSequentialChain</strong> is a <strong>legacy LangChain abstraction</strong> that executes <strong>multiple chains in a fixed order</strong>, where:</p>
+<ul class="simple">
+<li><p>The <strong>output of one chain becomes the input of the next</strong></p></li>
+<li><p>There is <strong>exactly one input and one output</strong> across the entire pipeline</p></li>
+</ul>
+<blockquote>
+<div><p>It is a <strong>convenience wrapper</strong> around <code class="docutils literal notranslate"><span class="pre">SequentialChain</span></code> for very simple linear workflows.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="core-idea">
+<h2><a class="toc-backref" href="#id3">Core Idea</a><a class="headerlink" href="#core-idea" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Input (string)
+   ↓
+Chain 1
+   ↓
+Chain 2
+   ↓
+Chain 3
+   ↓
+Final Output (string)
+</pre></div>
+</div>
+<p>There is <strong>no variable mapping</strong>, no branching, and no parallelism.</p>
+</section>
+<hr class="docutils" />
+<section id="why-simplesequentialchain-exists">
+<h2><a class="toc-backref" href="#id4">Why SimpleSequentialChain Exists</a><a class="headerlink" href="#why-simplesequentialchain-exists" title="Permalink to this heading">#</a></h2>
+<p>SimpleSequentialChain was introduced to:</p>
+<ul class="simple">
+<li><p>Reduce boilerplate for beginners</p></li>
+<li><p>Quickly chain text-generation steps</p></li>
+<li><p>Avoid managing input/output keys</p></li>
+</ul>
+<p>It trades <strong>flexibility</strong> for <strong>simplicity</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="key-characteristics">
+<h2><a class="toc-backref" href="#id5">Key Characteristics</a><a class="headerlink" href="#key-characteristics" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="constraints">
+<h2><a class="toc-backref" href="#id6">Constraints</a><a class="headerlink" href="#constraints" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Single input</p></li>
+<li><p>Single output</p></li>
+<li><p>Each chain must accept and return <strong>a string</strong></p></li>
+<li><p>No access to intermediate variables</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="basic-demonstration">
+<h2><a class="toc-backref" href="#id7">Basic Demonstration</a><a class="headerlink" href="#basic-demonstration" title="Permalink to this heading">#</a></h2>
+<section id="step-1-create-individual-llmchains">
+<h3><a class="toc-backref" href="#id8">Step 1: Create Individual LLMChains</a><a class="headerlink" href="#step-1-create-individual-llmchains" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMChain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.chains.sequential</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequentialChain</span><span class="p">,</span> <span class="n">SimpleSequentialChain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">title_prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">],</span>
+    <span class="n">template</span><span class="o">=</span><span class="s2">&quot;Generate a short title for: </span><span class="si">{input}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">summary_prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
+    <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">],</span>
+    <span class="n">template</span><span class="o">=</span><span class="s2">&quot;Write a one-line summary for the title: </span><span class="si">{input}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">title_chain</span> <span class="o">=</span> <span class="n">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">title_prompt</span><span class="p">)</span>
+<span class="n">summary_chain</span> <span class="o">=</span> <span class="n">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">summary_prompt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\sangouda\AppData\Local\Temp\ipykernel_27588\1790310879.py:18: LangChainDeprecationWarning: The class `LLMChain` was deprecated in LangChain 0.1.17 and will be removed in 1.0. Use `RunnableSequence, e.g., `prompt | llm`` instead.
+  title_chain = LLMChain(llm=llm, prompt=title_prompt)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="step-2-create-simplesequentialchain">
+<h3><a class="toc-backref" href="#id9">Step 2: Create SimpleSequentialChain</a><a class="headerlink" href="#step-2-create-simplesequentialchain" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_chain</span> <span class="o">=</span> <span class="n">SimpleSequentialChain</span><span class="p">(</span>
+    <span class="n">chains</span><span class="o">=</span><span class="p">[</span><span class="n">title_chain</span><span class="p">,</span> <span class="n">summary_chain</span><span class="p">],</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="step-3-invoke-the-chain">
+<h2><a class="toc-backref" href="#id10">Step 3: Invoke the Chain</a><a class="headerlink" href="#step-3-invoke-the-chain" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">simple_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;LangChain framework&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">&gt; Entering new SimpleSequentialChain chain...</span>
+<span class=" -Color -Color-Bold -Color-Bold-Cyan">&quot;LangChain: Empowering Language Model Applications&quot;</span>
+<span class=" -Color -Color-Bold -Color-Bold-Yellow">&quot;LangChain: A framework designed to enhance the development and deployment of applications utilizing language models.&quot;</span>
+
+<span class=" -Color -Color-Bold">&gt; Finished chain.</span>
+{&#39;input&#39;: &#39;LangChain framework&#39;, &#39;output&#39;: &#39;&quot;LangChain: A framework designed to enhance the development and deployment of applications utilizing language models.&quot;&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A framework for building applications with language models.
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="how-data-flows-internally">
+<h2><a class="toc-backref" href="#id11">How Data Flows Internally</a><a class="headerlink" href="#how-data-flows-internally" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&quot;LangChain framework&quot;
+   ↓
+title_chain → &quot;Building with Language Models&quot;
+   ↓
+summary_chain → &quot;A framework for building applications with language models.&quot;
+</pre></div>
+</div>
+<p>Only the <strong>final output</strong> is returned.</p>
+</section>
+<hr class="docutils" />
+<section id="simplesequentialchain-vs-sequentialchain">
+<h2><a class="toc-backref" href="#id12">SimpleSequentialChain vs SequentialChain</a><a class="headerlink" href="#simplesequentialchain-vs-sequentialchain" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="feature-comparison">
+<h2><a class="toc-backref" href="#id13">Feature Comparison</a><a class="headerlink" href="#feature-comparison" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>SimpleSequentialChain</p></th>
+<th class="head"><p>SequentialChain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Inputs</p></td>
+<td><p>One</p></td>
+<td><p>Multiple</p></td>
+</tr>
+<tr class="row-odd"><td><p>Outputs</p></td>
+<td><p>One</p></td>
+<td><p>Multiple</p></td>
+</tr>
+<tr class="row-even"><td><p>Variable mapping</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flexibility</p></td>
+<td><p>Low</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-even"><td><p>Complex workflows</p></td>
+<td><p>❌</p></td>
+<td><p>⚠️</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="simplesequentialchain-vs-lcel-modern-approach">
+<h2><a class="toc-backref" href="#id14">SimpleSequentialChain vs LCEL (Modern Approach)</a><a class="headerlink" href="#simplesequentialchain-vs-lcel-modern-approach" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="simplesequentialchain-legacy">
+<h2><a class="toc-backref" href="#id15">SimpleSequentialChain (Legacy)</a><a class="headerlink" href="#simplesequentialchain-legacy" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SimpleSequentialChain</span><span class="p">(</span><span class="n">chains</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="lcel-equivalent-recommended">
+<h2><a class="toc-backref" href="#id16">LCEL Equivalent (Recommended)</a><a class="headerlink" href="#lcel-equivalent-recommended" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="n">a</span> <span class="o">|</span> <span class="n">b</span> <span class="o">|</span> <span class="n">c</span>
+</pre></div>
+</div>
+<p>LCEL provides:</p>
+<ul class="simple">
+<li><p>Better composability</p></li>
+<li><p>Streaming &amp; async</p></li>
+<li><p>Parallelism</p></li>
+<li><p>Future-proof design</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="common-use-cases">
+<h2><a class="toc-backref" href="#id17">Common Use Cases</a><a class="headerlink" href="#common-use-cases" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Quick prototypes</p></li>
+<li><p>Simple content pipelines</p></li>
+<li><p>Text rewriting flows</p></li>
+<li><p>Title → summary generation</p></li>
+<li><p>Translation → formatting</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="limitations-important">
+<h2><a class="toc-backref" href="#id18">Limitations (Important)</a><a class="headerlink" href="#limitations-important" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>❌ No access to intermediate results</p></li>
+<li><p>❌ No branching or conditionals</p></li>
+<li><p>❌ No tool usage</p></li>
+<li><p>❌ No streaming control</p></li>
+<li><p>❌ Not agent-compatible</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-simplesequentialchain">
+<h2><a class="toc-backref" href="#id19">When to Use SimpleSequentialChain</a><a class="headerlink" href="#when-to-use-simplesequentialchain" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Learning LangChain basics</p></li>
+<li><p>Very small demos</p></li>
+<li><p>Legacy code maintenance</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-not-to-use-it">
+<h2><a class="toc-backref" href="#id20">When NOT to Use It</a><a class="headerlink" href="#when-not-to-use-it" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Production systems</p></li>
+<li><p>RAG pipelines</p></li>
+<li><p>Agents</p></li>
+<li><p>Multi-step reasoning</p></li>
+<li><p>Any new LangChain project</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="migration-to-lcel-recommended">
+<h2><a class="toc-backref" href="#id21">Migration to LCEL (Recommended)</a><a class="headerlink" href="#migration-to-lcel-recommended" title="Permalink to this heading">#</a></h2>
+<section id="before">
+<h3><a class="toc-backref" href="#id22">Before</a><a class="headerlink" href="#before" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SimpleSequentialChain</span><span class="p">(</span><span class="n">chains</span><span class="o">=</span><span class="p">[</span><span class="n">chain1</span><span class="p">,</span> <span class="n">chain2</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="after">
+<h3><a class="toc-backref" href="#id23">After</a><a class="headerlink" href="#after" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="n">chain1</span> <span class="o">|</span> <span class="n">chain2</span>
+</pre></div>
+</div>
+<p>Same logic, more power.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="best-practices-if-you-must-use-it">
+<h2><a class="toc-backref" href="#id24">Best Practices (If You Must Use It)</a><a class="headerlink" href="#best-practices-if-you-must-use-it" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Keep chains minimal</p></li>
+<li><p>Ensure each chain returns clean text</p></li>
+<li><p>Avoid more than 2–3 steps</p></li>
+<li><p>Plan migration to LCEL</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id25">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“SimpleSequentialChain is a legacy LangChain abstraction for chaining multiple LLM calls in a linear pipeline with a single input and output. It simplifies chaining but lacks flexibility and has been superseded by LCEL.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id26">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Very simple demos → SimpleSequentialChain</strong></p></li>
+<li><p><strong>Anything real → LCEL</strong></p></li>
+<li><p><strong>Dynamic workflows → Agents or LangGraph</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\chains"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-simplesequentialchain-is">What SimpleSequentialChain Is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea">Core Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-simplesequentialchain-exists">Why SimpleSequentialChain Exists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-characteristics">Key Characteristics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints">Constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-demonstration">Basic Demonstration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-create-individual-llmchains">Step 1: Create Individual LLMChains</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-create-simplesequentialchain">Step 2: Create SimpleSequentialChain</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-invoke-the-chain">Step 3: Invoke the Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-data-flows-internally">How Data Flows Internally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplesequentialchain-vs-sequentialchain">SimpleSequentialChain vs SequentialChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-comparison">Feature Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplesequentialchain-vs-lcel-modern-approach">SimpleSequentialChain vs LCEL (Modern Approach)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplesequentialchain-legacy">SimpleSequentialChain (Legacy)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcel-equivalent-recommended">LCEL Equivalent (Recommended)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-important">Limitations (Important)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-simplesequentialchain">When to Use SimpleSequentialChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-it">When NOT to Use It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#migration-to-lcel-recommended">Migration to LCEL (Recommended)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#before">Before</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#after">After</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-if-you-must-use-it">Best Practices (If You Must Use It)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

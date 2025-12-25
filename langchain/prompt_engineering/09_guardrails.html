@@ -1,0 +1,1110 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Guardrails (LangChain Perspective) &#8212; Machine Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'langchain/prompt_engineering/09_guardrails';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Machine Learning Handbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Machine Learning Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    LangChain Tutorial
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/svgoudar/Learn-ML-and-NLP/blob/master/langchain/prompt_engineering/09_guardrails.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/svgoudar/Learn-ML-and-NLP/issues/new?title=Issue%20on%20page%20%2Flangchain/prompt_engineering/09_guardrails.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/langchain/prompt_engineering/09_guardrails.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Guardrails (LangChain Perspective)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-guardrails-are-necessary">Why Guardrails Are Necessary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-guardrails-sit-in-the-pipeline">Where Guardrails Sit in the Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-guardrails">Types of Guardrails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-guardrails">Input Guardrails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-guardrails">Generation Guardrails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-guardrails">Output Guardrails</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-guardrails-demonstration">Input Guardrails (Demonstration)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-input-validation">Basic Input Validation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-runnablelambda">Using RunnableLambda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-level-guardrails">Prompt-Level Guardrails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strong-system-message">Strong System Message</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-guardrails-with-structured-output-primary">Output Guardrails with Structured Output (Primary)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schema-enforcement-best-practice">Schema Enforcement (Best Practice)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-validation-auto-fix">Output Validation + Auto-Fix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outputfixingparser">OutputFixingParser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-safety-guardrails">Content Safety Guardrails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-keyword-filter">Simple Keyword Filter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-with-retry-fallback">Guardrails with Retry &amp; Fallback</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-on-failure">Retry on Failure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback-model">Fallback Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-in-rag">Guardrails in RAG</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-only-answers">Context-Only Answers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-in-agents">Guardrails in Agents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-only-execution">Tool-Only Execution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-guardrail-patterns">Common Guardrail Patterns</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#allowlist">Allowlist</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#denylist">Denylist</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relying-only-on-prompts">Relying only on prompts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overly-complex-schemas">Overly complex schemas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-temperature-with-guardrails">High temperature with guardrails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-fallback-strategy">No fallback strategy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-guardrails-are-mandatory">When Guardrails Are Mandatory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#guardrails-langchain-perspective" id="id1">Guardrails (LangChain Perspective)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-guardrails-are-necessary" id="id2">Why Guardrails Are Necessary</a></p></li>
+<li><p><a class="reference internal" href="#where-guardrails-sit-in-the-pipeline" id="id3">Where Guardrails Sit in the Pipeline</a></p></li>
+<li><p><a class="reference internal" href="#types-of-guardrails" id="id4">Types of Guardrails</a></p>
+<ul>
+<li><p><a class="reference internal" href="#input-guardrails" id="id5">Input Guardrails</a></p></li>
+<li><p><a class="reference internal" href="#generation-guardrails" id="id6">Generation Guardrails</a></p></li>
+<li><p><a class="reference internal" href="#output-guardrails" id="id7">Output Guardrails</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#input-guardrails-demonstration" id="id8">Input Guardrails (Demonstration)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#basic-input-validation" id="id9">Basic Input Validation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#using-runnablelambda" id="id10">Using RunnableLambda</a></p></li>
+<li><p><a class="reference internal" href="#prompt-level-guardrails" id="id11">Prompt-Level Guardrails</a></p>
+<ul>
+<li><p><a class="reference internal" href="#strong-system-message" id="id12">Strong System Message</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#output-guardrails-with-structured-output-primary" id="id13">Output Guardrails with Structured Output (Primary)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#schema-enforcement-best-practice" id="id14">Schema Enforcement (Best Practice)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#output-validation-auto-fix" id="id15">Output Validation + Auto-Fix</a></p>
+<ul>
+<li><p><a class="reference internal" href="#outputfixingparser" id="id16">OutputFixingParser</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#content-safety-guardrails" id="id17">Content Safety Guardrails</a></p>
+<ul>
+<li><p><a class="reference internal" href="#simple-keyword-filter" id="id18">Simple Keyword Filter</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#guardrails-with-retry-fallback" id="id19">Guardrails with Retry &amp; Fallback</a></p>
+<ul>
+<li><p><a class="reference internal" href="#retry-on-failure" id="id20">Retry on Failure</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#fallback-model" id="id21">Fallback Model</a></p></li>
+<li><p><a class="reference internal" href="#guardrails-in-rag" id="id22">Guardrails in RAG</a></p>
+<ul>
+<li><p><a class="reference internal" href="#context-only-answers" id="id23">Context-Only Answers</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#guardrails-in-agents" id="id24">Guardrails in Agents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#tool-only-execution" id="id25">Tool-Only Execution</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#common-guardrail-patterns" id="id26">Common Guardrail Patterns</a></p>
+<ul>
+<li><p><a class="reference internal" href="#allowlist" id="id27">Allowlist</a></p></li>
+<li><p><a class="reference internal" href="#denylist" id="id28">Denylist</a></p></li>
+<li><p><a class="reference internal" href="#validation" id="id29">Validation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#common-mistakes" id="id30">Common Mistakes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#relying-only-on-prompts" id="id31">Relying only on prompts</a></p></li>
+<li><p><a class="reference internal" href="#overly-complex-schemas" id="id32">Overly complex schemas</a></p></li>
+<li><p><a class="reference internal" href="#high-temperature-with-guardrails" id="id33">High temperature with guardrails</a></p></li>
+<li><p><a class="reference internal" href="#no-fallback-strategy" id="id34">No fallback strategy</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#best-practices" id="id35">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#when-guardrails-are-mandatory" id="id36">When Guardrails Are Mandatory</a></p></li>
+<li><p><a class="reference internal" href="#interview-ready-summary" id="id37">Interview-Ready Summary</a></p></li>
+<li><p><a class="reference internal" href="#rule-of-thumb" id="id38">Rule of Thumb</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="guardrails-langchain-perspective">
+<h1><a class="toc-backref" href="#id1">Guardrails (LangChain Perspective)</a><a class="headerlink" href="#guardrails-langchain-perspective" title="Permalink to this heading">#</a></h1>
+<p><strong>Guardrails</strong> are <strong>controls applied before, during, and after LLM execution</strong> to ensure outputs are <strong>safe, correct, compliant, and reliable</strong>.</p>
+<blockquote>
+<div><p>Guardrails do not improve creativity; they <strong>reduce risk</strong>.</p>
+</div></blockquote>
+<p>In LangChain, guardrails are implemented as <strong>composable layers</strong> using prompts, validators, output parsers, retries, filters, and routing.</p>
+<hr class="docutils" />
+<section id="why-guardrails-are-necessary">
+<h2><a class="toc-backref" href="#id2">Why Guardrails Are Necessary</a><a class="headerlink" href="#why-guardrails-are-necessary" title="Permalink to this heading">#</a></h2>
+<p>LLMs can:</p>
+<ul class="simple">
+<li><p>Hallucinate facts</p></li>
+<li><p>Ignore instructions</p></li>
+<li><p>Leak sensitive data</p></li>
+<li><p>Produce unsafe content</p></li>
+<li><p>Return invalid formats</p></li>
+</ul>
+<p>Guardrails:</p>
+<ul class="simple">
+<li><p>Enforce structure</p></li>
+<li><p>Validate outputs</p></li>
+<li><p>Block unsafe inputs</p></li>
+<li><p>Provide fallbacks</p></li>
+<li><p>Increase determinism</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="where-guardrails-sit-in-the-pipeline">
+<h2><a class="toc-backref" href="#id3">Where Guardrails Sit in the Pipeline</a><a class="headerlink" href="#where-guardrails-sit-in-the-pipeline" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Input
+  ↓
+Input Guardrails
+  ↓
+Prompt + LLM
+  ↓
+Output Guardrails
+  ↓
+Validated Response
+</pre></div>
+</div>
+<p>LangChain lets you place guardrails <strong>at every stage</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="types-of-guardrails">
+<h2><a class="toc-backref" href="#id4">Types of Guardrails</a><a class="headerlink" href="#types-of-guardrails" title="Permalink to this heading">#</a></h2>
+<section id="input-guardrails">
+<h3><a class="toc-backref" href="#id5">Input Guardrails</a><a class="headerlink" href="#input-guardrails" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Prompt injection detection</p></li>
+<li><p>Input sanitization</p></li>
+<li><p>Length / schema validation</p></li>
+</ul>
+</section>
+<section id="generation-guardrails">
+<h3><a class="toc-backref" href="#id6">Generation Guardrails</a><a class="headerlink" href="#generation-guardrails" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Low temperature</p></li>
+<li><p>Tool-only responses</p></li>
+<li><p>Restricted instructions</p></li>
+</ul>
+</section>
+<section id="output-guardrails">
+<h3><a class="toc-backref" href="#id7">Output Guardrails</a><a class="headerlink" href="#output-guardrails" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Structured output validation</p></li>
+<li><p>Content filters</p></li>
+<li><p>Auto-fixing and retries</p></li>
+<li><p>Fallback routing</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="input-guardrails-demonstration">
+<h2><a class="toc-backref" href="#id8">Input Guardrails (Demonstration)</a><a class="headerlink" href="#input-guardrails-demonstration" title="Permalink to this heading">#</a></h2>
+<section id="basic-input-validation">
+<h3><a class="toc-backref" href="#id9">Basic Input Validation</a><a class="headerlink" href="#basic-input-validation" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">validate_input</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;ignore previous instructions&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Potential prompt injection detected&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="using-runnablelambda">
+<h2><a class="toc-backref" href="#id10">Using RunnableLambda</a><a class="headerlink" href="#using-runnablelambda" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+<span class="n">input_guard</span> <span class="o">=</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="n">validate_input</span><span class="p">)</span>
+
+<span class="n">safe_chain</span> <span class="o">=</span> <span class="n">input_guard</span> <span class="o">|</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="prompt-level-guardrails">
+<h2><a class="toc-backref" href="#id11">Prompt-Level Guardrails</a><a class="headerlink" href="#prompt-level-guardrails" title="Permalink to this heading">#</a></h2>
+<section id="strong-system-message">
+<h3><a class="toc-backref" href="#id12">Strong System Message</a><a class="headerlink" href="#strong-system-message" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Follow system rules. Do not reveal internal reasoning.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>System messages act as <strong>soft guardrails</strong>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="output-guardrails-with-structured-output-primary">
+<h2><a class="toc-backref" href="#id13">Output Guardrails with Structured Output (Primary)</a><a class="headerlink" href="#output-guardrails-with-structured-output-primary" title="Permalink to this heading">#</a></h2>
+<section id="schema-enforcement-best-practice">
+<h3><a class="toc-backref" href="#id14">Schema Enforcement (Best Practice)</a><a class="headerlink" href="#schema-enforcement-best-practice" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Ticket</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">guarded_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Ticket</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">guarded_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Email service is down for finance team&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Guarantees:</p>
+<ul class="simple">
+<li><p>Correct fields</p></li>
+<li><p>Correct types</p></li>
+<li><p>Retry on failure</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="output-validation-auto-fix">
+<h2><a class="toc-backref" href="#id15">Output Validation + Auto-Fix</a><a class="headerlink" href="#output-validation-auto-fix" title="Permalink to this heading">#</a></h2>
+<section id="outputfixingparser">
+<h3><a class="toc-backref" href="#id16">OutputFixingParser</a><a class="headerlink" href="#outputfixingparser" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PydanticOutputParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">OutputFixingParser</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">PydanticOutputParser</span><span class="p">(</span><span class="n">pydantic_object</span><span class="o">=</span><span class="n">Ticket</span><span class="p">)</span>
+<span class="n">fixing_parser</span> <span class="o">=</span> <span class="n">OutputFixingParser</span><span class="o">.</span><span class="n">from_llm</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If the model returns invalid JSON:</p>
+<ul class="simple">
+<li><p>LangChain re-prompts</p></li>
+<li><p>Repairs output automatically</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="content-safety-guardrails">
+<h2><a class="toc-backref" href="#id17">Content Safety Guardrails</a><a class="headerlink" href="#content-safety-guardrails" title="Permalink to this heading">#</a></h2>
+<section id="simple-keyword-filter">
+<h3><a class="toc-backref" href="#id18">Simple Keyword Filter</a><a class="headerlink" href="#simple-keyword-filter" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">safety_filter</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">blocked</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">b</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">blocked</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sensitive content detected&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span>
+
+<span class="n">output_guard</span> <span class="o">=</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="n">safety_filter</span><span class="p">)</span>
+<span class="n">safe_chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">output_guard</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="guardrails-with-retry-fallback">
+<h2><a class="toc-backref" href="#id19">Guardrails with Retry &amp; Fallback</a><a class="headerlink" href="#guardrails-with-retry-fallback" title="Permalink to this heading">#</a></h2>
+<section id="retry-on-failure">
+<h3><a class="toc-backref" href="#id20">Retry on Failure</a><a class="headerlink" href="#retry-on-failure" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">safe_chain</span> <span class="o">=</span> <span class="p">(</span><span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span><span class="p">)</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="fallback-model">
+<h2><a class="toc-backref" href="#id21">Fallback Model</a><a class="headerlink" href="#fallback-model" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">safe_chain</span> <span class="o">=</span> <span class="p">(</span><span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span><span class="p">)</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">([</span><span class="n">backup_chain</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Used when:</p>
+<ul class="simple">
+<li><p>Model fails validation</p></li>
+<li><p>Rate limits occur</p></li>
+<li><p>Output is unsafe</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="guardrails-in-rag">
+<h2><a class="toc-backref" href="#id22">Guardrails in RAG</a><a class="headerlink" href="#guardrails-in-rag" title="Permalink to this heading">#</a></h2>
+<section id="context-only-answers">
+<h3><a class="toc-backref" href="#id23">Context-Only Answers</a><a class="headerlink" href="#context-only-answers" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Answer only using the provided context.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;Context:</span><span class="se">\n</span><span class="si">{context}</span><span class="se">\n\n</span><span class="s2">Question:</span><span class="se">\n</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Combined with:</p>
+<ul class="simple">
+<li><p>Low temperature</p></li>
+<li><p>Source citation schema</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="guardrails-in-agents">
+<h2><a class="toc-backref" href="#id24">Guardrails in Agents</a><a class="headerlink" href="#guardrails-in-agents" title="Permalink to this heading">#</a></h2>
+<section id="tool-only-execution">
+<h3><a class="toc-backref" href="#id25">Tool-Only Execution</a><a class="headerlink" href="#tool-only-execution" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Tools have strict JSON schemas</p></li>
+<li><p>Agent cannot invent tool arguments</p></li>
+<li><p>Invalid tool calls are rejected</p></li>
+</ul>
+<p>Agents rely on:</p>
+<ul class="simple">
+<li><p>Structured tool schemas</p></li>
+<li><p>AgentExecutor validation</p></li>
+<li><p>Hidden chain-of-thought</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="common-guardrail-patterns">
+<h2><a class="toc-backref" href="#id26">Common Guardrail Patterns</a><a class="headerlink" href="#common-guardrail-patterns" title="Permalink to this heading">#</a></h2>
+<section id="allowlist">
+<h3><a class="toc-backref" href="#id27">Allowlist</a><a class="headerlink" href="#allowlist" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Allowed tools</p></li>
+<li><p>Allowed output labels</p></li>
+<li><p>Allowed fields</p></li>
+</ul>
+</section>
+<section id="denylist">
+<h3><a class="toc-backref" href="#id28">Denylist</a><a class="headerlink" href="#denylist" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Prompt injection phrases</p></li>
+<li><p>Sensitive keywords</p></li>
+</ul>
+</section>
+<section id="validation">
+<h3><a class="toc-backref" href="#id29">Validation</a><a class="headerlink" href="#validation" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Schema checks</p></li>
+<li><p>Range checks</p></li>
+<li><p>Enum checks</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="common-mistakes">
+<h2><a class="toc-backref" href="#id30">Common Mistakes</a><a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<section id="relying-only-on-prompts">
+<h3><a class="toc-backref" href="#id31">Relying only on prompts</a><a class="headerlink" href="#relying-only-on-prompts" title="Permalink to this heading">#</a></h3>
+<p>❌ Soft guardrails are not enough</p>
+</section>
+<section id="overly-complex-schemas">
+<h3><a class="toc-backref" href="#id32">Overly complex schemas</a><a class="headerlink" href="#overly-complex-schemas" title="Permalink to this heading">#</a></h3>
+<p>❌ Increases failure rate</p>
+</section>
+<section id="high-temperature-with-guardrails">
+<h3><a class="toc-backref" href="#id33">High temperature with guardrails</a><a class="headerlink" href="#high-temperature-with-guardrails" title="Permalink to this heading">#</a></h3>
+<p>❌ More retries and cost</p>
+</section>
+<section id="no-fallback-strategy">
+<h3><a class="toc-backref" href="#id34">No fallback strategy</a><a class="headerlink" href="#no-fallback-strategy" title="Permalink to this heading">#</a></h3>
+<p>❌ Fragile systems</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="best-practices">
+<h2><a class="toc-backref" href="#id35">Best Practices</a><a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use <strong>structured output</strong> as the primary guardrail</p></li>
+<li><p>Keep temperature low for deterministic tasks</p></li>
+<li><p>Validate both input and output</p></li>
+<li><p>Add retries and fallbacks</p></li>
+<li><p>Never expose chain-of-thought</p></li>
+<li><p>Log guardrail failures internally</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="when-guardrails-are-mandatory">
+<h2><a class="toc-backref" href="#id36">When Guardrails Are Mandatory</a><a class="headerlink" href="#when-guardrails-are-mandatory" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Scenario</p></th>
+<th class="head"><p>Guardrails</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>APIs</p></td>
+<td><p>Required</p></td>
+</tr>
+<tr class="row-odd"><td><p>Agents</p></td>
+<td><p>Required</p></td>
+</tr>
+<tr class="row-even"><td><p>RAG</p></td>
+<td><p>Required</p></td>
+</tr>
+<tr class="row-odd"><td><p>Automation</p></td>
+<td><p>Required</p></td>
+</tr>
+<tr class="row-even"><td><p>Creative chat</p></td>
+<td><p>Optional</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="interview-ready-summary">
+<h2><a class="toc-backref" href="#id37">Interview-Ready Summary</a><a class="headerlink" href="#interview-ready-summary" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>“Guardrails in LangChain are layered controls—input validation, prompt constraints, structured output enforcement, retries, and fallbacks—that ensure LLM outputs are safe, valid, and production-ready.”</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="rule-of-thumb">
+<h2><a class="toc-backref" href="#id38">Rule of Thumb</a><a class="headerlink" href="#rule-of-thumb" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>If a machine consumes the output → guard it</strong></p></li>
+<li><p><strong>If it’s production → guard it twice</strong></p></li>
+<li><p><strong>If it’s safety-critical → validate everything</strong></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./langchain\prompt_engineering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-guardrails-are-necessary">Why Guardrails Are Necessary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-guardrails-sit-in-the-pipeline">Where Guardrails Sit in the Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-guardrails">Types of Guardrails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-guardrails">Input Guardrails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-guardrails">Generation Guardrails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-guardrails">Output Guardrails</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-guardrails-demonstration">Input Guardrails (Demonstration)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-input-validation">Basic Input Validation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-runnablelambda">Using RunnableLambda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-level-guardrails">Prompt-Level Guardrails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strong-system-message">Strong System Message</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-guardrails-with-structured-output-primary">Output Guardrails with Structured Output (Primary)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schema-enforcement-best-practice">Schema Enforcement (Best Practice)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-validation-auto-fix">Output Validation + Auto-Fix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outputfixingparser">OutputFixingParser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-safety-guardrails">Content Safety Guardrails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-keyword-filter">Simple Keyword Filter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-with-retry-fallback">Guardrails with Retry &amp; Fallback</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-on-failure">Retry on Failure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fallback-model">Fallback Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-in-rag">Guardrails in RAG</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-only-answers">Context-Only Answers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-in-agents">Guardrails in Agents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-only-execution">Tool-Only Execution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-guardrail-patterns">Common Guardrail Patterns</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#allowlist">Allowlist</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#denylist">Denylist</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relying-only-on-prompts">Relying only on prompts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overly-complex-schemas">Overly complex schemas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-temperature-with-guardrails">High temperature with guardrails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-fallback-strategy">No fallback strategy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-guardrails-are-mandatory">When Guardrails Are Mandatory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interview-ready-summary">Interview-Ready Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-of-thumb">Rule of Thumb</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By svgoudar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
