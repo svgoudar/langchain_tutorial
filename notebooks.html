@@ -192,10 +192,264 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/core/overview.html">LangChain Core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/01_llms.html">LLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/02_chat_models.html">Chat Model</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/03_model_providers.html">Model Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/04_prompt_templates.html">Prompt Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/05_output_parsers.html">Output Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/06_runnable_interface.html">Runnable Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/07_lcel.html">LangChain Expression Language (LCEL)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/core/08_model_parameters.html">Model Parameters</a></li>
+
+
+
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/prompt_engineering/overview.html">Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/01_prompt_template.html">PromptTemplate (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/02_chat_prompt_template.html">ChatPromptTemplate (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/03_system_human_ai_messages.html">System / Human / AI Messages (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/04_few_shot_prompting.html">Few-shot Prompting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/05_chain_of_thought.html">Chain-of-Thought (CoT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/06_self_consistency.html">Self-Consistency (LangChain Perspective)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/07_instruction_prompting.html">Instruction Tuning (LangChain &amp; LLM Perspective)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/08_structured_output_prompts.html">Structured Output Prompts (LangChain Perspective)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/prompt_engineering/09_guardrails.html">Guardrails (LangChain Perspective)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/chains/overview.html">LangChain Chains</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/01_llmchain.html">LLMChain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/02_sequential_chain.html">SequentialChain (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/03_simple_sequential_chain.html">SimpleSequentialChain (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/04_router_chain.html">Router Chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/05_map_reduce_chains.html">MapReduce Chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/06_refine_chain.html">Refine Chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/07_stuff_chain.html">Stuff Chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/08_transform_chain.html">TransformChain (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/09_retrievalqa_chain.html">RetrievalQA Chain (LangChain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/chains/10_conversational_retrieval_chain.html">ConversationalRetrievalChain</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/rag/overview.html">Retrieval-Augmented Generation (RAG)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/01_document_loaders.html">Document Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/02_text_splitters.html">Text Splitter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/03_chunk_overlap.html">Chunk Overlap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/04_embeddings.html">Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/05_vector_stores.html">Vector Stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/06_similarity_search.html">Similarity Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/07_mmr.html">Maximal Marginal Relevance (MMR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/08_hybrid_search.html">Hybrid Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/09_reranking.html">Reranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/10_context_window_management.html">Context Window Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/11_source_attribution.html">Source Attribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/12_hallucination_prevention.html">Hallucination Prevention and Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/rag/13_types_of_rag.html">Types of RAG (Retrieval-Augmented Generation)</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/agents/overview.html">LangChain Agents</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/01_tool_calling.html">Tool Calling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/02_react_agents.html">ReAct Agent (Reason + Act)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/03_openai_tools_agent.html">OpenAI Tools Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/04_conversational_agents.html">Conversational Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/05_multi_tool_agents.html">Multi-Tool Agents</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/06_function_calling.html">Function Calling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/07_agent_scratchpad.html">agent_scratchpad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/08_agent_executor.html">AgentExecutor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/09_agent_memory.html">Agent Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/agents/10_planning_vs_execution_agents.html">Planning vs Execution Agents</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/tools/overview.html">Tools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/tools/01_custom_tools.html">Custom Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/tools/02_structured_tools.html">Structured Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/tools/03_tool_schemas.html">Tool Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/tools/04_api_tools.html">API Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/tools/05_database_tools.html">Database Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/tools/06_file_system_tools.html">File System Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/tools/07_web_search_tools.html">Web Search Tools — Explanation with Demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/tools/08_mcp_tool_adapters.html">MCP Tool Adapters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/memory/overview.html">Memory Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/memory/01_conversation_buffer_memory.html">ConversationBufferMemory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/memory/02_conversation_summary_memory.html">ConversationSummaryMemory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/memory/03_conversation_buffer_window_memory.html">ConversationBufferWindowMemory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/memory/04_vectorstore_backed_memory.html">VectorStore-Backed Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/memory/05_entity_memory.html">Entity Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/memory/06_session_based_memory.html">Session-Based Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/memory/07_long_term_vs_short_term_memory.html">Long-Term vs Short-Term Memory</a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/lcel/overview.html">LangChain Expression Language (LCEL)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/lcel/01_runnable_passthrough.html">RunnablePassthrough</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/lcel/02_runnable_lambda.html">RunnableLambda</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/lcel/03_runnable_parallel.html">RunnableParallel</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/lcel/04_runnable_sequence.html">RunnableSequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/lcel/05_streaming_runnables.html">Streaming Runnables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/lcel/06_batch_execution.html">Batch Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/lcel/07_async_execution.html">Async Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/lcel/08_retry_and_fallbacks.html">Retry and Fallback</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/streaming_callbacks/overview.html">Streaming and Callbacks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/streaming_callbacks/01_token_streaming.html">Token Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/streaming_callbacks/02_callback_handlers.html">Callback Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/streaming_callbacks/03_tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/streaming_callbacks/04_logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/streaming_callbacks/05_observability_hooks.html">Observability Hooks</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/streaming_callbacks/06_cost_tracking.html">Cost Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/streaming_callbacks/07_latency_tracking.html">Latency Tracking</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/evaluation/overview.html">Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/evaluation/01_llm_evaluation.html">LLM Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/evaluation/02_rag_evaluation.html">RAG Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/evaluation/03_faithfulness.html">Faithfulness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/evaluation/04_relevance.html">Relevance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/evaluation/05_answer_correctness.html">Answer Correctness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/evaluation/06_synthetic_data_generation.html">Synthetic Data Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/evaluation/07_regression_testing.html">Regression Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/evaluation/08_prompt_versioning.html">Regression Testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/data_ingestion/overview.html">Data Ingestion</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/data_ingestion/01_pdf_csv_html_loaders.html">Document Loaders — PDF / CSV / HTML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/data_ingestion/02_web_scraping.html">Web Scraping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/data_ingestion/03_api_based_loaders.html">API-Based Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/data_ingestion/04_data_cleaning.html">Data Cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/data_ingestion/05_metadata_enrichment.html">Metadata Enrichment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/data_ingestion/06_document_versioning.html">Document Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/data_ingestion/07_incremental_ingestion.html">Incremental Ingestion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/data_ingestion/08_cdc_style_updates.html">CDC (Change Data Capture) Style Updates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/caching/overview.html">LangChain Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/caching/01_prompt_caching.html">Prompt Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/caching/02_llm_response_caching.html">LLM Response Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/caching/03_embedding_caching.html">Embeddings Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/caching/04_redis_cache.html">Redis Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/caching/05_in_memory_cache.html">In-Memory Cache — Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/caching/06_cache_invalidation.html">Cache Invalidation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/caching/07_rate_limiting.html">Rate Limiting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/security/overview.html">Security</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/security/01_prompt_injection_detection.html">Prompt Injection Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/security/02_input_sanitization.html">Input Sanitization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/security/03_output_validation.html">Output Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/security/04_content_filtering.html">Content Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/security/05_secrets_management.html">Secrets Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/security/06_role_based_access.html">Role-Based Access Control (RBAC)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/deployment/overview.html">Deployment</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/deployment/01_fastapi_integration.html">FastAPI Integration with LangChain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/deployment/02_gradio_streamlit_ui.html">Gradio and Streamlit UI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/deployment/03_background_tasks.html">Background Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/deployment/04_async_workers.html">Async Workers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/deployment/05_server_sent_events.html">Server-Sent Events (SSE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/deployment/06_websockets.html">WebSockets —</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/deployment/07_load_balancing.html">Load Balancing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/deployment/08_horizontal_scaling.html">Horizontal Scaling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/interoperability/overview.html">Interoperability</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/interoperability/01_langgraph_integration.html">LangGraph Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/interoperability/02_llamaindex_integration.html">LlamaIndex Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/interoperability/03_mcp_integration.html">MCP (Model Context Protocol) Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/interoperability/04_external_vector_dbs.html">External Vector Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/interoperability/05_cloud_services.html">Cloud Services</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/production/overview.html">Production Best Practices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/production/01_config_management.html">Configuration Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/production/02_environment_separation.html">Environment Separation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/production/03_cicd_for_prompts.html">Environment Separation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/production/04_versioned_pipelines.html">Versioned Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/production/05_rollbacks.html">Rollbacks in LLM Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/production/06_monitoring_and_alerts.html">Monitoring and Alerts — Detailed Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/production/07_cost_optimization.html">Cost Optimization — Detailed Explanation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/metrics/overview.html">Metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/metrics/01_intrinsic_metrics.html">Intrinsic (Model-Centric) Metrics</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/metrics/02_task_metrics.html">Task &amp; Quality Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/metrics/03_RAG_metrics.html">RAG and Knowledge Grounding Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/metrics/04_safety_metrics.html">Safety &amp; Alignment Metrics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="langchain/metrics/05_perf_metrics.html">Performance Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/metrics/06_cost_effeciency_metrics.html">Cost &amp; Efficiency Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/metrics/07_reliability_stability_metrics.html">Reliability &amp; Stability Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/metrics/08_user_experience_metrics.html">User Experience Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="langchain/advanced/overview.html">Advanced LangChain Patterns</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="langchain/advanced/01_agentic_rag.html">Agentic RAG — Detailed Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/advanced/02_context_aware_rag.html">Context-Aware RAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/advanced/03_hierarchical_agents.html">Hierarchical Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/advanced/04_self_reflection.html">Self-Reflection in LLM Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/advanced/05_tool_reranking.html">Tool Re-Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/advanced/06_online_learning_from_feedback.html">Online Learning from Feedback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/advanced/07_multi_modal_chains.html">Multi-Modal Chain — Brief Explanation</a></li>
 </ul>
 </details></li>
 </ul>
